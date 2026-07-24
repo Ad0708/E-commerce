@@ -1,0 +1,169 @@
+"use client";
+
+import { useQuery } from "@tanstack/react-query";
+
+import {
+  getStoreBasic,
+  getStoreContact,
+  getStoreAddress,
+  getStoreBusiness,
+  getStoreTax,
+  getStoreShipping,
+  getStoreCurrency,
+  getStoreSocialLinks,
+  getStoreSeo,
+  getStoreMaintenance,
+  getStoreReturns,
+  getStoreBanners,
+} from "@/api/store";
+
+/* -------------------------------------------------------------------------- */
+/* Query Keys                                                                 */
+/* -------------------------------------------------------------------------- */
+
+export const STORE_QUERY_KEYS = {
+  basic: ["store", "basic"],
+  contact: ["store", "contact"],
+  address: ["store", "address"],
+  business: ["store", "business"],
+  tax: ["store", "tax"],
+  shipping: ["store", "shipping"],
+  currency: ["store", "currency"],
+  socialLinks: ["store", "social-links"],
+  seo: ["store", "seo"],
+  maintenance: ["store", "maintenance"],
+  returns: ["store", "returns"],
+  banners: ["store", "banners"],
+} as const;
+
+/* -------------------------------------------------------------------------- */
+/* Basic Store Information                                                    */
+/* -------------------------------------------------------------------------- */
+
+export const useStoreBasic = () => {
+  return useQuery({
+    queryKey: STORE_QUERY_KEYS.basic,
+    queryFn: getStoreBasic,
+  });
+};
+
+/* -------------------------------------------------------------------------- */
+/* Contact                                                                    */
+/* -------------------------------------------------------------------------- */
+
+export const useStoreContact = () => {
+  return useQuery({
+    queryKey: STORE_QUERY_KEYS.contact,
+    queryFn: getStoreContact,
+  });
+};
+
+/* -------------------------------------------------------------------------- */
+/* Address                                                                    */
+/* -------------------------------------------------------------------------- */
+
+export const useStoreAddress = () => {
+  return useQuery({
+    queryKey: STORE_QUERY_KEYS.address,
+    queryFn: getStoreAddress,
+  });
+};
+
+/* -------------------------------------------------------------------------- */
+/* Business                                                                   */
+/* -------------------------------------------------------------------------- */
+
+export const useStoreBusiness = () => {
+  return useQuery({
+    queryKey: STORE_QUERY_KEYS.business,
+    queryFn: getStoreBusiness,
+  });
+};
+
+/* -------------------------------------------------------------------------- */
+/* Tax                                                                        */
+/* -------------------------------------------------------------------------- */
+
+export const useStoreTax = () => {
+  return useQuery({
+    queryKey: STORE_QUERY_KEYS.tax,
+    queryFn: getStoreTax,
+  });
+};
+
+/* -------------------------------------------------------------------------- */
+/* Shipping                                                                   */
+/* -------------------------------------------------------------------------- */
+
+export const useStoreShipping = () => {
+  return useQuery({
+    queryKey: STORE_QUERY_KEYS.shipping,
+    queryFn: getStoreShipping,
+  });
+};
+
+/* -------------------------------------------------------------------------- */
+/* Currency                                                                   */
+/* -------------------------------------------------------------------------- */
+
+export const useStoreCurrency = () => {
+  return useQuery({
+    queryKey: STORE_QUERY_KEYS.currency,
+    queryFn: getStoreCurrency,
+  });
+};
+
+/* -------------------------------------------------------------------------- */
+/* Social Links                                                               */
+/* -------------------------------------------------------------------------- */
+
+export const useStoreSocialLinks = () => {
+  return useQuery({
+    queryKey: STORE_QUERY_KEYS.socialLinks,
+    queryFn: getStoreSocialLinks,
+  });
+};
+
+/* -------------------------------------------------------------------------- */
+/* SEO                                                                        */
+/* -------------------------------------------------------------------------- */
+
+export const useStoreSeo = () => {
+  return useQuery({
+    queryKey: STORE_QUERY_KEYS.seo,
+    queryFn: getStoreSeo,
+  });
+};
+
+/* -------------------------------------------------------------------------- */
+/* Maintenance                                                                */
+/* -------------------------------------------------------------------------- */
+
+export const useStoreMaintenance = () => {
+  return useQuery({
+    queryKey: STORE_QUERY_KEYS.maintenance,
+    queryFn: getStoreMaintenance,
+  });
+};
+
+/* -------------------------------------------------------------------------- */
+/* Returns                                                                    */
+/* -------------------------------------------------------------------------- */
+
+export const useStoreReturns = () => {
+  return useQuery({
+    queryKey: STORE_QUERY_KEYS.returns,
+    queryFn: getStoreReturns,
+  });
+};
+
+/* -------------------------------------------------------------------------- */
+/* Banners                                                                    */
+/* -------------------------------------------------------------------------- */
+
+export const useStoreBanners = () => {
+  return useQuery({
+    queryKey: STORE_QUERY_KEYS.banners,
+    queryFn: getStoreBanners,
+  });
+};
