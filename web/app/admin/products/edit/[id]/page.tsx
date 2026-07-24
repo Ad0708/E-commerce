@@ -7,7 +7,6 @@ import { useProduct } from "@/hooks/product/useProduct";
 import { useUpdateProduct } from "@/hooks/product/useUpdateProduct";
 import { ProductFormValues } from "@/types/product";
 
-
 export default function EditProductPage() {
   const { id } = useParams();
   const router = useRouter();
@@ -35,59 +34,52 @@ export default function EditProductPage() {
     );
   }
 
-const handleSubmit = (data: ProductFormValues) => {
-  const formData = new FormData();
+  const handleSubmit = (data: ProductFormValues) => {
+    const formData = new FormData();
 
-  formData.append("name", data.name);
-  formData.append("category", data.category);
-  formData.append("description", data.description);
-  formData.append("price", String(data.price));
-  formData.append("stock", String(data.stock));
-  formData.append("brand", data.brand || "");
-  formData.append("sku", data.sku || "");
-  formData.append("discountPrice", String(data.discountPrice || ""));
-  formData.append("featured", String(data.featured));
-  formData.append("status", data.status);
+    formData.append("name", data.name);
+    formData.append("category", data.category);
+    formData.append("description", data.description);
+    formData.append("price", String(data.price));
+    formData.append("stock", String(data.stock));
+    formData.append("brand", data.brand || "");
+    formData.append("sku", data.sku || "");
+    formData.append("discountPrice", String(data.discountPrice || ""));
+    formData.append("featured", String(data.featured));
+    formData.append("status", data.status);
 
-  const urls: string[] = [];
-  const files: File[] = [];
+    const urls: string[] = [];
+    const files: File[] = [];
 
-  // 🔥 SPLIT MIXED ARRAY
-  data.images.forEach((item: any) => {
-    if (typeof item === "string") {
-      urls.push(item);
-    } else {
-      files.push(item);
-    }
-  });
+    // 🔥 SPLIT MIXED ARRAY
+    data.images.forEach((item: any) => {
+      if (typeof item === "string") {
+        urls.push(item);
+      } else {
+        files.push(item);
+      }
+    });
 
-  // send URLs
-  formData.append("images", JSON.stringify(urls));
+    // send URLs
+    formData.append("images", JSON.stringify(urls));
 
-  // send files
-  files.forEach((file) => {
-    formData.append("images", file);
-  });
+    // send files
+    files.forEach((file) => {
+      formData.append("images", file);
+    });
 
-  updateProduct(
-    { id: id as string, data: formData },
-    {
-      onSuccess: () => {
-        router.push("/admin/products");
+    updateProduct(
+      { id: id as string, data: formData },
+      {
+        onSuccess: () => {
+          router.push("/admin/products");
+        },
       },
-    }
-  );
-};
+    );
+  };
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
-          Edit Product
-        </h1>
-        <p className="text-slate-500">Update product details</p>
-      </div>
-
       <ProductsForm
         mode="edit"
         initialValues={product}

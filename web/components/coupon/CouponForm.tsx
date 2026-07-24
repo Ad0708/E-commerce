@@ -214,7 +214,7 @@ export function CouponForm({
 
   return (
     <>
-      <div className="max-w-3xl">
+      <div className="">
         <form onSubmit={onFormSubmit} noValidate>
           <div className="space-y-5 ">
             {/* ── 1. Coupon Details ─────────────────────────────────────────── */}

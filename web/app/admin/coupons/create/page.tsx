@@ -27,8 +27,8 @@ export default function CreateCouponPage() {
 
   return (
     // FIX 1: Change w-full to max-w-full and add min-w-0 to anchor viewport width constraints
-    <div className="w-full max-w-full min-w-0 overflow-x-hidden p-4 sm:p-6">
-      <div className="mx-auto max-w-4xl w-full min-w-0">
+    <div className="w-full max-w-7xl mx-auto min-w-0 overflow-x-hidden p-4 sm:p-6">
+      <div className=" w-full min-w-0">
         {/* Page header */}
         <div className="mb-7 w-full min-w-0">
           <button

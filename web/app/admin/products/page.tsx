@@ -172,10 +172,6 @@ export default function ProductsPage() {
 
     // Optimistic local state update
     setProductsList((prev) => prev.filter((p) => p._id !== productToDelete));
-
-    // TODO: Trigger your delete mutation here if available
-    // deleteProduct({ id: productToDelete });
-
     // Close the Modal
     setProductToDelete(null);
   };
@@ -358,7 +354,7 @@ export default function ProductsPage() {
                           </span>
                           {product.discountPrice && (
                             <span className="text-xs text-emerald-600 dark:text-emerald-400 line-through">
-                              ${Number(product.discountPrice).toFixed(2)}
+                              ₹{Number(product.discountPrice).toFixed(2)}
                             </span>
                           )}
                         </div>
