@@ -1,5 +1,5 @@
 # Dependencies
-node_modules/
+**/node_modules/
 
 # Environment variables
 .env
@@ -7,18 +7,37 @@ node_modules/
 !.env.example
 
 # Next.js
-.next/
-out/
+**/.next/
+**/out/
+
+# Vite
+**/.vite/
+**/vite.config.js.timestamp-*
+**/vite.config.ts.timestamp-*
 
 # Build output
-dist/
-build/
+**/dist/
+**/build/
 
 # Logs
 *.log
 npm-debug.log*
 yarn-debug.log*
+yarn-error.log*
 pnpm-debug.log*
+
+# TypeScript
+*.tsbuildinfo
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Cache
+.cache/
+.turbo/
+.parcel-cache/
+.pnpm-store/
 
 # OS files
 .DS_Store
@@ -28,6 +47,7 @@ Thumbs.db
 .vscode/
 .idea/
 
-# Cache
-.cache/
-.turbo/
+# Misc
+*.tgz
+.eslintcache
+.stylelintcache
