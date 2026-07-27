@@ -1,6 +1,6 @@
 "use client";
 
-import { useUpdateStock } from "@/hooks/inventory/useUpdateStock";
+import { useUpdateStock } from "@/hooks/admin/inventory/useInventory";
 import React, { useRef, useState } from "react";
 import { InventoryProduct } from "@/types/inventory";
 import {
@@ -72,7 +72,7 @@ export default function InventoryTable({
       mutate(
         { productId: product._id, stock: parsed },
         {
-          onSuccess: () => {
+          onSuccess: (data) => {
             setEditing(false);
             setSaved(true);
             setTimeout(() => setSaved(false), 2000);
@@ -195,7 +195,7 @@ export default function InventoryTable({
   }
 
   return (
-    <Table className="w-full max-h-[calc(100vh-35rem)]!">
+    <Table className="w-full max-h-[calc(100vh-40rem)]">
       <TableHeader>
         <TableRow>
           {/* Explicitly defined width distributions */}

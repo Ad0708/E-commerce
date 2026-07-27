@@ -1,11 +1,12 @@
-// components/analytics/products/TopSellingProducts.tsx
 "use client";
 
-import React from "react";
-import { TrendingUp } from "lucide-react";
 import { useTopSellingProducts } from "@/hooks/admin/analytics/useProductsAnalytics";
-import { ErrorStateView, EmptyStateView } from "./StateViews";
-import { ProductPerformanceTable, TableSkeletonHeader } from "./ProductPerformanceTable";
+import { TrendingUp } from "lucide-react";
+import {
+  ProductPerformanceTable,
+  TableSkeletonHeader,
+} from "./ProductPerformanceTable";
+import { EmptyStateView, ErrorStateView } from "./StateViews";
 
 export default function TopSellingProducts() {
   const { data, isLoading, error, refetch } = useTopSellingProducts();

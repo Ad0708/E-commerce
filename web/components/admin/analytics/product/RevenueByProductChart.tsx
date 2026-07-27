@@ -1,19 +1,17 @@
-// components/analytics/products/RevenueByProductChart.tsx
 "use client";
 
-import React from "react";
+import { useRevenueByProduct } from "@/hooks/admin/analytics/useProductsAnalytics";
+import { BarChart3 } from "lucide-react";
 import {
-  BarChart,
   Bar,
+  BarChart,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
 } from "recharts";
-import { BarChart3 } from "lucide-react";
-import { useRevenueByProduct } from "@/hooks/admin/analytics/useProductsAnalytics";
-import { ErrorStateView, EmptyStateView } from "./StateViews";
+import { EmptyStateView, ErrorStateView } from "./StateViews";
 
 const formatINR = (value: number) =>
   new Intl.NumberFormat("en-IN", {

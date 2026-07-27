@@ -1,22 +1,19 @@
 "use client";
 
-import { useState, useCallback } from "react";
-import { useInventory } from "@/hooks/inventory/useInventory";
-import { useUpdateStock } from "@/hooks/inventory/useUpdateStock";
-import { InventoryProduct, StockFilter } from "@/types/inventory";
-import { useDebounce } from "@/hooks/useDebounce";
-import { useRef } from "react";
-import Pagination from "@/components/common/Pagination";
 import InventoryTable from "@/components/admin/inventory/InventoryTable";
+import Pagination from "@/components/common/Pagination";
 import SearchInput from "@/components/common/Search";
 import { SummaryCard } from "@/components/common/SummaryCard";
+import { useInventory } from "@/hooks/admin/inventory/useInventory";
+import { useDebounce } from "@/hooks/useDebounce";
+import { StockFilter } from "@/types/inventory";
 import { Package, PackageCheck, PackageX, TriangleAlert } from "lucide-react";
+import { useCallback, useState } from "react";
 
 // ─── Stock badge ──────────────────────────────────────────────────────────────
 
 // ─── Inline stock editor ──────────────────────────────────────────────────────
 
-// ─── Filter pill ──────────────────────────────────────────────────────────────
 function FilterPill({
   label,
   active,

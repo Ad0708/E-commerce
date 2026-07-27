@@ -28,6 +28,7 @@ export const useAdminStore = () => {
   return useQuery({
     queryKey: STORE_QUERY_KEY,
     queryFn: getAdminStore,
+    staleTime: 3 * 60 * 1000,
   });
 };
 

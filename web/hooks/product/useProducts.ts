@@ -34,5 +34,6 @@ export const useProducts = ({
         category,
       }),
     placeholderData: (previousData) => previousData,
+    staleTime: 3 * 60 * 1000,
   });
 };

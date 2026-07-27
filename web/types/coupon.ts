@@ -45,4 +45,4 @@ export interface FilterState {
   status: "all" | "active" | "inactive" | "scheduled" | "expired";
   page: number;
   limit: number;
-} 
+}

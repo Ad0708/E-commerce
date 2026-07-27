@@ -25,6 +25,7 @@ export const useRefunds = ({
         search,
       }),
     placeholderData: (previousData) => previousData,
+    staleTime: 3 * 60 * 1000,
   });
 };
 export const useApproveRefund = () => {
@@ -40,7 +41,6 @@ export const useApproveRefund = () => {
     },
   });
 };
-
 export const useRejectRefund = () => {
   const queryClient = useQueryClient();
 

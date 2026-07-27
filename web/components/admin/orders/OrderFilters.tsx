@@ -65,6 +65,8 @@ export default function OrderFilters({
       onFilterChange({
         year: undefined,
         month: undefined,
+        startDate: undefined,
+        endDate: undefined,
         page: 1,
       });
 
@@ -82,20 +84,22 @@ export default function OrderFilters({
 
     if (value === "current_month") {
       updatedDates.year = now.getFullYear().toString();
+      updatedDates.month = (now.getMonth() + 1).toString();
+    }
 
-      updatedDates.month = (now.getMonth() + 1).toString().padStart(2, "0");
-    } else if (value === "previous_month") {
-      const prevMonthDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+    if (value === "previous_month") {
+      const previousMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
 
-      updatedDates.year = prevMonthDate.getFullYear().toString();
+      updatedDates.year = previousMonth.getFullYear().toString();
+      updatedDates.month = (previousMonth.getMonth() + 1).toString();
+    }
 
-      updatedDates.month = (prevMonthDate.getMonth() + 1)
-        .toString()
-        .padStart(2, "0");
-    } else if (value === "current_year") {
-      updatedDates.year = currentYear.toString();
-    } else if (value === "previous_year") {
-      updatedDates.year = (currentYear - 1).toString();
+    if (value === "current_year") {
+      updatedDates.year = now.getFullYear().toString();
+    }
+
+    if (value === "previous_year") {
+      updatedDates.year = (now.getFullYear() - 1).toString();
     }
 
     onFilterChange({
@@ -103,7 +107,6 @@ export default function OrderFilters({
       page: 1,
     });
   };
-
   const handleCustomDateChange = (
     type: "startDate" | "endDate",
     value: string,
@@ -123,19 +126,39 @@ export default function OrderFilters({
       return "custom";
     }
 
-    if (filters.month && filters.year === currentYear.toString()) {
+    const now = new Date();
+
+    const currentYearValue = now.getFullYear().toString();
+    const currentMonthValue = (now.getMonth() + 1).toString();
+
+    const previousMonthDate = new Date(
+      now.getFullYear(),
+      now.getMonth() - 1,
+      1,
+    );
+
+    const previousYearValue = previousMonthDate.getFullYear().toString();
+    const previousMonthValue = (previousMonthDate.getMonth() + 1).toString();
+
+    if (
+      filters.year === currentYearValue &&
+      filters.month === currentMonthValue
+    ) {
       return "current_month";
     }
 
-    if (filters.month) {
+    if (
+      filters.year === previousYearValue &&
+      filters.month === previousMonthValue
+    ) {
       return "previous_month";
     }
 
-    if (filters.year === currentYear.toString()) {
+    if (filters.year === currentYearValue && !filters.month) {
       return "current_year";
     }
 
-    if (filters.year === (currentYear - 1).toString()) {
+    if (filters.year === (currentYear - 1).toString() && !filters.month) {
       return "previous_year";
     }
 

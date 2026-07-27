@@ -1,6 +1,6 @@
 export interface Banner {
   _id: string;
-  image: string; // URL from backend
+  image: string;
   title: string;
   subtitle: string;
   buttonText: string;

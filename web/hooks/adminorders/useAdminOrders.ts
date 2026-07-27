@@ -17,14 +17,6 @@ export const useAdminOrders = (filters: AdminOrderFilters) => {
   });
 };
 
-// export const useAdminOrderDetails = (orderId: string) => {
-//   return useQuery({
-//     queryKey: ["admin-order", orderId],
-//     queryFn: () => getAdminOrderById(orderId),
-//     enabled: !!orderId,
-//   });
-// };
-
 export const useUpdateOrderStatus = () => {
   const queryClient = useQueryClient();
 

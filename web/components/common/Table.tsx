@@ -14,7 +14,7 @@ export function Table({
   return (
     /* Outer layout card handling background theme accents and constraints independently */
     <div className="w-full rounded-2xl border border-blue-100/70 bg-blue-50/30 shadow-sm dark:border-slate-800 dark:bg-slate-950 overflow-hidden flex flex-col">
-      <div className="w-full overflow-x-auto overflow-y-auto max-h-[calc(100vh-34rem)] h-fit">
+      <div className="w-full overflow-x-auto overflow-y-auto max-h-[calc(100vh-33.5rem)] h-fit">
         <table
           /* 'min-w-full' keeps columns from squeezing; standard display attributes remain intact */
           className={`min-w-full border-collapse table-auto ${className}`}
@@ -66,12 +66,8 @@ export function TableHead({
   ...props
 }: ThHTMLAttributes<HTMLTableCellElement>) {
   return (
-    /* 1. 'sticky top-0' pins headers right against the container viewport.
-      2. Solid 'bg-blue-50' and 'dark:bg-slate-900' ensures scrolling row lines slide beneath cleanly.
-      3. 'whitespace-nowrap' forces column layout groups to stay on one uniform line instead of stacking.
-    */
     <th
-      className={`sticky top-0 z-20 bg-blue-50 dark:bg-slate-900 px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500/90 dark:text-slate-400 align-middle whitespace-nowrap ${className}`}
+      className={`sticky top-0 z-20 bg-blue-50 dark:bg-slate-900 px-6 py-3.5 text-left text-xs font-semibold uppercase tracking-wider text-slate-500/90 dark:text-slate-400 align-middle whitespace-nowrap ${className}`}
       {...props}
     />
   );

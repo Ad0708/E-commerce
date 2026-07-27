@@ -1,12 +1,10 @@
-// components/analytics/products/ProductAnalytics.tsx
 "use client";
 
-import React from "react";
-import ProductSummaryCards from "./ProductSummaryCards";
-import RevenueByProductChart from "./RevenueByProductChart";
-import ProfitByProductChart from "./ProfitByProductChart";
-import TopSellingProducts from "./TopSellingProducts";
 import LeastSellingProducts from "./LeastSellingProducts";
+import ProductSummaryCards from "./ProductSummaryCards";
+import ProfitByProductChart from "./ProfitByProductChart";
+import RevenueByProductChart from "./RevenueByProductChart";
+import TopSellingProducts from "./TopSellingProducts";
 
 export default function ProductAnalytics() {
   return (

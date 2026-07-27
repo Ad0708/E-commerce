@@ -90,9 +90,12 @@ export default function StoreSettingsPage() {
     return (
       <div className="mx-auto px-4 py-8 sm:px-6 lg:px-8">
         <div className="mb-6 space-y-1">
-          <h1 className="text-2xl font-semibold tracking-tight">Store Settings</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">
+            Store Settings
+          </h1>
           <p className="text-sm text-muted-foreground">
-            Manage your store information, branding, shipping, tax and localization.
+            Manage your store information, branding, shipping, tax and
+            localization.
           </p>
         </div>
         <Alert variant="destructive">
@@ -116,10 +119,13 @@ export default function StoreSettingsPage() {
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10">
             <Settings className="h-5 w-5 text-primary" />
           </div>
-          <h1 className="text-2xl font-semibold tracking-tight">Store Settings</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">
+            Store Settings
+          </h1>
         </div>
         <p className="ml-12 text-sm text-muted-foreground">
-          Manage your store information, branding, shipping, tax and localization.
+          Manage your store information, branding, shipping, tax and
+          localization.
         </p>
       </div>
 

@@ -16,13 +16,9 @@ export const connectDB = async () => {
       serverSelectionTimeoutMS: 10000,
     });
 
-    console.log(
-      `✅ MongoDB Connected: ${connection.connection.host}`
-    );
+    console.log(`✅ MongoDB Connected: ${connection.connection.host}`);
   } catch (error) {
-    console.error(
-      `❌ MongoDB connection failed: ${error.message}`
-    );
+    console.error(`❌ MongoDB connection failed: ${error.message}`);
 
     process.exit(1);
   }

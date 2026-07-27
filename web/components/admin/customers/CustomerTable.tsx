@@ -44,10 +44,7 @@ export default function CustomerTable({
       <TableBody>
         {customers.length === 0 ? (
           <TableRow>
-            <TableCell
-              colSpan={7}
-              className="py-12 text-center text-zinc-500"
-            >
+            <TableCell colSpan={7} className="py-12 text-center text-zinc-500">
               No customers found.
             </TableCell>
           </TableRow>

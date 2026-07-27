@@ -4,12 +4,10 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-// Components
 import { CouponCard } from "@/components/coupon/CouponCard";
 import { CouponStatsRow } from "@/components/coupon/CouponStatsRow";
 import { CouponTable } from "@/components/coupon/CouponTable";
 
-// Client-side Custom Hooks Stubs Mocking
 import Modal from "@/components/common/Modal";
 import Pagination from "@/components/common/Pagination";
 import SearchInput from "@/components/common/Search";
@@ -254,7 +252,6 @@ export default function CouponListPage() {
         </div>
       )}
 
-      {/* Global Context Modals Portal Mounting */}
       <Modal
         isOpen={!!selectedDeleteCoupon}
         title="Delete Coupon"

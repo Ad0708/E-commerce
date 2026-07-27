@@ -1,5 +1,4 @@
 // components/analytics/customers/StateViews.tsx
-import React from "react";
 import { AlertTriangle, RefreshCw, UserX } from "lucide-react";
 
 interface ViewProps {
@@ -10,7 +9,7 @@ interface ViewProps {
 
 export function ErrorStateView({ error, onRetry }: ViewProps) {
   return (
-    <div className="flex min-h-[320px] w-full flex-col items-center justify-center rounded-xl border border-red-200 bg-red-50/50 p-6 text-center dark:border-red-900/30 dark:bg-red-950/10">
+    <div className="flex min-h-80 w-full flex-col items-center justify-center rounded-xl border border-red-200 bg-red-50/50 p-6 text-center dark:border-red-900/30 dark:bg-red-950/10">
       <div className="flex h-12 w-12 items-center justify-center rounded-full bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400">
         <AlertTriangle className="h-6 w-6" />
       </div>
@@ -18,7 +17,8 @@ export function ErrorStateView({ error, onRetry }: ViewProps) {
         Failed to fetch customer metrics
       </h3>
       <p className="mt-1 max-w-xs text-xs text-slate-500 dark:text-slate-400">
-        {error?.message || "An unexpected error occurred while connecting to the analytics engine data stream."}
+        {error?.message ||
+          "An unexpected error occurred while connecting to the analytics engine data stream."}
       </p>
       {onRetry && (
         <button
@@ -33,9 +33,11 @@ export function ErrorStateView({ error, onRetry }: ViewProps) {
   );
 }
 
-export function EmptyStateView({ message = "No customer analytics available" }: ViewProps) {
+export function EmptyStateView({
+  message = "No customer analytics available",
+}: ViewProps) {
   return (
-    <div className="flex min-h-[320px] w-full flex-col items-center justify-center rounded-xl border border-dashed border-slate-200 bg-white p-6 text-center dark:border-slate-800 dark:bg-slate-900">
+    <div className="flex min-h-80 w-full flex-col items-center justify-center rounded-xl border border-dashed border-slate-200 bg-white p-6 text-center dark:border-slate-800 dark:bg-slate-900">
       <div className="flex h-12 w-12 items-center justify-center rounded-full bg-slate-50 text-slate-400 dark:bg-slate-800 dark:text-slate-500">
         <UserX className="h-6 w-6" />
       </div>
@@ -43,7 +45,8 @@ export function EmptyStateView({ message = "No customer analytics available" }: 
         {message}
       </h3>
       <p className="mt-1 text-xs text-slate-400 dark:text-slate-500">
-        No active user actions match the analytical tracking filters at this window.
+        No active user actions match the analytical tracking filters at this
+        window.
       </p>
     </div>
   );

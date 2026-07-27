@@ -16,16 +16,10 @@ import { Button } from "@/components/ui/button";
 import { Loader2, MapPin } from "lucide-react";
 import { toast } from "react-hot-toast";
 import { useUpdateAdminStore } from "@/hooks/admin/store/useAdminStore";
-import type { AdminStore } from "@/types/adminStore";
+import type { AddressStore, AdminStore } from "@/types/adminStore";
 
 interface AddressFields {
-  address: {
-    street: string;
-    city: string;
-    state: string;
-    country: string;
-    pincode: string;
-  };
+  address: AddressStore;
 }
 
 interface Props {

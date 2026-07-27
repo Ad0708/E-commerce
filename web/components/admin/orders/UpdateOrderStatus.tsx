@@ -20,16 +20,20 @@ const AVAILABLE_STATUSES: OrderStatusType[] = [
   "Cancelled",
 ];
 
-export default function UpdateOrderStatus({ order, onClose }: UpdateOrderStatusProps) {
+export default function UpdateOrderStatus({
+  order,
+  onClose,
+}: UpdateOrderStatusProps) {
   const { mutate: updateStatus, isPending } = useUpdateOrderStatus();
   const [selectedStatus, setSelectedStatus] = useState<OrderStatusType | "">(
-    order?.status || ""
+    order?.status || "",
   );
   const [showConfirmation, setShowConfirmation] = useState(false);
 
   if (!order) return null;
 
-  const isTerminalState = order.status === "Delivered" || order.status === "Cancelled";
+  const isTerminalState =
+    order.status === "Delivered" || order.status === "Cancelled";
 
   const handleApplyClick = (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,7 +50,7 @@ export default function UpdateOrderStatus({ order, onClose }: UpdateOrderStatusP
           setShowConfirmation(false);
           onClose();
         },
-      }
+      },
     );
   };
 
@@ -73,21 +77,29 @@ export default function UpdateOrderStatus({ order, onClose }: UpdateOrderStatusP
             <div className="flex gap-3 p-4 rounded-2xl bg-amber-50/50 dark:bg-amber-950/10 border border-amber-200/60 dark:border-amber-950/40 text-amber-800 dark:text-amber-400 text-sm">
               <AlertCircle size={18} className="shrink-0 mt-0.5" />
               <p>
-                This tracking configuration is marked as <span className="font-bold">{order.status}</span>. Orders in terminal state configurations are locked from state mutation updates.
+                This tracking configuration is marked as{" "}
+                <span className="font-bold">{order.status}</span>. Orders in
+                terminal state configurations are locked from state mutation
+                updates.
               </p>
             </div>
           ) : !showConfirmation ? (
             <form onSubmit={handleApplyClick} className="space-y-4">
               <div>
                 <p className="text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider mb-2">
-                  Order Number: <span className="font-mono text-zinc-700 dark:text-zinc-300">#{order.orderNumber}</span>
+                  Order Number:{" "}
+                  <span className="font-mono text-zinc-700 dark:text-zinc-300">
+                    #{order.orderNumber}
+                  </span>
                 </p>
                 <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1.5">
                   Select Target Operational Stage
                 </label>
                 <select
                   value={selectedStatus}
-                  onChange={(e) => setSelectedStatus(e.target.value as OrderStatusType)}
+                  onChange={(e) =>
+                    setSelectedStatus(e.target.value as OrderStatusType)
+                  }
                   className="w-full px-4 py-2.5 text-sm bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 transition appearance-none cursor-pointer"
                 >
                   {AVAILABLE_STATUSES.map((status) => (
@@ -122,7 +134,14 @@ export default function UpdateOrderStatus({ order, onClose }: UpdateOrderStatusP
                 <div>
                   <p className="font-semibold">Confirm Phase Pipeline Update</p>
                   <p className="text-xs text-blue-600/90 dark:text-blue-400/80 mt-1">
-                    Are you certain you want to shift the lifecycle of order #{order.orderNumber} from <span className="font-bold underline">{order.status}</span> to <span className="font-bold underline">{selectedStatus}</span>?
+                    Are you certain you want to shift the lifecycle of order #
+                    {order.orderNumber} from{" "}
+                    <span className="font-bold underline">{order.status}</span>{" "}
+                    to{" "}
+                    <span className="font-bold underline">
+                      {selectedStatus}
+                    </span>
+                    ?
                   </p>
                 </div>
               </div>

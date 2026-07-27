@@ -23,7 +23,9 @@ export default function AnalyticsPage() {
 
   // Read active tab from URL query params, default to "sales"
   const currentTab = searchParams.get("tab") as AnalyticsTab;
-  const activeTab: AnalyticsTab = navItems.some((item) => item.id === currentTab)
+  const activeTab: AnalyticsTab = navItems.some(
+    (item) => item.id === currentTab,
+  )
     ? currentTab
     : "sales";
 

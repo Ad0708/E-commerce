@@ -1,12 +1,10 @@
-// components/analytics/customers/CustomerAnalytics.tsx
 "use client";
 
-import React from "react";
-import CustomerSummaryCards from "./CustomerSummaryCards";
-import CustomerRegistrationTrend from "./CustomerRegistrationTrend";
-import RepeatCustomersChart from "./RepeatCustomersChart";
-import FavoriteCategoriesChart from "./FavoriteCategoriesChart";
 import CustomerOrderFrequencyChart from "./CustomerOrderFrequencyChart";
+import CustomerRegistrationTrend from "./CustomerRegistrationTrend";
+import CustomerSummaryCards from "./CustomerSummaryCards";
+import FavoriteCategoriesChart from "./FavoriteCategoriesChart";
+import RepeatCustomersChart from "./RepeatCustomersChart";
 import TopCustomersTable from "./TopCustomersTable";
 
 export default function CustomerAnalytics() {

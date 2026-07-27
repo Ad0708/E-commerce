@@ -1,24 +1,34 @@
-// src/components/admin/analytics/marketing/CampaignPerformanceTable.tsx
 "use client";
 
-import React from "react";
-import { Megaphone, RefreshCw } from "lucide-react";
 import { useCampaignPerformance } from "@/hooks/admin/analytics/useMarketingAnalytics";
+import { Megaphone, RefreshCw } from "lucide-react";
 
 const formatINR = (value: number) =>
-  new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", notation: "compact", maximumFractionDigits: 1 }).format(value);
+  new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    notation: "compact",
+    maximumFractionDigits: 1,
+  }).format(value);
 
 export default function CampaignPerformanceTable() {
   const { data, isLoading, error, refetch } = useCampaignPerformance();
 
-  if (isLoading) return <TableSkeletonView title="Active Campaigns Attribution Matrix" />;
+  if (isLoading)
+    return <TableSkeletonView title="Active Campaigns Attribution Matrix" />;
 
   if (error || !data) {
     return (
-      <div className="flex min-h-[260px] flex-col items-center justify-center rounded-xl border border-slate-200 bg-white p-6 text-center dark:border-slate-800 dark:bg-slate-900">
-        <p className="text-sm text-slate-500 dark:text-slate-400">Error rendering database campaign assets logs</p>
-        <button onClick={() => refetch()} className="mt-2 text-xs font-semibold underline text-slate-900 dark:text-slate-100 flex items-center gap-1">
-          <RefreshCw className="h-3 w-3"/>Retry Connection
+      <div className="flex min-h-65 flex-col items-center justify-center rounded-xl border border-slate-200 bg-white p-6 text-center dark:border-slate-800 dark:bg-slate-900">
+        <p className="text-sm text-slate-500 dark:text-slate-400">
+          Error rendering database campaign assets logs
+        </p>
+        <button
+          onClick={() => refetch()}
+          className="mt-2 text-xs font-semibold underline text-slate-900 dark:text-slate-100 flex items-center gap-1"
+        >
+          <RefreshCw className="h-3 w-3" />
+          Retry Connection
         </button>
       </div>
     );
@@ -32,25 +42,41 @@ export default function CampaignPerformanceTable() {
             <Megaphone className="h-4 w-4" />
           </div>
           <div>
-            <h3 className="text-base font-semibold text-slate-900 dark:text-slate-50">Active Campaigns Attribution Matrix</h3>
-            <p className="text-xs text-slate-400 dark:text-slate-500">Financial conversion diagnostics grouped by marketing campaign identifiers</p>
+            <h3 className="text-base font-semibold text-slate-900 dark:text-slate-50">
+              Active Campaigns Attribution Matrix
+            </h3>
+            <p className="text-xs text-slate-400 dark:text-slate-500">
+              Financial conversion diagnostics grouped by marketing campaign
+              identifiers
+            </p>
           </div>
         </div>
       </div>
 
-      <div className="relative overflow-x-auto max-h-[440px] overflow-y-auto">
+      <div className="relative overflow-x-auto max-h-110 overflow-y-auto">
         <table className="w-full text-left text-sm text-slate-500 dark:text-slate-400">
           <thead className="sticky top-0 z-10 bg-slate-50 text-xs font-semibold uppercase text-slate-700 dark:bg-slate-800/80 dark:text-slate-300 backdrop-blur-sm border-b border-slate-200 dark:border-slate-700">
             <tr>
-              <th scope="col" className="px-6 py-3.5">Campaign Name</th>
-              <th scope="col" className="px-6 py-3.5 text-right">Orders Driven</th>
-              <th scope="col" className="px-6 py-3.5 text-right">Average Order Value</th>
-              <th scope="col" className="px-6 py-3.5 text-right">Gross Revenue Yield</th>
+              <th scope="col" className="px-6 py-3.5">
+                Campaign Name
+              </th>
+              <th scope="col" className="px-6 py-3.5 text-right">
+                Orders Driven
+              </th>
+              <th scope="col" className="px-6 py-3.5 text-right">
+                Average Order Value
+              </th>
+              <th scope="col" className="px-6 py-3.5 text-right">
+                Gross Revenue Yield
+              </th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60">
             {data.map((row: any, idx: number) => (
-              <tr key={row.campaign || idx} className="bg-white hover:bg-slate-50/70 transition-colors dark:bg-slate-900 dark:hover:bg-slate-800/50">
+              <tr
+                key={row.campaign || idx}
+                className="bg-white hover:bg-slate-50/70 transition-colors dark:bg-slate-900 dark:hover:bg-slate-800/50"
+              >
                 <td className="whitespace-nowrap px-6 py-4 font-mono font-semibold text-slate-950 dark:text-slate-50">
                   {row.campaign || "Unassigned / General"}
                 </td>

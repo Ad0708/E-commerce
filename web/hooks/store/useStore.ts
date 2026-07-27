@@ -44,6 +44,7 @@ export const useStoreBasic = () => {
   return useQuery({
     queryKey: STORE_QUERY_KEYS.basic,
     queryFn: getStoreBasic,
+    staleTime: 5 * 60 * 1000,
   });
 };
 
@@ -55,6 +56,7 @@ export const useStoreContact = () => {
   return useQuery({
     queryKey: STORE_QUERY_KEYS.contact,
     queryFn: getStoreContact,
+    staleTime: 5 * 60 * 1000,
   });
 };
 
@@ -66,6 +68,7 @@ export const useStoreAddress = () => {
   return useQuery({
     queryKey: STORE_QUERY_KEYS.address,
     queryFn: getStoreAddress,
+    staleTime: 5 * 60 * 1000,
   });
 };
 
@@ -77,6 +80,7 @@ export const useStoreBusiness = () => {
   return useQuery({
     queryKey: STORE_QUERY_KEYS.business,
     queryFn: getStoreBusiness,
+    staleTime: 5 * 60 * 1000,
   });
 };
 
@@ -88,6 +92,7 @@ export const useStoreTax = () => {
   return useQuery({
     queryKey: STORE_QUERY_KEYS.tax,
     queryFn: getStoreTax,
+    staleTime: 5 * 60 * 1000,
   });
 };
 
@@ -99,6 +104,7 @@ export const useStoreShipping = () => {
   return useQuery({
     queryKey: STORE_QUERY_KEYS.shipping,
     queryFn: getStoreShipping,
+    staleTime: 5 * 60 * 1000,
   });
 };
 
@@ -110,6 +116,7 @@ export const useStoreCurrency = () => {
   return useQuery({
     queryKey: STORE_QUERY_KEYS.currency,
     queryFn: getStoreCurrency,
+    staleTime: 5 * 60 * 1000,
   });
 };
 
@@ -121,6 +128,7 @@ export const useStoreSocialLinks = () => {
   return useQuery({
     queryKey: STORE_QUERY_KEYS.socialLinks,
     queryFn: getStoreSocialLinks,
+    staleTime: 5 * 60 * 1000,
   });
 };
 
@@ -132,6 +140,7 @@ export const useStoreSeo = () => {
   return useQuery({
     queryKey: STORE_QUERY_KEYS.seo,
     queryFn: getStoreSeo,
+    staleTime: 5 * 60 * 1000,
   });
 };
 
@@ -154,6 +163,7 @@ export const useStoreReturns = () => {
   return useQuery({
     queryKey: STORE_QUERY_KEYS.returns,
     queryFn: getStoreReturns,
+    staleTime: 5 * 60 * 1000,
   });
 };
 

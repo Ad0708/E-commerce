@@ -1,11 +1,9 @@
-// components/analytics/products/LeastSellingProducts.tsx
 "use client";
 
-import React from "react";
-import { ShoppingBag } from "lucide-react";
 import { useLeastSellingProducts } from "@/hooks/admin/analytics/useProductsAnalytics";
-import { ErrorStateView, EmptyStateView } from "./StateViews";
+import { ShoppingBag } from "lucide-react";
 import { ProductPerformanceTable, TableSkeletonHeader } from "./ProductPerformanceTable";
+import { EmptyStateView, ErrorStateView } from "./StateViews";
 
 export default function LeastSellingProducts() {
   const { data, isLoading, error, refetch } = useLeastSellingProducts();

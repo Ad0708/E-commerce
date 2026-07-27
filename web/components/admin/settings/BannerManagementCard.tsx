@@ -1,27 +1,5 @@
 "use client";
 
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
-import { Badge } from "@/components/ui/badge";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -32,6 +10,32 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import {
+  useAddBanner,
+  useDeleteBanner,
+  useUpdateBanner,
+} from "@/hooks/admin/store/useAdminStore";
+import { cn } from "@/lib/utils";
+import type { AdminStore, Banner, BannerFormFields } from "@/types/adminStore";
 import {
   ChevronDown,
   ChevronUp,
@@ -42,15 +46,10 @@ import {
   Plus,
   Trash2,
 } from "lucide-react";
-import { toast } from "react-hot-toast";
-import {
-  useAddBanner,
-  useUpdateBanner,
-  useDeleteBanner,
-} from "@/hooks/admin/store/useAdminStore";
-import type { AdminStore, Banner, BannerFormFields } from "@/types/adminStore";
 import Image from "next/image";
-import { cn } from "@/lib/utils";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
 
 interface Props {
   store: AdminStore;
@@ -68,23 +67,17 @@ export function BannerManagementCard({ store }: Props) {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [preview, setPreview] = useState("");
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    watch,
-    setValue,
-    formState: { errors },
-  } = useForm<BannerFormFields>({
-    defaultValues: {
-      title: "",
-      subtitle: "",
-      buttonText: "",
-      buttonLink: "",
-      active: true,
-      order: (store.banners?.length ?? 0) + 1,
-    },
-  });
+  const { register, handleSubmit, reset, watch, setValue } =
+    useForm<BannerFormFields>({
+      defaultValues: {
+        title: "",
+        subtitle: "",
+        buttonText: "",
+        buttonLink: "",
+        active: true,
+        order: (store.banners?.length ?? 0) + 1,
+      },
+    });
 
   const isActive = watch("active");
 

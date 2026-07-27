@@ -1,5 +1,13 @@
 export type StockFilter = "all" | "in" | "low" | "out";
 
+export type UseInventoryParams = {
+  search?: string;
+  stockFilter?: StockFilter;
+  category?: string;
+  page?: number;
+  limit?: number;
+};
+
 export type InventoryProduct = {
   _id: string;
   name: string;

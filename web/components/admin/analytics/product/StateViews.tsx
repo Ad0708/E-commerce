@@ -1,6 +1,4 @@
-// components/analytics/products/StateViews.tsx
-import React from "react";
-import { AlertTriangle, RefreshCw, FolderOpen } from "lucide-react";
+import { AlertTriangle, FolderOpen, RefreshCw } from "lucide-react";
 
 interface ViewProps {
   error?: Error | null;
@@ -10,7 +8,7 @@ interface ViewProps {
 
 export function ErrorStateView({ error, onRetry }: ViewProps) {
   return (
-    <div className="flex min-h-[320px] w-full flex-col items-center justify-center rounded-xl border border-red-200 bg-red-50/50 p-6 text-center dark:border-red-900/30 dark:bg-red-950/10">
+    <div className="flex min-h-80 w-full flex-col items-center justify-center rounded-xl border border-red-200 bg-red-50/50 p-6 text-center dark:border-red-900/30 dark:bg-red-950/10">
       <div className="flex h-12 w-12 items-center justify-center rounded-full bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400">
         <AlertTriangle className="h-6 w-6" />
       </div>
@@ -18,7 +16,8 @@ export function ErrorStateView({ error, onRetry }: ViewProps) {
         Failed to fetch analytics metrics
       </h3>
       <p className="mt-1 max-w-xs text-xs text-slate-500 dark:text-slate-400">
-        {error?.message || "An unexpected dynamic error occurred while connecting to the analytics engine data stream."}
+        {error?.message ||
+          "An unexpected dynamic error occurred while connecting to the analytics engine data stream."}
       </p>
       {onRetry && (
         <button
@@ -33,9 +32,11 @@ export function ErrorStateView({ error, onRetry }: ViewProps) {
   );
 }
 
-export function EmptyStateView({ message = "No analytics available" }: ViewProps) {
+export function EmptyStateView({
+  message = "No analytics available",
+}: ViewProps) {
   return (
-    <div className="flex min-h-[320px] w-full flex-col items-center justify-center rounded-xl border border-dashed border-slate-200 bg-white p-6 text-center dark:border-slate-800 dark:bg-slate-900">
+    <div className="flex min-h-80 w-full flex-col items-center justify-center rounded-xl border border-dashed border-slate-200 bg-white p-6 text-center dark:border-slate-800 dark:bg-slate-900">
       <div className="flex h-12 w-12 items-center justify-center rounded-full bg-slate-50 text-slate-400 dark:bg-slate-800 dark:text-slate-500">
         <FolderOpen className="h-6 w-6" />
       </div>
@@ -43,7 +44,8 @@ export function EmptyStateView({ message = "No analytics available" }: ViewProps
         {message}
       </h3>
       <p className="mt-1 text-xs text-slate-400 dark:text-slate-500">
-        No active reporting periods map to your dashboard filters at this window.
+        No active reporting periods map to your dashboard filters at this
+        window.
       </p>
     </div>
   );

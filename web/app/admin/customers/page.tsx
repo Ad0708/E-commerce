@@ -1,23 +1,23 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
-import CustomerTable from "@/components/admin/customers/CustomerTable";
-import CustomerStats from "@/components/admin/customers/CustomerStats";
 import CustomerEditModal from "@/components/admin/customers/CustomerEditModal";
+import CustomerStats from "@/components/admin/customers/CustomerStats";
+import CustomerTable from "@/components/admin/customers/CustomerTable";
 
-import SearchInput from "@/components/common/Search";
 import Pagination from "@/components/common/Pagination";
+import SearchInput from "@/components/common/Search";
 
 import {
-  useCustomers,
   useBlockCustomer,
+  useCustomers,
   useUnblockCustomer,
 } from "@/hooks/admin/customers/useCustomers";
 
 import { Customer } from "@/api/admin/customer";
-import { useDebounce } from "@/hooks/useDebounce";
 import Modal from "@/components/common/Modal";
+import { useDebounce } from "@/hooks/useDebounce";
 
 export default function CustomersPage() {
   const [page, setPage] = useState(1);

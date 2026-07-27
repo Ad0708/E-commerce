@@ -1,6 +1,5 @@
 import jwt from "jsonwebtoken";
 
-// Verify ADMIN token (rejects user tokens)
 export const verifyAdminToken = (req, res, next) => {
   const token = req.cookies?.token;
 
@@ -29,7 +28,6 @@ export const verifyAdminToken = (req, res, next) => {
   }
 };
 
-// Optional: Verify ANY token (for general auth)
 export const verifyAnyToken = (req, res, next) => {
   const token = req.cookies?.token || req.cookies?.admin_token;
 

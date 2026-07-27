@@ -73,6 +73,7 @@ app.use("/api/store", storeRoutes);
 app.use("/api/invoices", invoiceRoutes);
 app.use("/api/admin/ai", aiRoutes);
 
+// console.log("FRONTEND_URL:", process.env.FRONTEND_URL);
 const PORT = process.env.PORT || 5000;
 
 server.listen(PORT, "0.0.0.0", () => {

@@ -1,10 +1,8 @@
-// src/app/admin/analytics/marketing/page.tsx
-import React from "react";
-import MarketingOverviewCards from "./MarketingOverviewCards";
-import MarketingChannelChart from "./MarketingChannelChart";
-import MarketingMediumChart from "./MarketingMediumChart";
 import CampaignPerformanceTable from "./CampaignPerformanceTable";
 import InfluencerPerformanceTable from "./InfluencerPerformanceTable";
+import MarketingChannelChart from "./MarketingChannelChart";
+import MarketingMediumChart from "./MarketingMediumChart";
+import MarketingOverviewCards from "./MarketingOverviewCards";
 
 export const metadata = {
   title: "Marketing Analytics Dashboard | Admin Panel",
