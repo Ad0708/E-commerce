@@ -63,12 +63,15 @@ export default function FeaturedProducts() {
       variants={containerVariants}
       initial="hidden"
       whileInView="visible"
-      // Set once to false so it animates every time it enters the viewport
       viewport={{ once: false, margin: "-50px" }}
     >
       {data.products.map((product: any) => (
-        <motion.div key={product._id} variants={itemVariants}>
-          <Link href={`/product/${product._id}`} className="block">
+        <motion.div
+          key={product._id}
+          variants={itemVariants}
+          className="h-full"
+        >
+          <Link href={`/product/${product._id}`} className="block h-full">
             <ProductCard
               product={product}
               view="grid"

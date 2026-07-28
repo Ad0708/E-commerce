@@ -8,6 +8,8 @@ import { AuthProvider } from "@/providers/auth-provider";
 import SocketProvider from "@/providers/socket-provider";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import MarketingProvider from "@/providers/marketing-provider";
+import { Suspense } from "react";
+import Loader from "@/components/common/Loader";
 
 export const metadata: Metadata = {
   title: "E-Commerce",
@@ -24,14 +26,22 @@ export default function RootLayout({
       <body className="min-h-screen bg-background text-foreground antialiased">
         <ThemeProvider>
           <QueryProvider>
-            <MarketingProvider>
-              <AuthProvider>
-                <SocketProvider>
-                  <Toaster position="top-right" reverseOrder={false} />
-                  {children}
-                </SocketProvider>
-              </AuthProvider>
-            </MarketingProvider>
+            <Suspense
+              fallback={
+                <div>
+                  <Loader />
+                </div>
+              }
+            >
+              <MarketingProvider>
+                <AuthProvider>
+                  <SocketProvider>
+                    <Toaster position="top-right" reverseOrder={false} />
+                    {children}
+                  </SocketProvider>
+                </AuthProvider>
+              </MarketingProvider>
+            </Suspense>
           </QueryProvider>
         </ThemeProvider>
       </body>

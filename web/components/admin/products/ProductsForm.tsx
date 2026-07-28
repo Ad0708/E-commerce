@@ -56,8 +56,8 @@ export default function ProductForm({
 
   const [existingImages, setExistingImages] = useState<string[]>([]);
 
-  console.log("initialValues", initialValues);
   const router = useRouter();
+
   useEffect(() => {
     if (!initialValues?.images) return;
 
@@ -155,7 +155,10 @@ export default function ProductForm({
                 />
               </Input>
 
-              <Input label="Discount Price" error={errors.discountPrice?.message}>
+              <Input
+                label="Discount Price"
+                error={errors.discountPrice?.message}
+              >
                 <input
                   type="number"
                   {...register("discountPrice", {
@@ -314,7 +317,7 @@ export default function ProductForm({
             <Input label="Images" error={errors.images?.message}>
               <label
                 htmlFor="product-images"
-                className="group flex min-h-[220px] cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 transition hover:border-blue-500 hover:bg-blue-50 dark:border-slate-700 dark:bg-slate-950 dark:hover:bg-slate-900"
+                className="group flex min-h-55 cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 transition hover:border-blue-500 hover:bg-blue-50 dark:border-slate-700 dark:bg-slate-950 dark:hover:bg-slate-900"
               >
                 <div className="rounded-full bg-blue-100 p-4 dark:bg-blue-900/30 text-2xl">
                   📷
@@ -468,23 +471,23 @@ export default function ProductForm({
   );
 }
 
-  /* reusable input wrapper */
-  function Input({
-    label,
-    error,
-    children,
-  }: {
-    label: string;
-    error?: string;
-    children: React.ReactNode;
-  }) {
-    return (
-      <div className="flex flex-col gap-1">
-        <label className="text-sm font-medium">{label}</label>
+/* reusable input wrapper */
+function Input({
+  label,
+  error,
+  children,
+}: {
+  label: string;
+  error?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="flex flex-col gap-1">
+      <label className="text-sm font-medium">{label}</label>
 
-        {children}
+      {children}
 
-        {error && <span className="text-sm text-red-500">{error}</span>}
-      </div>
-    );
-  }
+      {error && <span className="text-sm text-red-500">{error}</span>}
+    </div>
+  );
+}

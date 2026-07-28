@@ -195,7 +195,7 @@ export default function InventoryTable({
   }
 
   return (
-    <Table className="w-full max-h-[calc(100vh-40rem)]">
+    <Table containerClassName="w-full max-h-[calc(100vh-33rem)]!">
       <TableHeader>
         <TableRow>
           {/* Explicitly defined width distributions */}
@@ -246,7 +246,7 @@ export default function InventoryTable({
                   )}
                 </div>
                 {/* 'truncate' prevents long names from expanding the row height */}
-                <span className="font-medium text-zinc-900 dark:text-white truncate">
+                <span className="font-medium text-zinc-900 dark:text-white truncate max-w-50">
                   {product.name}
                 </span>
               </div>

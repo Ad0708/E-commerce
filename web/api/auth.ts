@@ -3,13 +3,13 @@ import api from "../lib/axios/axios";
 
 export const signupApi = async (data: any) => {
   const response = await api.post("/auth/signup", data);
-    console.log("signupApi response:", response.data);
+    // console.log("signupApi response:", response.data);
   return response.data;
 };
 
 export const loginApi = async (data: any) => {
   const response = await api.post("/auth/login", data);
-  console.log("loginApi response:", response.data);
+  // console.log("loginApi response:", response.data);
   return response.data;
 };
 

@@ -46,7 +46,7 @@ export function RefundTable({ refunds }: RefundTableProps) {
   }
 
   return (
-    <Table className="w-full max-h-[calc(100vh-34rem)]! h-fit">
+    <Table className="w-full" containerClassName="max-h-[calc(100vh-23.7rem)]">
       <TableHeader>
         <TableRow>
           <TableHead>Refund ID</TableHead>

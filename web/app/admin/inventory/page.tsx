@@ -201,7 +201,7 @@ export default function InventoryPage() {
         </div>
       </div>
 
-      <div className="flex-1 pb-4">
+      <div className="flex-1">
         <InventoryTable data={data} isLoading={isLoading} />
       </div>
 

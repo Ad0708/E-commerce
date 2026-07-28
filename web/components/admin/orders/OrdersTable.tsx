@@ -43,7 +43,7 @@ export default function OrdersTable({
   };
 
   return (
-    <Table className="min-w-full min-h-50 md:min-h-0">
+    <Table containerClassName="min-h-50 md:min-h-0 max-h-[calc(100vh-25rem)]">
       <TableHeader>
         <TableRow>
           <TableHead>Order Reference</TableHead>

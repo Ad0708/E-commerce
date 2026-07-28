@@ -38,7 +38,7 @@ export default function ProductsPage() {
   const debouncedSearch = useDebounce(searchQuery, 500);
 
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(5);
+  const [limit, setLimit] = useState(10);
 
   const { data, isLoading } = useProducts({
     page,

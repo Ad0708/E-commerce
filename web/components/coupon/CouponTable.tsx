@@ -27,7 +27,7 @@ export const CouponTable: React.FC<TableProps> = ({
   onDeleteRequest,
 }) => {
   return (
-    <Table className="min-w-full min-h-40">
+    <Table className="min-w-full min-h-40"  containerClassName="max-h-[calc(100vh-23.7rem)]">
       <TableHeader className="sticky top-0 z-10 bg-white dark:bg-zinc-950">
         <TableRow>
           <TableHead>Code</TableHead>

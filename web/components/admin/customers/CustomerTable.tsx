@@ -28,7 +28,10 @@ export default function CustomerTable({
   onUnblock,
 }: CustomerTableProps) {
   return (
-    <Table className="min-w-full ">
+    <Table
+      className="min-w-full"
+      containerClassName="max-h-[calc(100vh-23.7rem)]"
+    >
       <TableHeader>
         <TableRow>
           <TableHead>Customer</TableHead>

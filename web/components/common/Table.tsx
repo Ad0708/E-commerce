@@ -9,12 +9,14 @@ import {
 
 export function Table({
   className = "",
+  containerClassName = "",
   ...props
 }: TableHTMLAttributes<HTMLTableElement>) {
+  console.log(containerClassName);
   return (
     /* Outer layout card handling background theme accents and constraints independently */
     <div className="w-full rounded-2xl border border-blue-100/70 bg-blue-50/30 shadow-sm dark:border-slate-800 dark:bg-slate-950 overflow-hidden flex flex-col">
-      <div className="w-full overflow-x-auto overflow-y-auto max-h-[calc(100vh-33.5rem)] h-fit">
+      <div className={`w-full overflow-x-auto overflow-y-auto h-fit ${containerClassName}`}>
         <table
           /* 'min-w-full' keeps columns from squeezing; standard display attributes remain intact */
           className={`min-w-full border-collapse table-auto ${className}`}

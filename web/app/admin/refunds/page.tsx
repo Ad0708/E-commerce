@@ -93,7 +93,7 @@ export default function RefundsPage() {
 
             {/* Sticky Pagination Panel */}
             {pagination && (
-              <div className="shrink-0 border-t border-zinc-100 dark:border-zinc-800/80 bg-white dark:bg-zinc-950 z-10">
+              <div className="shrink-0 ">
                 <Pagination
                   page={pagination.page}
                   total={pagination.total}

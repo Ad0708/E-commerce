@@ -13,18 +13,6 @@ export const fetchProduct = async (id: string): Promise<Product> => {
   return res.data.product;
 };
 
-// export const updateProductApi = async ({
-//   id,
-//   data,
-// }: {
-//   id: string;
-//   data: FormData;
-// }) => {
-//   const response = await axiosInstance.put(`/products/${id}`, data);
-
-//   return response.data;
-// };
-
 export const updateProductApi = async ({
   id,
   data,

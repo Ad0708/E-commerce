@@ -5,7 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import ProductsForm from "@/components/admin/products/ProductsForm";
 import { useProduct } from "@/hooks/product/useProduct";
 import { useUpdateProduct } from "@/hooks/product/useUpdateProduct";
-import { ProductFormValues } from "@/types/product";
+import { Product, ProductFormValues } from "@/types/product";
 
 export default function EditProductPage() {
   const { id } = useParams();
@@ -82,7 +82,7 @@ export default function EditProductPage() {
     <div className="space-y-6">
       <ProductsForm
         mode="edit"
-        initialValues={product}
+        initialValues={product as Partial<Product>}
         onSubmit={handleSubmit}
         loading={isPending}
       />

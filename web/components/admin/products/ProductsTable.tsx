@@ -31,7 +31,7 @@ export default function ProductsTable({
   handleDeleteClick,
 }: ProductsTableProps) {
   return (
-    <Table>
+    <Table containerClassName="max-h-[calc(100vh-23rem)]">
       <TableHeader>
         <TableRow>
           <TableHead>Product</TableHead>
@@ -103,7 +103,7 @@ export default function ProductsTable({
                 {/* PRICE */}
                 <TableCell>
                   <div className="flex flex-col">
-                    {product.discountPrice ?(
+                    {product.discountPrice ? (
                       <>
                         <span className="font-medium text-slate-900 dark:text-slate-100">
                           ₹
