@@ -1,22 +1,21 @@
 "use client";
 
+import { useLogout } from "@/hooks/auth/uselogout";
+import {
+  Boxes,
+  ExternalLink,
+  LayoutDashboard,
+  LogOut,
+  Package,
+  RotateCcw,
+  Settings,
+  ShoppingCart,
+  Sparkles,
+  TicketPercent,
+  Users,
+} from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import {
-  LayoutDashboard,
-  Package,
-  Boxes,
-  ShoppingCart,
-  Users,
-  Settings,
-  LogOut,
-  TicketPercent,
-  LucideBarChart2,
-  Sparkles,
-  ExternalLink,
-  RotateCcw,
-} from "lucide-react";
-import { useLogout } from "@/hooks/auth/uselogout";
 
 interface Props {
   mobileSidebarOpen: boolean;
@@ -33,11 +32,6 @@ const menuGroups = [
         href: "/admin",
         icon: LayoutDashboard,
       },
-      // {
-      //   title: "Analytics",
-      //   href: "/admin/analytics",
-      //   icon: LucideBarChart2,
-      // },
     ],
   },
   {
@@ -110,6 +104,7 @@ export default function AdminSidebar({
     logout(undefined, {
       onSuccess: () => {
         router.replace("/login");
+        router.refresh();
       },
     });
   };
@@ -228,9 +223,7 @@ export default function AdminSidebar({
             <LogOut size={19} className="shrink-0" />
 
             {!desktopCollapsed && (
-              <span className="text-sm font-medium tracking-tight">
-                Logout
-              </span>
+              <span className="text-sm font-medium tracking-tight">Logout</span>
             )}
           </button>
         </div>

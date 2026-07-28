@@ -54,6 +54,7 @@ export function Header({ logo, storeName }: HeaderProps) {
     } finally {
       clearAuth();
       router.replace("/login");
+      router.refresh();
     }
   };
 
@@ -73,7 +74,7 @@ export function Header({ logo, storeName }: HeaderProps) {
   }, [wishlist, isLoading, setWishlist, setLoading]);
 
   const length = wishlist ? Object.keys(wishlist).length : 0;
-  
+
   const itemCount = useCartStore((state) => state.getItemCount());
   // console.log("Item Count:", itemCount);
 

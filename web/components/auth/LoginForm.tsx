@@ -57,7 +57,6 @@ export default function LoginForm() {
   const router = useRouter();
   const loginMutation = useLogin();
 
-
   const onSubmit = (data: LoginPayload) => {
     loginMutation.mutate(data, {
       onSuccess: (response) => {
@@ -68,8 +67,10 @@ export default function LoginForm() {
           router.replace("/home");
         }
 
+        router.refresh();
+
         // Update Zustand store with user data
-        const user : User = response.user as User;
+        const user: User = response.user as User;
         useAuthStore.getState().setUser(user as User);
       },
       onError: (error) => {
