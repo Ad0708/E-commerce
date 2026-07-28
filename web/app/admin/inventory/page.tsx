@@ -1,6 +1,7 @@
 "use client";
 
 import InventoryTable from "@/components/admin/inventory/InventoryTable";
+import InventoryTableSkeleton from "@/components/admin/inventory/InventoryTableSkeleton";
 import Pagination from "@/components/common/Pagination";
 import SearchInput from "@/components/common/Search";
 import { SummaryCard } from "@/components/common/SummaryCard";
@@ -202,7 +203,11 @@ export default function InventoryPage() {
       </div>
 
       <div className="flex-1">
-        <InventoryTable data={data} isLoading={isLoading} />
+        {isLoading ? (
+          <InventoryTableSkeleton />
+        ) : (
+          <InventoryTable data={data} />
+        )}
       </div>
 
       {/* ============ FIXED STICKY FOOTER PAGINATION ============ */}

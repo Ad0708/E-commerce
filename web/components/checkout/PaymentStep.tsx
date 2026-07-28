@@ -1,6 +1,6 @@
 "use client";
 
-import { Banknote, CreditCard, Landmark, Smartphone } from "lucide-react";
+import { Banknote, CreditCard, Landmark } from "lucide-react";
 
 import { PaymentMethod } from "@/types/order";
 
@@ -16,24 +16,6 @@ const paymentMethods = [
     description: "Pay when your order is delivered.",
     icon: Banknote,
   },
-  // {
-  //   id: "UPI",
-  //   title: "UPI",
-  //   description: "Pay using Google Pay, PhonePe, Paytm, BHIM, etc.",
-  //   icon: Smartphone,
-  // },
-  // {
-  //   id: "CARD",
-  //   title: "Credit / Debit Card",
-  //   description: "Visa, MasterCard, RuPay and more.",
-  //   icon: CreditCard,
-  // },
-  // {
-  //   id: "NET_BANKING",
-  //   title: "Net Banking",
-  //   description: "Pay securely using your bank account.",
-  //   icon: Landmark,
-  // },
   {
     id: "STRIPE",
     title: "Stripe",

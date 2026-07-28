@@ -14,12 +14,10 @@ import {
 
 interface InventoryTableProps {
   data: any;
-  isLoading: boolean;
 }
 
 export default function InventoryTable({
   data,
-  isLoading,
 }: InventoryTableProps) {
   function StockBadge({ stock }: { stock: number }) {
     if (stock === 0)
@@ -167,14 +165,6 @@ export default function InventoryTable({
     );
   }
 
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center gap-3 h-64 text-sm text-slate-400 dark:text-slate-500">
-        <span className="w-4 h-4 border-2 border-slate-200 dark:border-slate-700 border-t-blue-500 rounded-full animate-spin" />
-        Loading inventory…
-      </div>
-    );
-  }
 
   if (!data?.products?.length) {
     return (

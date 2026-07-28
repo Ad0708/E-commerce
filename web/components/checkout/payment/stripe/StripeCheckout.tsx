@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import {
   PaymentElement,
-  useStripe,
   useElements,
+  useStripe,
 } from "@stripe/react-stripe-js";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 interface Props {
   orderId: string;

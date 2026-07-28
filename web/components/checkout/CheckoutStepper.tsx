@@ -1,7 +1,7 @@
 "use client";
 
-import { Check } from "lucide-react";
 import clsx from "clsx";
+import { Check } from "lucide-react";
 
 interface CheckoutStepperProps {
   currentStep: 1 | 2 | 3;
@@ -25,9 +25,7 @@ const steps = [
   },
 ] as const;
 
-export default function CheckoutStepper({
-  currentStep,
-}: CheckoutStepperProps) {
+export default function CheckoutStepper({ currentStep }: CheckoutStepperProps) {
   return (
     <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
       <div className="flex items-center justify-between">
@@ -40,7 +38,7 @@ export default function CheckoutStepper({
               key={step.id}
               className={clsx(
                 "flex flex-1 items-center",
-                index === steps.length - 1 && "flex-none"
+                index === steps.length - 1 && "flex-none",
               )}
             >
               {/* Step */}
@@ -48,20 +46,15 @@ export default function CheckoutStepper({
                 <div
                   className={clsx(
                     "flex h-12 w-12 items-center justify-center rounded-full border-2 text-sm font-semibold transition-all duration-300",
-                    completed &&
-                      "border-blue-600 bg-blue-600 text-white",
+                    completed && "border-blue-600 bg-blue-600 text-white",
                     active &&
                       "border-blue-600 bg-blue-50 text-blue-600 dark:bg-blue-950",
                     !completed &&
                       !active &&
-                      "border-gray-300 bg-white text-gray-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-gray-400"
+                      "border-gray-300 bg-white text-gray-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-gray-400",
                   )}
                 >
-                  {completed ? (
-                    <Check className="h-5 w-5" />
-                  ) : (
-                    step.id
-                  )}
+                  {completed ? <Check className="h-5 w-5" /> : step.id}
                 </div>
 
                 <span
@@ -69,7 +62,7 @@ export default function CheckoutStepper({
                     "mt-3 text-sm font-semibold",
                     active
                       ? "text-blue-600"
-                      : "text-gray-700 dark:text-gray-300"
+                      : "text-gray-700 dark:text-gray-300",
                   )}
                 >
                   {step.title}
@@ -87,7 +80,7 @@ export default function CheckoutStepper({
                     <div
                       className={clsx(
                         "absolute left-0 top-0 h-full rounded-full bg-blue-600 transition-all duration-500",
-                        currentStep > step.id ? "w-full" : "w-0"
+                        currentStep > step.id ? "w-full" : "w-0",
                       )}
                     />
                   </div>

@@ -10,6 +10,7 @@ import UpdateOrderStatus from "@/components/admin/orders/UpdateOrderStatus";
 import OrderSkeleton from "@/components/orders/OrderSkeleton";
 import { Shield, AlertTriangle, RefreshCcw, Inbox } from "lucide-react";
 import { Order } from "@/types/order";
+import OrderTableSkeleton from "@/components/admin/orders/OrderTableSkeleton";
 
 export default function AdminOrdersListingPage() {
   const [filters, setFilters] = useState<AdminOrderFilters>({
@@ -84,7 +85,7 @@ export default function AdminOrdersListingPage() {
       )}
 
       {/* Loading Block */}
-      {isLoading && <OrderSkeleton />}
+      {isLoading && <OrderTableSkeleton />}
 
       {/* Empty State */}
       {!isLoading && !isError && ordersList.length === 0 && (

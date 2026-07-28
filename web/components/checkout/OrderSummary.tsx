@@ -1,8 +1,8 @@
 "use client";
 
-import { Tag, Truck } from "lucide-react";
-import { useCartStore } from "@/store/cart.store";
 import { useCart } from "@/hooks/cart/useCart";
+import { useCartStore } from "@/store/cart.store";
+import { Tag, Truck } from "lucide-react";
 
 interface OrderSummaryProps {
   onPlaceOrder?: () => void;
@@ -41,9 +41,7 @@ export default function OrderSummary({
         {/* Items */}
         <div className="flex items-center justify-between text-sm">
           <span className="text-gray-500">Items</span>
-          <span className="font-medium">
-            {finalSummary.itemCount}
-          </span>
+          <span className="font-medium">{finalSummary.itemCount}</span>
         </div>
 
         {/* Subtotal */}
@@ -90,9 +88,7 @@ export default function OrderSummary({
           </div>
 
           {deliveryCharge === 0 ? (
-            <span className="font-medium text-green-600">
-              FREE
-            </span>
+            <span className="font-medium text-green-600">FREE</span>
           ) : (
             <span className="font-medium">
               ₹{deliveryCharge.toLocaleString("en-IN")}
@@ -114,17 +110,16 @@ export default function OrderSummary({
         {/* Savings */}
         {finalSummary.savings > 0 && (
           <div className="rounded-xl bg-green-50 p-3 text-center text-sm font-medium text-green-700 dark:bg-green-900/20 dark:text-green-400">
-            🎉 You saved ₹
-            {finalSummary.savings.toLocaleString("en-IN")} on this order
+            🎉 You saved ₹{finalSummary.savings.toLocaleString("en-IN")} on this
+            order
           </div>
         )}
 
         {/* Paid Delivery Message */}
         {deliveryCharge > 0 && (
           <div className="rounded-xl bg-yellow-50 p-3 text-center text-sm text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400">
-            Delivery charge of ₹
-            {deliveryCharge.toLocaleString("en-IN")} has been added to your
-            order.
+            Delivery charge of ₹{deliveryCharge.toLocaleString("en-IN")} has
+            been added to your order.
           </div>
         )}
 

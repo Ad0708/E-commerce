@@ -1,6 +1,7 @@
 "use client";
 
 import ProductsTable from "@/components/admin/products/ProductsTable";
+import ProductTableSkeleton from "@/components/admin/products/ProductTableSkeleton";
 import Modal from "@/components/common/Modal";
 import Pagination from "@/components/common/Pagination";
 import SearchInput from "@/components/common/Search";
@@ -163,14 +164,6 @@ export default function ProductsPage() {
     setProductToDelete(null);
   };
 
-  if (isLoading) {
-    return (
-      <div className="flex h-96 items-center justify-center text-sm font-medium text-slate-500 animate-pulse">
-        Loading admin products...
-      </div>
-    );
-  }
-
   if (error) {
     return (
       <div className="flex h-96 items-center justify-center text-sm font-medium text-red-500">
@@ -263,13 +256,16 @@ export default function ProductsPage() {
 
         {/* ============ MIDDLE LAYER (TABLE) ============ */}
         <div className="flex-1 overflow-hidden">
-          <ProductsTable
-            productsList={productsList}
-            isUpdating={isUpdating}
-            handleStatusToggle={handleStatusToggle}
-            handleFeaturedToggle={handleFeaturedToggle}
-            handleDeleteClick={handleDeleteClick}
-          />
+          {isLoading && <ProductTableSkeleton />}
+          {!isLoading && (
+            <ProductsTable
+              productsList={productsList}
+              isUpdating={isUpdating}
+              handleStatusToggle={handleStatusToggle}
+              handleFeaturedToggle={handleFeaturedToggle}
+              handleDeleteClick={handleDeleteClick}
+            />
+          )}
         </div>
 
         {/* ============ FOOTER PAGINATION ============ */}

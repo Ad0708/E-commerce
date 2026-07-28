@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { useEffect, useRef } from "react";
 
 import { toast } from "react-hot-toast";
 
@@ -121,9 +121,7 @@ export default function RazorpayCheckout({
   return (
     <div className="rounded-xl border bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
       <div className="space-y-4 text-center">
-        <h2 className="text-xl font-semibold">
-          Redirecting to Razorpay...
-        </h2>
+        <h2 className="text-xl font-semibold">Redirecting to Razorpay...</h2>
 
         <p className="text-muted-foreground">
           Please wait while we open the secure payment window.

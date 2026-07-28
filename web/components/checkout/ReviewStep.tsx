@@ -1,11 +1,11 @@
 "use client";
 
+import { useCreateOrder } from "@/hooks/order/useOrder";
+import { getMarketingData } from "@/lib/utils/marketing";
 import { Address } from "@/types/address";
+import { PaymentMethod } from "@/types/order";
 import CartReview from "./CartReview";
 import OrderSummary from "./OrderSummary";
-import { useCreateOrder } from "@/hooks/order/useOrder";
-import { PaymentMethod } from "@/types/order";
-import { getMarketingData } from "@/lib/utils/marketing";
 
 interface ReviewStepProps {
   address: Address | null;

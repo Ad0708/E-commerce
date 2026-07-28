@@ -18,6 +18,7 @@ import {
 } from "@/hooks/coupon/useCoupon";
 import { useDebounce } from "@/hooks/useDebounce";
 import { Coupon, FilterState } from "@/types/coupon";
+import CouponTableSkeleton from "@/components/coupon/CouponTableSkeleton";
 
 export default function CouponListPage() {
   const router = useRouter();
@@ -185,14 +186,7 @@ export default function CouponListPage() {
 
       {/* Main Core Content Node UI Rendering Flow */}
       {isLoading ? (
-        <div className="space-y-4 flex-1 overflow-y-auto">
-          {[...Array(3)].map((_, i) => (
-            <div
-              key={i}
-              className="h-16 w-full bg-zinc-200 dark:bg-zinc-800 animate-pulse rounded-xl"
-            />
-          ))}
-        </div>
+        <CouponTableSkeleton />
       ) : isError ? (
         <div className="p-8 text-center border border-dashed border-red-200 dark:border-red-900/50 rounded-xl bg-red-50/50 dark:bg-red-950/10 flex-1 flex items-center justify-center">
           <p className="text-red-600 dark:text-red-400 font-medium">

@@ -1,7 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import type { CartItem } from "@/types/cart";
+import Image from "next/image";
 
 export function CheckoutItem({ item }: { item: CartItem }) {
   const lineTotal = item.price * item.quantity;

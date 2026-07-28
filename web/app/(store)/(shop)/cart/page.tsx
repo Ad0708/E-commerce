@@ -5,6 +5,7 @@ import { categories } from "@/constants/categories";
 import { useCart } from "@/hooks/cart/useCart";
 import { useRemoveCoupon } from "@/hooks/coupon/useCoupon";
 import { useCartStore } from "@/store/cart.store";
+import { AnimatePresence, motion, Variants } from "framer-motion";
 import {
   ArrowLeft,
   Minus,
@@ -18,7 +19,6 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { motion, AnimatePresence, Variants } from "framer-motion";
 
 // Stagger container variant
 const containerVariants: Variants = {
@@ -81,8 +81,8 @@ export default function CartPage() {
 
   if (items.length === 0) {
     return (
-      <div className="flex min-h-[calc(100vh-28rem)] flex-col bg-slate-50 dark:bg-slate-950">
-        <main className="flex 1 items-center justify-center">
+      <div className="flex min-h-[calc(100vh-16rem)] flex-col items-center justify-center bg-slate-50 dark:bg-slate-950">
+        <main className="flex w-full flex-1 items-center justify-center px-4 py-12">
           <EmptyCart />
         </main>
       </div>
@@ -130,128 +130,140 @@ export default function CartPage() {
               className="lg:col-span-2 space-y-3"
             >
               <AnimatePresence mode="popLayout">
-                {items.map((item) => (
-                  <motion.div
-                    key={item.productId}
-                    variants={itemVariants}
-                    layout
-                    exit="exit"
-                    className="group flex gap-4 rounded-2xl border border-slate-200 bg-white p-4 transition-shadow hover:shadow-md dark:border-slate-800 dark:bg-slate-900 sm:gap-5 sm:p-5"
-                  >
-                    {/* Image */}
-                    <Link
-                      href={`/product/${item.productId}`}
-                      className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-slate-100 dark:bg-slate-800 sm:h-28 sm:w-28"
+                {items.map((item) => {
+                  // ── Safe Discount & Price Computations ──
+                  const hasValidDiscount =
+                    typeof item.discountPrice === "number" &&
+                    item.discountPrice > 0 &&
+                    item.discountPrice < item.price;
+
+                  const displayPrice = hasValidDiscount
+                    ? item.discountPrice!
+                    : item.price;
+
+                  const discountPct = hasValidDiscount
+                    ? Math.round(
+                        ((item.price - item.discountPrice!) / item.price) * 100,
+                      )
+                    : 0;
+
+                  return (
+                    <motion.div
+                      key={item.productId}
+                      variants={itemVariants}
+                      layout
+                      exit="exit"
+                      className="group flex gap-4 rounded-2xl border border-slate-200 bg-white p-4 transition-shadow hover:shadow-md dark:border-slate-800 dark:bg-slate-900 sm:gap-5 sm:p-5"
                     >
-                      <Image
-                        src={item?.image}
-                        alt={item?.name}
-                        fill
-                        className="object-contain p-2 transition-transform duration-300 group-hover:scale-105"
-                        sizes="112px"
-                      />
-                    </Link>
+                      {/* Image */}
+                      <Link
+                        href={`/product/${item.productId}`}
+                        className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-slate-100 dark:bg-slate-800 sm:h-28 sm:w-28"
+                      >
+                        <Image
+                          src={item?.image}
+                          alt={item?.name}
+                          fill
+                          className="object-contain p-2 transition-transform duration-300 group-hover:scale-105"
+                          sizes="112px"
+                        />
+                      </Link>
 
-                    {/* Info */}
-                    <div className="flex flex-1 flex-col justify-between min-w-0">
-                      <div className="flex items-start justify-between gap-2">
-                        <div className="min-w-0">
-                          <p className="text-xs font-medium text-blue-500 dark:text-blue-400">
-                            {categories.find((c) => c.value === item.category)
-                              ?.label ?? item.category}
-                          </p>
-                          <Link href={`/product/${item.productId}`}>
-                            <h3 className="mt-0.5 line-clamp-2 text-sm font-semibold text-slate-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors sm:text-base">
-                              {item.name}
-                            </h3>
-                          </Link>
+                      {/* Info */}
+                      <div className="flex flex-1 flex-col justify-between min-w-0">
+                        <div className="flex items-start justify-between gap-2">
+                          <div className="min-w-0">
+                            <p className="text-xs font-medium text-blue-500 dark:text-blue-400">
+                              {categories.find((c) => c.value === item.category)
+                                ?.label ?? item.category}
+                            </p>
+                            <Link href={`/product/${item.productId}`}>
+                              <h3 className="mt-0.5 line-clamp-2 text-sm font-semibold text-slate-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors sm:text-base">
+                                {item.name}
+                              </h3>
+                            </Link>
+                          </div>
+
+                          {/* Remove */}
+                          <button
+                            onClick={() => removeFromCart(item.productId)}
+                            disabled={isRemoving}
+                            className="shrink-0 rounded-lg p-1.5 text-slate-400 hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-950 dark:hover:text-red-400 transition-colors disabled:opacity-50"
+                            aria-label="Remove item"
+                          >
+                            <Trash2 size={16} />
+                          </button>
                         </div>
 
-                        {/* Remove */}
-                        <button
-                          onClick={() => removeFromCart(item.productId)}
-                          disabled={isRemoving}
-                          className="shrink-0 rounded-lg p-1.5 text-slate-400 hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-950 dark:hover:text-red-400 transition-colors disabled:opacity-50"
-                          aria-label="Remove item"
-                        >
-                          <Trash2 size={16} />
-                        </button>
-                      </div>
+                        {/* Price + Qty row */}
+                        <div className="mt-3 flex items-center justify-between">
+                          {/* Price Block */}
+                          <div className="flex items-baseline gap-2">
+                            <span className="text-base font-bold text-slate-900 dark:text-white sm:text-lg">
+                              ₹{displayPrice.toLocaleString("en-IN")}
+                            </span>
 
-                      {/* Price + Qty row */}
-                      <div className="mt-3 flex items-center justify-between">
-                        {/* Price */}
-                        <div className="flex items-baseline gap-2">
-                          <span className="text-base font-bold text-slate-900 dark:text-white sm:text-lg">
-                            ₹
-                            {(item.discountPrice ?? item.price).toLocaleString(
-                              "en-IN",
+                            {hasValidDiscount && (
+                              <span className="text-xs text-slate-400 line-through">
+                                ₹{item.price.toLocaleString("en-IN")}
+                              </span>
                             )}
-                          </span>
-                          {item.discountPrice && (
-                            <span className="text-xs text-slate-400 line-through">
-                              ₹{item.price.toLocaleString("en-IN")}
+
+                            {hasValidDiscount && discountPct > 0 && (
+                              <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs font-semibold text-green-700 dark:bg-green-900/40 dark:text-green-400">
+                                {discountPct}% off
+                              </span>
+                            )}
+                          </div>
+
+                          {/* Quantity stepper */}
+                          <div className="flex items-center gap-1 rounded-xl border border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800">
+                            <button
+                              onClick={() =>
+                                item.quantity === 1
+                                  ? removeFromCart(item.productId)
+                                  : updateQuantity({
+                                      productId: item.productId,
+                                      quantity: item.quantity - 1,
+                                    })
+                              }
+                              disabled={isUpdating || isRemoving}
+                              className="flex h-8 w-8 items-center justify-center rounded-l-xl text-slate-600 hover:bg-slate-200 dark:text-slate-300 dark:hover:bg-slate-700 transition-colors disabled:opacity-40"
+                              aria-label="Decrease quantity"
+                            >
+                              <Minus size={14} />
+                            </button>
+                            <span className="w-8 text-center text-sm font-semibold text-slate-900 dark:text-white">
+                              {item.quantity}
                             </span>
-                          )}
-                          {item.discountPrice && (
-                            <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs font-semibold text-green-700 dark:bg-green-900/40 dark:text-green-400">
-                              {Math.round(
-                                ((item.price - item.discountPrice) /
-                                  item.price) *
-                                  100,
-                              )}
-                              % off
-                            </span>
-                          )}
+                            <button
+                              onClick={() =>
+                                updateQuantity({
+                                  productId: item.productId,
+                                  quantity: item.quantity + 1,
+                                })
+                              }
+                              disabled={
+                                item.quantity >= item.stock || isUpdating
+                              }
+                              className="flex h-8 w-8 items-center justify-center rounded-r-xl text-slate-600 hover:bg-slate-200 dark:text-slate-300 dark:hover:bg-slate-700 transition-colors disabled:opacity-40"
+                              aria-label="Increase quantity"
+                            >
+                              <Plus size={14} />
+                            </button>
+                          </div>
                         </div>
 
-                        {/* Quantity stepper */}
-                        <div className="flex items-center gap-1 rounded-xl border border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800">
-                          <button
-                            onClick={() =>
-                              item.quantity === 1
-                                ? removeFromCart(item.productId)
-                                : updateQuantity({
-                                    productId: item.productId,
-                                    quantity: item.quantity - 1,
-                                  })
-                            }
-                            disabled={isUpdating || isRemoving}
-                            className="flex h-8 w-8 items-center justify-center rounded-l-xl text-slate-600 hover:bg-slate-200 dark:text-slate-300 dark:hover:bg-slate-700 transition-colors disabled:opacity-40"
-                            aria-label="Decrease quantity"
-                          >
-                            <Minus size={14} />
-                          </button>
-                          <span className="w-8 text-center text-sm font-semibold text-slate-900 dark:text-white">
-                            {item.quantity}
-                          </span>
-                          <button
-                            onClick={() =>
-                              updateQuantity({
-                                productId: item.productId,
-                                quantity: item.quantity + 1,
-                              })
-                            }
-                            disabled={
-                              item.quantity >= item.stock || isUpdating
-                            }
-                            className="flex h-8 w-8 items-center justify-center rounded-r-xl text-slate-600 hover:bg-slate-200 dark:text-slate-300 dark:hover:bg-slate-700 transition-colors disabled:opacity-40"
-                            aria-label="Increase quantity"
-                          >
-                            <Plus size={14} />
-                          </button>
-                        </div>
+                        {/* Stock warning */}
+                        {item.stock <= 5 && (
+                          <p className="mt-1.5 text-xs font-medium text-amber-600 dark:text-amber-400">
+                            Only {item.stock} left!
+                          </p>
+                        )}
                       </div>
-
-                      {/* Stock warning */}
-                      {item.stock <= 5 && (
-                        <p className="mt-1.5 text-xs font-medium text-amber-600 dark:text-amber-400">
-                          Only {item.stock} left!
-                        </p>
-                      )}
-                    </div>
-                  </motion.div>
-                ))}
+                    </motion.div>
+                  );
+                })}
               </AnimatePresence>
             </motion.div>
 
@@ -396,11 +408,12 @@ function EmptyCart() {
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.3, ease: "easeOut" }}
-      className="flex flex-col items-center justify-center gap-6 px-4 text-center min-h-full"
+      className="flex flex-col items-center justify-center gap-6 text-center"
     >
       <div className="flex h-24 w-24 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
         <ShoppingBag size={40} className="text-slate-400" />
       </div>
+
       <div>
         <h2 className="text-xl font-bold text-slate-900 dark:text-white">
           Your cart is empty
@@ -409,9 +422,10 @@ function EmptyCart() {
           Looks like you haven&apos;t added anything yet.
         </p>
       </div>
+
       <Link
         href="/products"
-        className="rounded-xl bg-blue-600 px-8 py-3 text-sm font-semibold text-white transition hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
+        className="rounded-xl bg-blue-600 px-8 py-3 text-sm font-semibold text-white transition hover:bg-blue-700 active:scale-95 dark:bg-blue-500 dark:hover:bg-blue-600"
       >
         Start shopping
       </Link>

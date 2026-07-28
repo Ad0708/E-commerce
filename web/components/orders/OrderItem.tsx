@@ -6,8 +6,17 @@ interface OrderItemProps {
 }
 
 export default function OrderItem({ item }: OrderItemProps) {
-  const activePrice = item.discountPrice ?? item.price;
-  const hasDiscount = !!item.discountPrice;
+  // 1. Strict boolean check that ensures discountPrice is a valid positive number
+  const hasValidDiscount =
+    typeof item.discountPrice === "number" &&
+    item.discountPrice > 0 &&
+    item.discountPrice < item.price;
+
+  // 2. Coerce to number using nullish coalescing to satisfy TypeScript
+  const activePrice: number = hasValidDiscount
+    ? (item.discountPrice ?? item.price)
+    : item.price;
+    
 
   return (
     <div className="flex items-center gap-4 py-4 first:pt-0 last:pb-0 border-b last:border-0 border-zinc-100 dark:border-zinc-800/60">
@@ -39,11 +48,17 @@ export default function OrderItem({ item }: OrderItemProps) {
 
       <div className="text-right shrink-0">
         <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-          ₹{(activePrice * item.quantity).toFixed(2)}
+          ₹{(activePrice * item.quantity).toLocaleString("en-IN", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })}
         </p>
-        {hasDiscount && (
+        {hasValidDiscount && (
           <p className="text-xs text-zinc-400 dark:text-zinc-500 line-through mt-0.5">
-            ₹{(item.price * item.quantity).toFixed(2)}
+            ₹{(item.price * item.quantity).toLocaleString("en-IN", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
           </p>
         )}
       </div>

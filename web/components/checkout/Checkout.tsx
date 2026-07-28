@@ -1,14 +1,13 @@
 "use client";
 
-import { useState } from "react";
-import CheckoutStepper from "./CheckoutStepper";
-import AddressStep from "../address/AddressStep";
-import PaymentStep from "./PaymentStep";
-import ReviewStep from "./ReviewStep";
-import NavigationButtons from "./NavigationButtons";
-import OrderSummary from "./OrderSummary";
 import { Address } from "@/types/address";
 import { PaymentMethod } from "@/types/order";
+import { useState } from "react";
+import AddressStep from "../address/AddressStep";
+import CheckoutStepper from "./CheckoutStepper";
+import NavigationButtons from "./NavigationButtons";
+import PaymentStep from "./PaymentStep";
+import ReviewStep from "./ReviewStep";
 
 export default function Checkout() {
   const [step, setStep] = useState<1 | 2 | 3>(1);
@@ -59,7 +58,7 @@ export default function Checkout() {
 
               {step === 3 && (
                 <ReviewStep
-                  address= {selectedAddress || null}
+                  address={selectedAddress || null}
                   paymentMethod={paymentMethod}
                 />
               )}
@@ -69,9 +68,7 @@ export default function Checkout() {
               step={step}
               nextStep={nextStep}
               previousStep={previousStep}
-              canContinue={
-                step === 1 ? !!selectedAddress : true
-              }
+              canContinue={step === 1 ? !!selectedAddress : true}
             />
           </div>
         </div>

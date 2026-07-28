@@ -18,6 +18,7 @@ import {
 import { Customer } from "@/api/admin/customer";
 import Modal from "@/components/common/Modal";
 import { useDebounce } from "@/hooks/useDebounce";
+import CustomerTableSkeleton from "@/components/admin/customers/CustomerTableSkeleton";
 
 export default function CustomersPage() {
   const [page, setPage] = useState(1);
@@ -151,9 +152,7 @@ export default function CustomersPage() {
       {/* Operational Matrix Rendering Wrapper */}
       <div className="w-full flex-1 flex flex-col justify-between min-h-0">
         {isLoading ? (
-          <div className="flex items-center justify-center py-24 my-auto">
-            <div className="h-10 w-10 animate-spin rounded-full border-4 border-blue-600 border-t-transparent" />
-          </div>
+          <CustomerTableSkeleton />
         ) : customers.length === 0 ? (
           /* Centers empty states flawlessly since the search component is decoupled */
           <div className="flex flex-col items-center justify-center py-16 border border-dashed border-zinc-200 dark:border-zinc-800 rounded-2xl max-w-md mx-auto bg-zinc-50/40 dark:bg-zinc-900/10 my-auto w-full">

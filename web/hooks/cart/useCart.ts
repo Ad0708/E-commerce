@@ -13,6 +13,7 @@ import {
 } from "@/api/cart";
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
+import { AxiosError } from "axios";
 
 export const CART_KEY = ["cart"];
 
@@ -23,7 +24,6 @@ export function useCart() {
   const setItems = useCartStore((s) => s.setItems);
   const updateQuantityStore = useCartStore((s) => s.updateQuantity);
   const removeItem = useCartStore((s) => s.removeItem);
-  const clearCartStore = useCartStore((s) => s.clearCart);
   const openCart = useCartStore((s) => s.openCart);
   // ── Query ────────────────────────────────────────────────────────────────────
   const pathname = usePathname();
@@ -59,10 +59,16 @@ export function useCart() {
       openCart();
       toast.success("Added to cart");
     },
-    onError: (err: Error, _vars, ctx) => {
-      if (ctx?.previous) queryClient.setQueryData(CART_KEY, ctx.previous);
+    onError: (error: AxiosError<{ error: string }>, _vars, ctx) => {
+      if (ctx?.previous) {
+        queryClient.setQueryData(CART_KEY, ctx.previous);
+      }
+
       setItems(ctx?.previous?.items ?? []);
-      toast.error(err.message);
+
+      toast.error(
+        error.response?.data?.error || error.message || "Something went wrong",
+      );
     },
   });
 
