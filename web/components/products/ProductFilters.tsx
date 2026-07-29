@@ -51,7 +51,7 @@ export default function ProductFilters({
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex-1 lg:max-w-md">
           <SearchInput
@@ -79,7 +79,7 @@ export default function ProductFilters({
                 size={14}
                 className={cn(
                   "shrink-0 text-slate-400 transition-transform duration-200",
-                  showCategoryDropdown && "rotate-180"
+                  showCategoryDropdown && "rotate-180",
                 )}
               />
             </button>
@@ -98,7 +98,7 @@ export default function ProductFilters({
                       "w-full px-4 py-2 text-left text-xs font-medium transition-colors",
                       selectedCategory === null
                         ? "bg-slate-100 font-semibold text-slate-900 dark:bg-slate-800 dark:text-white"
-                        : "text-slate-600 hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-slate-800/50"
+                        : "text-slate-600 hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-slate-800/50",
                     )}
                   >
                     All Categories
@@ -115,7 +115,7 @@ export default function ProductFilters({
                         "w-full px-4 py-2 text-left text-xs font-medium transition-colors",
                         selectedCategory === cat.value
                           ? "bg-slate-100 font-semibold text-slate-900 dark:bg-slate-800 dark:text-white"
-                          : "text-slate-600 hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-slate-800/50"
+                          : "text-slate-600 hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-slate-800/50",
                       )}
                     >
                       {cat.label}
@@ -138,7 +138,10 @@ export default function ProductFilters({
               <span className="truncate">
                 {sortOptions.find((o) => o.value === sortBy)?.label}
               </span>
-              <SlidersHorizontal size={14} className="shrink-0 text-slate-400" />
+              <SlidersHorizontal
+                size={14}
+                className="shrink-0 text-slate-400"
+              />
             </button>
 
             {showSortDropdown && (
@@ -157,7 +160,7 @@ export default function ProductFilters({
                         "w-full px-4 py-2 text-left text-xs font-medium transition-colors",
                         sortBy === opt.value
                           ? "bg-slate-100 font-semibold text-slate-900 dark:bg-slate-800 dark:text-white"
-                          : "text-slate-600 hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-slate-800/50"
+                          : "text-slate-600 hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-slate-800/50",
                       )}
                     >
                       {opt.label}
@@ -178,7 +181,7 @@ export default function ProductFilters({
             "shrink-0 rounded-full px-4 py-1.5 text-xs font-semibold uppercase tracking-wide transition-all",
             selectedCategory === null
               ? "bg-slate-900 text-white dark:bg-white dark:text-slate-900"
-              : "border border-slate-200 bg-white text-slate-600 hover:border-slate-300 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-400 dark:hover:border-slate-600"
+              : "border border-slate-200 bg-white text-slate-600 hover:border-slate-300 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-400 dark:hover:border-slate-600",
           )}
         >
           All
@@ -189,10 +192,10 @@ export default function ProductFilters({
             type="button"
             onClick={() => onCategoryChange(cat.value)}
             className={cn(
-              "shrink-0 rounded-full px-4 py-1.5 text-xs font-semibold uppercase tracking-wide transition-all",
+              "shrink-0 rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-wide transition-all",
               selectedCategory === cat.value
                 ? "bg-slate-900 text-white dark:bg-white dark:text-slate-900"
-                : "border border-slate-200 bg-white text-slate-600 hover:border-slate-300 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-400 dark:hover:border-slate-600"
+                : "border border-slate-200 bg-white text-slate-600 hover:border-slate-300 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-400 dark:hover:border-slate-600",
             )}
           >
             {cat.label}

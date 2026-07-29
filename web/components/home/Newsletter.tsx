@@ -8,7 +8,7 @@ export default function Newsletter() {
     <section className="relative overflow-hidden bg-white py-24 dark:bg-slate-950 sm:py-32">
       <div className="absolute inset-0 bg-slate-50 dark:bg-slate-900/50" />
       
-      <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
+      <div className="relative mx-auto max-w-370 px-6 lg:px-8">
         <motion.div
           className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-2 lg:items-center"
           initial={{ opacity: 0, y: 40 }}

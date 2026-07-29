@@ -38,7 +38,7 @@ export default function StoreFooter({ storeName }: StoreFooterProps) {
 
   return (
     <footer className="w-full bg-slate-950 text-white pt-24 pb-12 mt-auto">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+      <div className="max-w-360 mx-auto px-6 lg:px-8">
         
         {/* Top Huge Type */}
         <div className="mb-20">

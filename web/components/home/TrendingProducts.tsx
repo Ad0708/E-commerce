@@ -28,7 +28,7 @@ export default function TrendingProducts() {
 
   return (
     <section className="py-32 bg-white dark:bg-slate-950">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+      <div className="max-w-370 mx-auto px-6 lg:px-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-24 gap-8">
           <div className="max-w-2xl">
             <h2 className="text-sm font-bold uppercase tracking-widest text-slate-500 mb-4">Trending Now</h2>

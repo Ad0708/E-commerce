@@ -49,7 +49,7 @@ export default function ProductsPage() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  } ,[page])
+  } ,[page ,  selectedCategory, sortBy]);
 
   const { data, isLoading } = useProducts({
     page,
@@ -92,7 +92,7 @@ export default function ProductsPage() {
     <main className="min-h-screen bg-slate-50 text-slate-900 transition-colors duration-300 dark:bg-slate-950 dark:text-slate-50">
       Page hero — offset for fixed header
       <section className="border-b border-slate-200/80 bg-white pt-24 dark:border-slate-800 dark:bg-slate-900">
-        <div className="mx-auto max-w-7xl px-4 pb-10 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-360 px-4 pb-10 sm:px-6 lg:px-8">
           <div className="flex items-start gap-3">
             <div className="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-900 text-white dark:bg-white dark:text-slate-900">
               <Sparkles className="h-5 w-5" />
@@ -115,7 +115,7 @@ export default function ProductsPage() {
 
       {/* Sticky filter bar */}
       <div className="sticky top-[72px] z-40 border-b border-slate-200/80 bg-slate-50/95 backdrop-blur-md dark:border-slate-800 dark:bg-slate-950/95">
-        <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-360 px-4 py-4 sm:px-8 lg:px-8">
           <ProductFilters
             searchQuery={searchQuery}
             onSearchChange={setSearchQuery}
@@ -131,7 +131,7 @@ export default function ProductsPage() {
       </div>
 
       {/* Product grid */}
-      <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <section className="mx-auto max-w-360 px-4 py-8 sm:px-6 lg:px-8">
         {isLoading ? (
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
             {Array.from({ length: 8 }).map((_, i) => (

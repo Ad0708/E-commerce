@@ -93,7 +93,7 @@ export function Header({ logo, storeName }: HeaderProps) {
           : "border-transparent bg-transparent"
       }`}
     >
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-5 sm:px-6 lg:px-8">
+      <div className="mx-auto flex max-w-370 items-center justify-between px-4 py-5 sm:px-6 lg:px-8">
         {/* Logo */}
         <Link href="/home" className="flex items-center gap-3 group">
           {logo ? (
