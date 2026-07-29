@@ -1,126 +1,142 @@
 "use client";
 
-import {
-  Smartphone,
-  Watch,
-  Laptop,
-  ArrowUpRight,
-  Computer,
-} from "lucide-react";
-import { motion, Variants } from "framer-motion";
-
-// Section header slide-down animation
-const headerVariants: Variants = {
-  hidden: { opacity: 0, y: -20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5, ease: "easeOut" },
-  },
-};
-
-// Container stagger controller
-const containerVariants: Variants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.12,
-    },
-  },
-};
-
-// Card pop-and-scale animation variant
-const cardVariants: Variants = {
-  hidden: { opacity: 0, scale: 0.9, y: 30 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    y: 0,
-    transition: {
-      duration: 0.5,
-      ease: "easeOut",
-    },
-  },
-};
+import { useRef, useState, useEffect, useMemo } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import Link from "next/link";
+import { categories } from "@/constants/categories";
+import { ArrowRight } from "lucide-react";
+import Image from "next/image";
 
 export default function CategorySection() {
-  const techCategories = [
-    {
-      label: "Mobile Devices",
-      slug: "smartphones",
-      icon: Smartphone,
-      color: "group-hover:text-purple-500 dark:group-hover:text-purple-400",
-    },
-    {
-      label: "Smart Accessories",
-      slug: "accessories",
-      icon: Watch,
-      color: "group-hover:text-cyan-500 dark:group-hover:text-cyan-400",
-    },
-    {
-      label: "Gaming",
-      slug: "gaming",
-      icon: Computer,
-      color: "group-hover:text-blue-500 dark:group-hover:text-blue-400",
-    },
-    {
-      label: "Laptops",
-      slug: "laptops",
-      icon: Laptop,
-      color: "group-hover:text-pink-500 dark:group-hover:text-pink-400",
-    },
-  ];
+  const targetRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [scrollRange, setScrollRange] = useState(0);
+  const [viewportHeight, setViewportHeight] = useState(0);
+
+  useEffect(() => {
+    const updateMetrics = () => {
+      if (!containerRef.current) return;
+
+      const vh = window.innerHeight;
+      const range = Math.max(
+        0,
+        containerRef.current.scrollWidth - window.innerWidth + 48
+      );
+
+      setViewportHeight(vh);
+      setScrollRange(range);
+    };
+
+    updateMetrics();
+
+    const ro = new ResizeObserver(updateMetrics);
+    if (containerRef.current) ro.observe(containerRef.current);
+
+    window.addEventListener("resize", updateMetrics);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", updateMetrics);
+    };
+  }, []);
+
+  // Phase 1: vertical scroll while section enters (V)
+  // Phase 2: horizontal scroll through categories (scrollRange)
+  // Phase 3: release back to normal vertical scroll (V buffer)
+  const sectionHeight = viewportHeight + scrollRange + viewportHeight;
+
+  const { scrollYProgress } = useScroll({
+    target: targetRef,
+    offset: ["start end", "end start"],
+  });
+
+  const enterProgress = useMemo(() => {
+    if (viewportHeight <= 0 || scrollRange <= 0) return 1;
+    return viewportHeight / (viewportHeight + scrollRange);
+  }, [viewportHeight, scrollRange]);
+
+  const x = useTransform(
+    scrollYProgress,
+    [enterProgress, 1],
+    [0, scrollRange > 0 ? -scrollRange : 0]
+  );
+
+  const categoryImages: Record<string, string> = {
+    smartphones:
+      "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=800&auto=format&fit=crop",
+    laptops:
+      "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=800&auto=format&fit=crop",
+    tablets:
+      "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?q=80&w=800&auto=format&fit=crop",
+    smartwatches:
+      "https://images.unsplash.com/photo-1579586337278-3befd40fd17a?q=80&w=800&auto=format&fit=crop",
+    headphones:
+      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=800&auto=format&fit=crop",
+    gaming:
+      "https://images.unsplash.com/photo-1606144042873-77231453ef12?q=80&w=800&auto=format&fit=crop",
+    accessories:
+      "https://images.unsplash.com/photo-1629131726692-1accd0c53ce0?q=80&w=800&auto=format&fit=crop",
+    electronics:
+      "https://images.unsplash.com/photo-1550009158-9ebf69173e03?q=80&w=800&auto=format&fit=crop",
+  };
 
   return (
-    <section className="mx-auto max-w-350 px-4 py-12 sm:py-16 sm:px-6 lg:px-8">
-      {/* Header with gentle slide-down effect */}
-      <motion.div
-        className="mb-8 sm:mb-10 text-center sm:text-left"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: false, margin: "-50px" }}
-        variants={headerVariants}
-      >
-        <h2 className="text-xs font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400">
-          Next-Gen Ecosystems
-        </h2>
-        <p className="mt-1 text-2xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
-          Shop by Category
-        </p>
-      </motion.div>
+    <section
+      ref={targetRef}
+      className="relative bg-slate-50 dark:bg-slate-950"
+      style={{ height: sectionHeight > 0 ? sectionHeight : "100vh" }}
+    >
+      <div className="sticky top-0 flex h-screen items-center overflow-hidden">
+        <motion.div
+          ref={containerRef}
+          style={{ x }}
+          className="flex items-center gap-6 px-6 will-change-transform md:gap-8 md:px-12"
+        >
+          {/* Intro Text Card */}
+          <div className="flex w-[85vw] flex-shrink-0 flex-col justify-center pr-8 sm:w-[400px] md:w-[450px]">
+            <h2 className="mb-4 text-sm font-bold uppercase tracking-widest text-slate-500">
+              Curated Collection
+            </h2>
+            <h3 className="mb-8 text-4xl font-extrabold leading-tight tracking-tight text-slate-900 dark:text-white md:text-6xl">
+              Explore Our <br /> Categories
+            </h3>
+            <Link
+              href="/products"
+              className="inline-flex w-max items-center gap-2 border-b-2 border-slate-900 pb-1 text-sm font-bold uppercase tracking-widest text-slate-900 transition-colors hover:text-slate-500 dark:border-white dark:text-white"
+            >
+              View All Products <ArrowRight className="h-5 w-5" />
+            </Link>
+          </div>
 
-      {/* Grid with stagger scale pop-in */}
-      <motion.div
-        className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4"
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: false, margin: "-50px" }}
-      >
-        {techCategories.map((cat) => (
-          <motion.a
-            key={cat.slug}
-            href={`/products?category=${cat.slug}`}
-            variants={cardVariants}
-            className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-slate-200 bg-white p-4 sm:p-6 text-left hover:border-slate-300 hover:shadow-xl dark:border-slate-800 dark:bg-slate-900 dark:hover:border-slate-700 transition-all duration-200"
-          >
-            <div className="flex items-center justify-between">
-              <div className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-xl bg-slate-50 text-slate-700 border border-slate-100 group-hover:bg-slate-900 group-hover:text-white dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700 dark:group-hover:bg-white dark:group-hover:text-slate-900 transition-colors duration-200">
-                <cat.icon className="h-5 w-5 stroke-[1.5]" />
+          {/* Category Image Cards */}
+          {categories.map((cat, idx) => (
+            <Link
+              href={`/products?category=${cat.value}`}
+              key={cat.value}
+              className="group relative aspect-[4/5] w-[75vw] flex-shrink-0 overflow-hidden rounded-3xl bg-slate-900 shadow-xl sm:w-[350px] md:w-[400px]"
+            >
+              <Image
+                src={categoryImages[cat.value] || categoryImages.electronics}
+                alt={cat.label}
+                fill
+                sizes="(max-width: 768px) 75vw, 400px"
+                className="object-cover opacity-80 transition-all duration-700 ease-out group-hover:scale-110 group-hover:opacity-100"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent transition-opacity duration-500 group-hover:opacity-80" />
+
+              <div className="absolute inset-0 flex transform flex-col justify-end p-6 transition-transform duration-500 md:p-8">
+                <span className="mb-2 block font-mono text-sm uppercase tracking-widest text-white/60">
+                  0{idx + 1}
+                </span>
+                <h4 className="mb-2 text-3xl font-bold text-white md:text-4xl">
+                  {cat.label}
+                </h4>
               </div>
-              <ArrowUpRight className="h-4 w-4 text-slate-300 group-hover:text-slate-500 dark:text-slate-700 dark:group-hover:text-slate-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-200" />
-            </div>
+            </Link>
+          ))}
 
-            <div className="mt-8 sm:mt-12">
-              <span
-                className={`mt-0.5 block text-sm sm:text-base font-semibold text-slate-900 dark:text-white transition-colors duration-200 ${cat.color}`}
-              >
-                {cat.label}
-              </span>
-            </div>
-          </motion.a>
-        ))}
-      </motion.div>
+          <div className="w-6 flex-shrink-0 md:w-12" aria-hidden />
+        </motion.div>
+      </div>
     </section>
   );
 }

@@ -18,28 +18,27 @@ export default function AdminLayout({
         mobileSidebarOpen={mobileSidebarOpen}
         setMobileSidebarOpen={setMobileSidebarOpen}
         desktopCollapsed={desktopCollapsed}
+        setDesktopCollapsed={setDesktopCollapsed}
       />
 
       <div
-        className={`flex flex-col flex-1 min-w-0 transition-all duration-300 ${
-          desktopCollapsed ? "lg:ml-24" : "lg:ml-68"
+        className={`flex flex-col flex-1 min-w-0 transition-all duration-300 p-2 ${
+          desktopCollapsed ? "lg:ml-21" : "lg:ml-67"
         }`}
       >
-        {/* Sticky Header stays pinned at top of viewport */}
-        <div className="sticky top-0 z-30 w-full bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 rounded-2xl">
+        {/* Sticky Header */}
+        <div className="sticky top-2 z-30 w-full">
           <AdminHeader
-            onToggleSidebar={() => {
-              if (window.innerWidth >= 1024) {
-                setDesktopCollapsed((prev) => !prev);
-              } else {
-                setMobileSidebarOpen((prev) => !prev);
-              }
-            }}
+            onToggleSidebar={() => setMobileSidebarOpen((prev) => !prev)}
           />
         </div>
 
-        {/* Main body expands to allow natural full-page browser scrolling */}
-        <main className="w-full max-w-370 mx-auto px-6 py-6 min-w-0 flex-1">
+        {/* Main Content Area */}
+        <main
+          className={`w-full mx-auto px-4 sm:px-6 py-6 min-w-0 flex-1 transition-all duration-300 ${
+            desktopCollapsed ? "max-w-420" : "max-w-370"
+          }`}
+        >
           {children}
         </main>
       </div>

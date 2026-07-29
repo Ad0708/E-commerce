@@ -4,35 +4,14 @@ import ProductCard from "@/components/products/ProductCard";
 import { useFeaturedProducts } from "@/hooks/product/useFeaturedProducts";
 import { useWishlistStore } from "@/store/wishlist.store";
 import { Wishlist } from "@/types/wishlist";
-import Link from "next/link";
 import { useMemo } from "react";
-import { motion, Variants } from "framer-motion";
+import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
-// Container variant to coordinate children staggering
-const containerVariants: Variants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
-};
-
-// Item variant for smooth fade-and-rise
-const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.5,
-      ease: "easeOut",
-    },
-  },
-};
 
 export default function FeaturedProducts() {
   const { data, isLoading, isError } = useFeaturedProducts();
+  const router = useRouter();
 
   const wishlist = useWishlistStore((state) => state.wishlist);
   const wishlistSet = useMemo<Set<string>>(
@@ -40,47 +19,41 @@ export default function FeaturedProducts() {
     [wishlist],
   );
 
-  if (isLoading) {
-    return (
-      <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4">
-        {Array.from({ length: 4 }).map((_, index) => (
-          <div
-            key={index}
-            className="h-80 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800"
-          />
-        ))}
-      </div>
-    );
-  }
-
-  if (isError || !data?.products?.length) {
+  if (isLoading || isError || !data?.products?.length) {
     return null;
   }
 
+  // Split into columns for a masonry-like effect without external libraries
+  const columns = [[], [], []] as any[][];
+  data.products.forEach((product: any, idx: number) => {
+      columns[idx % 3].push(product);
+  });
+
   return (
-    <motion.div
-      className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4"
-      variants={containerVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: false, margin: "-50px" }}
-    >
-      {data.products.map((product: any) => (
-        <motion.div
-          key={product._id}
-          variants={itemVariants}
-          className="h-full"
-        >
-          <Link href={`/product/${product._id}`} className="block h-full">
-            <ProductCard
-              product={product}
-              view="grid"
-              mode="customer"
-              wishlisted={wishlistSet.has(product._id)}
-            />
-          </Link>
-        </motion.div>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 items-start">
+      {columns.map((column, colIdx) => (
+        <div key={colIdx} className={`flex flex-col gap-8 ${colIdx === 1 ? 'lg:mt-24' : ''} ${colIdx === 2 ? 'lg:mt-12' : ''}`}>
+          {column.map((product: any) => (
+            <motion.div
+              key={product._id}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              onClick={() => {router.push(`/product/${product._id}`) ,window.scrollTo(0, 0)}}
+            >
+                <div className="group transition-transform duration-700 hover:-translate-y-4">
+                    <ProductCard
+                        product={product}
+                        view="grid"
+                        mode="customer"
+                        wishlisted={wishlistSet.has(product._id)}
+                    />
+                </div>
+            </motion.div>
+          ))}
+        </div>
       ))}
-    </motion.div>
+    </div>
   );
 }

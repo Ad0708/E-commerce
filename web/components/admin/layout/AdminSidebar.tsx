@@ -7,12 +7,15 @@ import {
   LayoutDashboard,
   LogOut,
   Package,
+  PanelLeftClose,
+  PanelLeftOpen,
   RotateCcw,
   Settings,
   ShoppingCart,
   Sparkles,
   TicketPercent,
   Users,
+  X,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -21,6 +24,7 @@ interface Props {
   mobileSidebarOpen: boolean;
   setMobileSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
   desktopCollapsed: boolean;
+  setDesktopCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const menuGroups = [
@@ -95,6 +99,7 @@ export default function AdminSidebar({
   mobileSidebarOpen,
   setMobileSidebarOpen,
   desktopCollapsed,
+  setDesktopCollapsed,
 }: Props) {
   const pathname = usePathname();
   const router = useRouter();
@@ -125,33 +130,58 @@ export default function AdminSidebar({
           fixed left-0 top-0 z-50 flex h-[calc(100vh-1rem)] flex-col
           border border-slate-200 bg-white/90 backdrop-blur-xl
           dark:border-slate-800 dark:bg-slate-900/90
-          transition-all duration-300 m-2 rounded-2xl overflow-hidden shadow-sm
+          transition-all duration-300 m-2 rounded-xl overflow-hidden shadow-sm
 
           ${mobileSidebarOpen ? "translate-x-0" : "-translate-x-full"}
 
           lg:translate-x-0
-          ${desktopCollapsed ? "lg:w-20" : "lg:w-64"}
+          ${desktopCollapsed ? "lg:w-18" : "lg:w-64"}
         `}
       >
         {/* Fixed Header */}
-        <div className="shrink-0 border-b border-slate-200/60 px-4.5 h-20 dark:border-slate-800/60 flex flex-col justify-center">
-          {!desktopCollapsed ? (
-            <>
-              <h1 className="bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-2xl font-bold text-transparent">
+        <div
+          className={`shrink-0 border-b border-slate-200/60 px-4 h-20 dark:border-slate-800/60 flex items-center ${
+            desktopCollapsed ? "justify-center" : "justify-between"
+          }`}
+        >
+          {/* Expanded Brand Header */}
+          {!desktopCollapsed && (
+            <div className="flex flex-col justify-center overflow-hidden">
+              <h1 className="bg-linear-to-r from-blue-600 to-cyan-500 bg-clip-text text-2xl font-bold text-transparent truncate">
                 Admin Panel
               </h1>
-              <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
+              <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400 truncate">
                 Manage your store
               </p>
-            </>
-          ) : (
-            <div className="flex justify-center text-2xl font-bold text-blue-600">
-              A
             </div>
           )}
+
+          {/* Dedicated Sidebar Toggle Button */}
+          <button
+            type="button"
+            onClick={() => {
+              if (window.innerWidth < 1024) {
+                setMobileSidebarOpen(false);
+              } else {
+                setDesktopCollapsed((prev) => !prev);
+              }
+            }}
+            className="flex items-center justify-center rounded-xl border border-slate-200 p-2.5 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:border-slate-800/60 dark:text-slate-400 dark:hover:bg-slate-800/60 dark:hover:text-slate-200 shrink-0"
+            title={desktopCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
+          >
+            {/* Mobile close icon */}
+            <X size={19} className="lg:hidden" />
+
+            {/* Desktop Sidebar Toggle Icons */}
+            {desktopCollapsed ? (
+              <PanelLeftOpen size={19} className="hidden lg:block" />
+            ) : (
+              <PanelLeftClose size={19} className="hidden lg:block" />
+            )}
+          </button>
         </div>
 
-        {/* Scrollable Middle Area (Categorized Navigation) */}
+        {/* Scrollable Middle Area */}
         <div className="flex-1 overflow-y-auto p-3 space-y-5 custom-scrollbar">
           {menuGroups.map((group, groupIdx) => (
             <div key={groupIdx} className="space-y-1">
@@ -178,14 +208,15 @@ export default function AdminSidebar({
                       desktopCollapsed ? "justify-center" : "gap-3.5"
                     } ${
                       isActive
-                        ? "bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-md font-medium"
+                        ? "bg-linear-to-r from-blue-600 to-cyan-500 text-white shadow-md font-medium"
                         : "text-slate-600 hover:bg-slate-100/80 dark:text-slate-300 dark:hover:bg-slate-800/60"
                     }`}
+                    title={desktopCollapsed ? item.title : undefined}
                   >
                     <Icon size={19} className="shrink-0" />
 
                     {!desktopCollapsed && (
-                      <span className="text-sm font-medium tracking-tight">
+                      <span className="text-sm font-medium tracking-tight truncate">
                         {item.title}
                       </span>
                     )}
@@ -203,11 +234,12 @@ export default function AdminSidebar({
             className={`flex items-center rounded-xl px-3.5 py-2.5 text-slate-600 transition hover:bg-slate-100/80 dark:text-slate-300 dark:hover:bg-slate-800/60 ${
               desktopCollapsed ? "justify-center" : "gap-3.5"
             }`}
+            title={desktopCollapsed ? "View Store" : undefined}
           >
             <ExternalLink size={19} className="shrink-0" />
 
             {!desktopCollapsed && (
-              <span className="text-sm font-medium tracking-tight">
+              <span className="text-sm font-medium tracking-tight truncate">
                 View Store
               </span>
             )}
@@ -219,11 +251,14 @@ export default function AdminSidebar({
               desktopCollapsed ? "justify-center" : "gap-3.5"
             }`}
             onClick={handleLogout}
+            title={desktopCollapsed ? "Logout" : undefined}
           >
             <LogOut size={19} className="shrink-0" />
 
             {!desktopCollapsed && (
-              <span className="text-sm font-medium tracking-tight">Logout</span>
+              <span className="text-sm font-medium tracking-tight truncate">
+                Logout
+              </span>
             )}
           </button>
         </div>

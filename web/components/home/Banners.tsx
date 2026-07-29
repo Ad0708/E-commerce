@@ -1,176 +1,117 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useStoreBanners } from "@/hooks/store/useStore";
+import { motion, AnimatePresence } from "framer-motion";
+import { ChevronRight } from "lucide-react";
 
 export function StoreBanners() {
   const { data: banners = [], isLoading, isError } = useStoreBanners();
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const activeBanners = banners
     .filter((banner) => banner.active)
     .sort((a, b) => a.order - b.order);
 
-  // Navigation handlers for infinite looping side buttons
-  const scroll = (direction: "left" | "right") => {
-    if (scrollContainerRef.current) {
-      const { clientWidth, scrollLeft, scrollWidth } =
-        scrollContainerRef.current;
-      let scrollTo =
-        direction === "left"
-          ? scrollLeft - clientWidth
-          : scrollLeft + clientWidth;
-
-      const isAtEnd = scrollLeft + clientWidth >= scrollWidth - 10;
-      const isAtStart = scrollLeft <= 10;
-
-      if (direction === "right" && isAtEnd) {
-        scrollTo = 0;
-      } else if (direction === "left" && isAtStart) {
-        scrollTo = scrollWidth - clientWidth;
-      }
-
-      scrollContainerRef.current.scrollTo({
-        left: scrollTo,
-        behavior: "smooth",
-      });
-    }
-  };
-
-  // Autoplay function
   useEffect(() => {
     if (activeBanners.length <= 1) return;
 
     const interval = setInterval(() => {
-      scroll("right");
-    }, 5000); // Transitions every 5 seconds
+      setCurrentIndex((prev) => (prev + 1) % activeBanners.length);
+    }, 6000);
 
     return () => clearInterval(interval);
   }, [activeBanners.length]);
 
   if (isLoading) {
-    return (
-      <section className="w-full px-4 md:px-6">
-        <div className="h-[250px] sm:h-[350px] md:h-[450px] lg:h-[500px] w-full animate-pulse rounded-2xl bg-muted" />
-      </section>
-    );
+    return <div className="h-screen w-full animate-pulse bg-slate-900" />;
   }
 
   if (isError || activeBanners.length === 0) {
     return null;
   }
 
+  const currentBanner = activeBanners[currentIndex];
+
   return (
-    <section className="group relative w-full px-4 md:px-6">
-      {/* Scroll Container */}
-      <div
-        ref={scrollContainerRef}
-        className="scrollbar-none flex w-full snap-x snap-mandatory overflow-x-auto rounded-2xl"
-        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-      >
-        {activeBanners.map((banner) => (
-          <div
-            key={banner._id}
-            className="relative h-[250px] sm:h-[350px] md:h-[450px] lg:h-[700px] w-full shrink-0 snap-start overflow-hidden"
+    <section className="relative w-full h-screen overflow-hidden bg-black">
+      <AnimatePresence initial={false} mode="wait">
+        <motion.div
+          key={currentIndex}
+          initial={{ opacity: 0, scale: 1.05 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1.2, ease: [0.33, 1, 0.68, 1] }}
+          className="absolute inset-0"
+        >
+          <Image
+            src={currentBanner.image}
+            alt={currentBanner.title || "Store banner"}
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
+          />
+          {/* Subtle gradient to ensure text readability */}
+          <div className="absolute inset-0 bg-black/40" />
+        </motion.div>
+      </AnimatePresence>
+
+      <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-6 z-20 pt-20">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentIndex}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -30 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="max-w-4xl"
           >
-            {/* Banner Background Image */}
-            <Image
-              src={banner.image}
-              alt={banner.title || "Store banner"}
-              fill
-              priority
-              sizes="100vw"
-              className="object-cover object-center"
-            />
+            {currentBanner.title && (
+              <h2 className="text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter text-white leading-tight mb-6 drop-shadow-xl">
+                {currentBanner.title}
+              </h2>
+            )}
+            
+            {currentBanner.subtitle && (
+              <p className="text-xl md:text-2xl text-white/90 mb-10 font-medium drop-shadow-md">
+                {currentBanner.subtitle}
+              </p>
+            )}
 
-            {/* Gradient Overlay */}
-            <div className="absolute inset-0 bg-linear-to-r from-black/70 via-black/40 to-transparent pointer-events-none" />
-
-            {/* Content Container */}
-            <div className="absolute inset-0 z-30 flex flex-col justify-center px-8 sm:px-12 md:px-16 lg:px-20 text-white pointer-events-none">
-              {/* Responsive text alignment wrapper */}
-              <div className="w-full max-w-xs sm:max-w-md md:max-w-xl lg:max-w-2xl space-y-3 md:space-y-4 pointer-events-auto">
-                {banner.title && (
-                  <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight drop-shadow-sm leading-tight max-w-[85%] sm:max-w-[80%] md:max-w-[75%]">
-                    {banner.title}
-                  </h2>
-                )}
-
-                {banner.subtitle && (
-                  <p className="text-xs sm:text-base md:text-lg text-zinc-200 font-medium drop-shadow-sm line-clamp-2 sm:line-clamp-none max-w-[90%] sm:max-w-[85%]">
-                    {banner.subtitle}
-                  </p>
-                )}
-
-                {banner.buttonText && banner.buttonLink && (
-                  <div className="pt-2 md:pt-4">
-                    <Link
-                      href={
-                        banner.buttonLink.startsWith("http") ||
-                        banner.buttonLink.startsWith("/")
-                          ? banner.buttonLink
-                          : `/${banner.buttonLink}`
-                      }
-                      className="inline-flex items-center justify-center rounded-xl bg-white px-5 py-2.5 sm:px-6 sm:py-3 text-xs sm:text-sm font-bold text-black shadow-lg transition-all duration-200 hover:bg-zinc-100 hover:scale-[1.02] active:scale-[0.98]"
-                    >
-                      {banner.buttonText}
-                    </Link>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        ))}
+            {currentBanner.buttonText && currentBanner.buttonLink && (
+              <Link
+                href={
+                  currentBanner.buttonLink.startsWith("http") || currentBanner.buttonLink.startsWith("/")
+                    ? currentBanner.buttonLink
+                    : `/${currentBanner.buttonLink}`
+                }
+                className="group inline-flex items-center gap-4 bg-white text-black px-10 py-5 rounded-full font-bold text-sm tracking-widest uppercase hover:bg-slate-200 transition-colors shadow-2xl"
+              >
+                {currentBanner.buttonText}
+                <div className="bg-black rounded-full p-2 text-white group-hover:translate-x-1 transition-transform">
+                    <ChevronRight className="w-4 h-4" />
+                </div>
+              </Link>
+            )}
+          </motion.div>
+        </AnimatePresence>
       </div>
 
-      {/* Side Navigation Buttons */}
-      {activeBanners.length > 1 && (
-        <>
+      {/* Indicators */}
+      <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex gap-4 z-20">
+        {activeBanners.map((_, idx) => (
           <button
-            onClick={() => scroll("left")}
-            className="absolute left-6 md:left-8 top-1/2 z-40 flex h-10 w-10 md:h-12 md:w-12 -translate-y-1/2 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-md transition-all duration-200 opacity-0 group-hover:opacity-100 hover:bg-black/70 active:scale-95 shadow-md"
-            aria-label="Previous slide"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={2.5}
-              stroke="currentColor"
-              className="w-5 h-5 md:w-6 md:h-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M15.75 19.5L8.25 12l7.5-7.5"
-              />
-            </svg>
-          </button>
-
-          <button
-            onClick={() => scroll("right")}
-            className="absolute right-6 md:right-8 top-1/2 z-40 flex h-10 w-10 md:h-12 md:w-12 -translate-y-1/2 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-md transition-all duration-200 opacity-0 group-hover:opacity-100 hover:bg-black/70 active:scale-95 shadow-md"
-            aria-label="Next slide"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={2.5}
-              stroke="currentColor"
-              className="w-5 h-5 md:w-6 md:h-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M8.25 4.5l7.5 7.5-7.5 7.5"
-              />
-            </svg>
-          </button>
-        </>
-      )}
+            key={idx}
+            onClick={() => setCurrentIndex(idx)}
+            className={`h-1.5 rounded-full transition-all duration-500 ${
+              idx === currentIndex ? "w-16 bg-white" : "w-6 bg-white/40 hover:bg-white/70"
+            }`}
+          />
+        ))}
+      </div>
     </section>
   );
 }

@@ -7,6 +7,7 @@ import Pagination from "@/components/common/Pagination";
 import SearchInput from "@/components/common/Search";
 import { categories } from "@/constants/categories";
 import { useallProducts } from "@/hooks/product/useAllProduct";
+// import { useDeleteProduct } from "@/hooks/product/useDeleteProduct";
 import { useUpdateProduct } from "@/hooks/product/useUpdateProduct";
 import { useDebounce } from "@/hooks/useDebounce";
 import { Product } from "@/types/product";
@@ -148,15 +149,21 @@ export default function ProductsPage() {
   const handleDeleteClick = (productId: string) => {
     setProductToDelete(productId);
   };
-
+  // const { mutateAsync: deleteProduct } = useDeleteProduct();
   // 2. Triggered when clicking "Delete Product" in Modal
   const confirmDelete = async () => {
     if (!productToDelete) return;
 
-    // Optimistic local state update
-    setProductsList((prev) => prev.filter((p) => p._id !== productToDelete));
-    // Close the Modal
-    setProductToDelete(null);
+    try {
+      // await deleteProduct(productToDelete);
+
+      // Optimistic UI
+      setProductsList((prev) => prev.filter((p) => p._id !== productToDelete));
+
+      setProductToDelete(null);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   // 3. Triggered when closing or canceling the Modal

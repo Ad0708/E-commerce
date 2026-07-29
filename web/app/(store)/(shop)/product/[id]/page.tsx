@@ -114,7 +114,7 @@ export default function CustomerProductPage() {
   };
 
   return (
-    <div className="bg-slate-50 dark:bg-slate-950 min-h-screen">
+    <div className="bg-slate-50 dark:bg-slate-950 min-h-screen pt-20">
       <main className="py-10 lg:py-14">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <motion.div

@@ -71,7 +71,7 @@ export default function CartPage() {
   // 2. EARLY RETURNS AND CONDITIONAL CHECKS GO HERE
   if (isLoading) {
     return (
-      <div className="flex flex-col bg-slate-50 dark:bg-slate-950">
+      <div className="flex flex-col bg-slate-50 dark:bg-slate-950 pt-20 min-h-screen">
         <main className="flex-1">
           <CartSkeleton />
         </main>
@@ -81,7 +81,7 @@ export default function CartPage() {
 
   if (items.length === 0) {
     return (
-      <div className="flex min-h-[calc(100vh-16rem)] flex-col items-center justify-center bg-slate-50 dark:bg-slate-950">
+      <div className="flex min-h-screen flex-col items-center justify-center bg-slate-50 dark:bg-slate-950">
         <main className="flex w-full flex-1 items-center justify-center px-4 py-12">
           <EmptyCart />
         </main>
@@ -90,7 +90,7 @@ export default function CartPage() {
   }
 
   return (
-    <div className="flex flex-col bg-slate-50 dark:bg-slate-950">
+    <div className="flex flex-col bg-slate-50 dark:bg-slate-950 pt-18 min-h-screen">
       <main className="flex-1">
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
           {/* Header */}
