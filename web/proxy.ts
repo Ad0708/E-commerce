@@ -2,9 +2,9 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 // Decode JWT payload on the edge
-function decodeToken(token: string) {
+function decodeToken(auth_token: string) {
   try {
-    const base64Url = token.split(".")[1];
+    const base64Url = auth_token.split(".")[1];
     const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
     const jsonPayload = decodeURIComponent(
       atob(base64)
@@ -54,7 +54,7 @@ function redirectToLogin(request: NextRequest) {
 
 export default function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const token = request.cookies.get("token")?.value;
+  const auth_token = request.cookies.get("auth_token")?.value;
 
   // Public routes
   const publicRoutes = ["/login", "/signup", "/forgot-password"];
@@ -67,8 +67,8 @@ export default function proxy(request: NextRequest) {
   // PUBLIC ROUTES
   // ==========================================
   if (isPublicRoute) {
-    if (token) {
-      const decoded = decodeToken(token);
+    if (auth_token) {
+      const decoded = decodeToken(auth_token);
 
       if (decoded?.role === "admin") {
         return NextResponse.redirect(new URL("/admin", request.url));
@@ -86,11 +86,11 @@ export default function proxy(request: NextRequest) {
   // ADMIN ROUTES
   // ==========================================
   if (isAdminRoute) {
-    if (!token) {
+    if (!auth_token) {
       return redirectToLogin(request);
     }
 
-    const decoded = decodeToken(token);
+    const decoded = decodeToken(auth_token);
 
     if (decoded?.role === "customer") {
       return NextResponse.redirect(new URL("/home", request.url));
@@ -106,11 +106,11 @@ export default function proxy(request: NextRequest) {
   // ==========================================
   // USER / PROTECTED ROUTES
   // ==========================================
-  if (!token) {
+  if (!auth_token) {
     return redirectToLogin(request);
   }
 
-  const decoded = decodeToken(token);
+  const decoded = decodeToken(auth_token);
 
   if (!decoded) {
     return redirectToLogin(request);

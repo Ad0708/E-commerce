@@ -70,7 +70,7 @@ export default function ProductFilters({
                 setShowSortDropdown(false);
                 setShowCategoryDropdown((prev) => !prev);
               }}
-              className="flex w-full min-w-[160px] items-center justify-between gap-2 rounded-xl border border-slate-200/80 bg-white px-4 py-2.5 text-sm font-medium shadow-sm transition-all hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-slate-700"
+              className="flex w-full min-w-40 items-center justify-between gap-2 rounded-xl border border-slate-200/80 bg-white px-4 py-2.5 text-sm font-medium shadow-sm transition-all hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-slate-700"
             >
               <span className="truncate">
                 {activeCategoryLabel || "All Categories"}

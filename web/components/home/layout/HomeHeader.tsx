@@ -22,6 +22,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import ThemeToggle from "../../common/ThemeToggle";
 import NotificationButton from "../../notification/NotificationButton";
+import { useLogout } from "@/hooks/auth/uselogout";
 
 const navLinks = [
   { href: "/home", label: "Home" },
@@ -49,19 +50,15 @@ export function Header({ logo, storeName }: HeaderProps) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleLogout = async () => {
-    try {
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/logout`, {
-        method: "POST",
-        credentials: "include",
-      });
-    } catch (error) {
-      console.error(error);
-    } finally {
-      clearAuth();
-      router.replace("/login");
-      router.refresh();
-    }
+  const { mutate: logout } = useLogout();
+
+  const handleLogout = () => {
+    logout(undefined, {
+      onSuccess: () => {
+        router.replace("/login");
+        router.refresh();
+      },
+    });
   };
 
   const isActive = (href: string) => pathname === href;

@@ -72,7 +72,7 @@ export default function CategorySection() {
     headphones:
       "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=800&auto=format&fit=crop",
     gaming:
-      "https://images.unsplash.com/photo-1606144042873-77231453ef12?q=80&w=800&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?w=800&auto=format&fit=crop&q=80",
     accessories:
       "https://images.unsplash.com/photo-1629131726692-1accd0c53ce0?q=80&w=800&auto=format&fit=crop",
     electronics:
