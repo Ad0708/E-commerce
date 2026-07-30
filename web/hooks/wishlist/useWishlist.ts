@@ -7,20 +7,24 @@ import {
 } from "@/api/wishlist";
 import toast from "react-hot-toast";
 
+import { useAuthStore } from "@/store/auth.store";
+
 export const useWishlist = (productId?: string) => {
   const queryClient = useQueryClient();
+  const user = useAuthStore((state) => state.user);
 
   // Wishlist data
   const wishlistQuery = useQuery({
     queryKey: ["wishlist"],
     queryFn: getWishlist,
+    enabled: !!user,
   });
 
   // Check if product exists in wishlist
   const checkWishlistQuery = useQuery({
     queryKey: ["wishlist", productId],
     queryFn: () => checkWishlist(productId!),
-    enabled: !!productId,
+    enabled: !!productId && !!user,
   });
 
   // Add to wishlist

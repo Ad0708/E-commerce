@@ -1,3 +1,4 @@
+
 import ThemeToggle from "@/components/common/ThemeToggle";
 
 export default function AuthShowcase() {
@@ -56,9 +57,11 @@ export default function AuthShowcase() {
     "
       />
 
+
       <div className="absolute top-8 right-8 z-20">
         <ThemeToggle />
       </div>
+
 
       <div className="relative z-10 mt-20">
         <h1 className="text-6xl font-bold leading-tight text-white">

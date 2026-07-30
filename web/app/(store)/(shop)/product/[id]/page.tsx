@@ -32,16 +32,31 @@ const buttonVariants: Variants = {
   },
 };
 
+import { useAuthStore } from "@/store/auth.store";
+import { useAuthModalStore } from "@/store/authModal.store";
+
 export default function CustomerProductPage() {
   const { id } = useParams();
   const router = useRouter();
 
+  const user = useAuthStore((s) => s.user);
+  const openAuthModal = useAuthModalStore((s) => s.openAuthModal);
+
   const wishlistItems = useWishlistStore((state) => state.wishlist);
-  const isWishlisted = wishlistItems.some((item) => item.product._id === id);
+  const isWishlisted = (wishlistItems ?? []).some((item) => item?.product?._id === id);
 
   const { addToWishlist, removeFromWishlist } = useWishlist();
 
   const handleToggleWishlist = () => {
+    if (!user) {
+      openAuthModal({
+        title: "Login Required",
+        description: "Please log in to save items to your wishlist.",
+        pendingAction: { type: "ADD_TO_WISHLIST", productId: id as string },
+      });
+      return;
+    }
+
     if (isWishlisted) {
       removeFromWishlist(id as string);
     } else {
@@ -56,19 +71,29 @@ export default function CustomerProductPage() {
   );
 
   const handleBuyNow = () => {
-    if (product) {
-      addToCart({
-        productId: product._id,
-        name: product.name,
-        image: product.images[0],
-        price: product.price,
-        discountPrice: product.discountPrice,
-        stock: product.stock,
-        category: product.category,
-        quantity: 1,
+    if (!product) return;
+
+    const payload = {
+      productId: product._id,
+      name: product.name,
+      image: product.images?.[0] || "",
+      price: product.price,
+      discountPrice: product.discountPrice,
+      stock: product.stock,
+      category: product.category,
+      quantity: 1,
+    };
+
+    if (!user) {
+      openAuthModal({
+        title: "Login Required",
+        description: `Please log in to buy ${product.name}.`,
+        pendingAction: { type: "ADD_TO_CART", payload },
       });
+      return;
     }
 
+    addToCart(payload);
     router.push("/cart");
   };
 
@@ -93,7 +118,7 @@ export default function CustomerProductPage() {
     if (!product) return;
     if (isInCart || product.stock === 0) return;
 
-    addToCart({
+    const payload = {
       productId: product._id,
       name: product.name,
       image: imageUrl,
@@ -102,7 +127,18 @@ export default function CustomerProductPage() {
       stock: product.stock,
       category: product.category,
       quantity: 1,
-    });
+    };
+
+    if (!user) {
+      openAuthModal({
+        title: "Login Required",
+        description: `Please log in to add ${product.name} to your cart.`,
+        pendingAction: { type: "ADD_TO_CART", payload },
+      });
+      return;
+    }
+
+    addToCart(payload);
   }
 
   const handletoggle = () => {

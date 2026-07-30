@@ -17,8 +17,11 @@ import { AxiosError } from "axios";
 
 export const CART_KEY = ["cart"];
 
+import { useAuthStore } from "@/store/auth.store";
+
 export function useCart() {
   const queryClient = useQueryClient();
+  const user = useAuthStore((s) => s.user);
 
   const addItem = useCartStore((s) => s.addItem);
   const setItems = useCartStore((s) => s.setItems);
@@ -33,7 +36,7 @@ export function useCart() {
     queryKey: CART_KEY,
     queryFn: getCart,
     staleTime: 1000 * 60 * 2,
-    enabled: !isAdminRoute,
+    enabled: !isAdminRoute && !!user,
   });
 
   useEffect(() => {

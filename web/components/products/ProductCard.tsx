@@ -16,6 +16,8 @@ import { categories } from "@/constants/categories";
 import { useDeleteProduct } from "@/hooks/product/useDeleteProduct";
 import { useCart } from "@/hooks/cart/useCart";
 import { useCartStore } from "@/store/cart.store";
+import { useAuthStore } from "@/store/auth.store";
+import { useAuthModalStore } from "@/store/authModal.store";
 import WishlistButton from "./WishlistButton";
 import { useState } from "react";
 import Modal from "../common/Modal";
@@ -72,9 +74,13 @@ export default function ProductCard({
 
   const isDraft = product.status === "draft";
 
+  const user = useAuthStore((s) => s.user);
+  const openAuthModal = useAuthModalStore((s) => s.openAuthModal);
+
   function handleAddToCart() {
     if (isInCart || product.stock === 0 || isDraft) return;
-    addToCart({
+
+    const payload = {
       productId: product._id,
       name: product.name,
       image: imageUrl ?? "",
@@ -83,7 +89,18 @@ export default function ProductCard({
       stock: product.stock,
       category: product.category,
       quantity: 1,
-    });
+    };
+
+    if (!user) {
+      openAuthModal({
+        title: "Login Required",
+        description: `Please log in to add ${product.name} to your cart.`,
+        pendingAction: { type: "ADD_TO_CART", payload },
+      });
+      return;
+    }
+
+    addToCart(payload);
   }
 
   function handleRemoveToCart() {

@@ -12,6 +12,7 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { useCustomerSupportAI } from "@/hooks/ai/useAI";
+import { useAuthStore } from "@/store/auth.store";
 
 type Role = "user" | "assistant";
 
@@ -32,6 +33,7 @@ function extractOrderId(text: string): string | undefined {
 }
 
 export default function SupportChatBubble() {
+  const { user } = useAuthStore();
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([WELCOME]);
   const [input, setInput] = useState("");
@@ -83,6 +85,8 @@ export default function SupportChatBubble() {
       setError("Something went wrong. Please try again.");
     }
   }, [input, isPending, messages, mutateAsync]);
+
+  if (!user) return null;
 
   const handleKey = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {

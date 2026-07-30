@@ -39,9 +39,6 @@ export default function CategorySection() {
     };
   }, []);
 
-  // Phase 1: vertical scroll while section enters (V)
-  // Phase 2: horizontal scroll through categories (scrollRange)
-  // Phase 3: release back to normal vertical scroll (V buffer)
   const sectionHeight = viewportHeight + scrollRange + viewportHeight;
 
   const { scrollYProgress } = useScroll({
@@ -92,7 +89,7 @@ export default function CategorySection() {
           className="flex items-center gap-6 px-6 will-change-transform md:gap-8 md:px-12"
         >
           {/* Intro Text Card */}
-          <div className="flex w-[85vw] flex-shrink-0 flex-col justify-center pr-8 sm:w-[400px] md:w-[450px]">
+          <div className="flex w-[85vw] shrink-0 flex-col justify-center pr-8 sm:w-[400px] md:w-[450px]">
             <h2 className="mb-4 text-sm font-bold uppercase tracking-widest text-slate-500">
               Curated Collection
             </h2>
@@ -112,7 +109,7 @@ export default function CategorySection() {
             <Link
               href={`/products?category=${cat.value}`}
               key={cat.value}
-              className="group relative aspect-[4/5] w-[75vw] flex-shrink-0 overflow-hidden rounded-3xl bg-slate-900 shadow-xl sm:w-[350px] md:w-[400px]"
+              className="group relative aspect-[4/5] w-[75vw] shrink-0 overflow-hidden rounded-3xl bg-slate-900 shadow-xl sm:w-[350px] md:w-[400px]"
             >
               <Image
                 src={categoryImages[cat.value] || categoryImages.electronics}
@@ -134,7 +131,7 @@ export default function CategorySection() {
             </Link>
           ))}
 
-          <div className="w-6 flex-shrink-0 md:w-12" aria-hidden />
+          <div className="w-6 shrink-0 md:w-12" aria-hidden />
         </motion.div>
       </div>
     </section>

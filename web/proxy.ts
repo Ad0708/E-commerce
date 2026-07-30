@@ -56,17 +56,42 @@ export default function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const auth_token = request.cookies.get("auth_token")?.value;
 
-  // Public routes
-  const publicRoutes = ["/login", "/signup", "/forgot-password"];
-  const isPublicRoute = publicRoutes.includes(pathname);
+  // Auth routes (redirect logged-in users away)
+  const authRoutes = ["/login", "/signup", "/forgot-password"];
+  const isAuthRoute = authRoutes.includes(pathname);
 
   // Admin routes
   const isAdminRoute = pathname.startsWith("/admin");
 
+  // Publicly accessible store pages for guests
+  const guestAllowedRoutes = [
+    "/home",
+    "/products",
+    "/customer-support",
+    "/maintenance",
+  ];
+  const isGuestAllowed =
+    guestAllowedRoutes.includes(pathname) || pathname.startsWith("/product/");
+
+  // Protected user pages requiring login
+  const protectedRoutes = [
+    "/cart",
+    "/wishlist",
+    "/checkout",
+    "/orders",
+    "/profile",
+    "/settings",
+    "/wallet",
+    "/refunds",
+  ];
+  const isProtectedRoute = protectedRoutes.some((route) =>
+    pathname.startsWith(route),
+  );
+
   // ==========================================
-  // PUBLIC ROUTES
+  // AUTH ROUTES (/login, /signup, etc.)
   // ==========================================
-  if (isPublicRoute) {
+  if (isAuthRoute) {
     if (auth_token) {
       const decoded = decodeToken(auth_token);
 
@@ -83,7 +108,7 @@ export default function proxy(request: NextRequest) {
   }
 
   // ==========================================
-  // ADMIN ROUTES
+  // ADMIN ROUTES (/admin/*)
   // ==========================================
   if (isAdminRoute) {
     if (!auth_token) {
@@ -104,16 +129,27 @@ export default function proxy(request: NextRequest) {
   }
 
   // ==========================================
-  // USER / PROTECTED ROUTES
+  // PUBLIC STORE PAGES (/home, /products, /product/*)
   // ==========================================
-  if (!auth_token) {
-    return redirectToLogin(request);
+  if (isGuestAllowed) {
+    return NextResponse.next();
   }
 
-  const decoded = decodeToken(auth_token);
+  // ==========================================
+  // PROTECTED USER ROUTES (/cart, /wishlist, /checkout, etc.)
+  // ==========================================
+  if (isProtectedRoute) {
+    if (!auth_token) {
+      return redirectToLogin(request);
+    }
 
-  if (!decoded) {
-    return redirectToLogin(request);
+    const decoded = decodeToken(auth_token);
+
+    if (!decoded) {
+      return redirectToLogin(request);
+    }
+
+    return NextResponse.next();
   }
 
   return NextResponse.next();

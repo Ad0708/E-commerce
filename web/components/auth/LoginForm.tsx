@@ -102,11 +102,10 @@ export default function LoginForm() {
             placeholder="john@example.com"
             {...register("email")}
             className={`w-full rounded-xl border bg-white dark:bg-slate-950 px-4 py-3 outline-none transition-all
-            ${
-              errors.email
+            ${errors.email
                 ? "border-red-500 focus:border-red-500"
                 : "border-slate-300 dark:border-slate-700 focus:border-blue-500"
-            }`}
+              }`}
           />
 
           {errors.email && (
@@ -123,11 +122,10 @@ export default function LoginForm() {
               placeholder="Enter password"
               {...register("password")}
               className={`w-full rounded-xl border bg-white dark:bg-slate-950 px-4 py-3 pr-12 outline-none transition-all
-              ${
-                errors.password
+              ${errors.password
                   ? "border-red-500 focus:border-red-500"
                   : "border-slate-300 dark:border-slate-700 focus:border-blue-500"
-              }`}
+                }`}
             />
 
             <button

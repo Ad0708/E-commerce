@@ -3,6 +3,9 @@
 import { Heart } from "lucide-react";
 import { useWishlist } from "@/hooks/wishlist/useWishlist";
 
+import { useAuthStore } from "@/store/auth.store";
+import { useAuthModalStore } from "@/store/authModal.store";
+
 interface WishlistButtonProps {
   productId: string;
   wishlisted: boolean;
@@ -14,12 +17,22 @@ export default function WishlistButton({
   wishlisted,
   size = 22,
 }: WishlistButtonProps) {
-  const { addToWishlist, removeFromWishlist, isAdding, isRemoving } =
-    useWishlist();
+  const { addToWishlist, removeFromWishlist } = useWishlist();
+  const user = useAuthStore((s) => s.user);
+  const openAuthModal = useAuthModalStore((s) => s.openAuthModal);
 
   const handleToggleWishlist = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
+
+    if (!user) {
+      openAuthModal({
+        title: "Login Required",
+        description: "Please log in to save items to your wishlist.",
+        pendingAction: { type: "ADD_TO_WISHLIST", productId },
+      });
+      return;
+    }
 
     if (wishlisted) {
       removeFromWishlist(productId);

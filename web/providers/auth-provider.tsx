@@ -8,17 +8,28 @@ import { usePathname } from "next/navigation";
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
-  const publicRoutes = ["/login", "/signup", "/forgot-password"];
+  const authRoutes = ["/login", "/signup", "/forgot-password"];
+  const isAuthRoute = authRoutes.includes(pathname);
 
-  const isPublicRoute = publicRoutes.includes(pathname);
   const { user, setUser, setLoading, isLoading } = useAuthStore();
   const hasFetched = useRef(false);
 
   useEffect(() => {
-    if (isPublicRoute) return;
+    if (isAuthRoute) return;
 
     if (!user && !hasFetched.current) {
       hasFetched.current = true;
+
+      const hasCookie = typeof document !== "undefined" && (
+        document.cookie.includes("auth_token=") || document.cookie.includes("token=")
+      );
+
+      if (!hasCookie) {
+        setUser(null);
+        setLoading(false);
+        return;
+      }
+
       setLoading(true);
 
       getCurrentUser()
@@ -26,13 +37,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         .catch(() => setUser(null))
         .finally(() => setLoading(false));
     }
-  }, [isPublicRoute, user, setUser, setLoading]);
+  }, [isAuthRoute, user, setUser, setLoading]);
 
-  // Show loading state while fetching
-  if (isLoading && !user) {
+  // Show full screen loading state only on protected pages when auth is resolving
+  const protectedRoutes = ["/cart", "/wishlist", "/checkout", "/orders", "/profile", "/settings", "/wallet"];
+  const isProtectedRoute = protectedRoutes.some((route) => pathname.startsWith(route));
+
+  if (isLoading && !user && isProtectedRoute) {
     return (
-      <div className="flex h-screen items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900" />
+      <div className="flex h-screen items-center justify-center bg-slate-50 dark:bg-slate-950">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-slate-900 dark:border-white" />
       </div>
     );
   }
