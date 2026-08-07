@@ -12,6 +12,7 @@ import {
   verifyAnyToken,
 } from "../../middlewares/auth.middleware.js";
 import multer from "multer";
+import { aiLimiter } from "../../middlewares/rateLimiter.middleware.js";
 
 const router = express.Router();
 
@@ -63,6 +64,6 @@ router.get("/inventory-forecast", verifyAdminToken, generateInventoryForecast);
 | AI Customer Support
 |--------------------------------------------------------------------------
 */
-router.post("/customer-support", verifyAnyToken, askCustomerSupportAI);
+router.post("/customer-support", verifyAnyToken, aiLimiter, askCustomerSupportAI);
 
 export default router;

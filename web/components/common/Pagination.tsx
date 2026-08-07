@@ -74,8 +74,8 @@ export default function Pagination({
 
   const visiblePages = getVisiblePages();
 
-return (
-    <div className="flex flex-col gap-4 rounded-xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900/60 md:flex-row md:items-center md:justify-between">
+  return (
+    <div className="mt-4 flex flex-col gap-4 rounded-xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900/60 md:flex-row md:items-center md:justify-between">
       {/* Left: Show Result Selector */}
       {onLimitChange ? (
         <div className="flex items-center gap-2.5">
@@ -166,11 +166,10 @@ return (
                 key={`page-${pageNumber}`}
                 type="button"
                 onClick={() => onPageChange(pageNumber as number)}
-                className={`flex h-8 min-w-[32px] items-center justify-center rounded-lg px-2 text-xs transition ${
-                  isCurrent
+                className={`flex h-8 min-w-[32px] items-center justify-center rounded-lg px-2 text-xs transition ${isCurrent
                     ? "border border-indigo-500/80 bg-indigo-50 font-bold text-indigo-600 shadow-xs dark:border-indigo-500/80 dark:bg-indigo-950/40 dark:text-indigo-400"
                     : "border border-slate-200 bg-white font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-100"
-                }`}
+                  }`}
               >
                 {pageNumber}
               </button>

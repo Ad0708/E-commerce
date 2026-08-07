@@ -29,13 +29,13 @@ export default function OrderDetailsPage({ params }: OrderDetailsPageProps) {
     useDownloadInvoice();
   const formattedDate = order
     ? new Date(order.createdAt).toLocaleDateString("en-US", {
-        weekday: "long",
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      })
+      weekday: "long",
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    })
     : "";
 
   if (isLoading) {
@@ -91,8 +91,12 @@ export default function OrderDetailsPage({ params }: OrderDetailsPageProps) {
               Placed on {formattedDate}
             </p>
           </div>
-
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2.5 flex-wrap">
+            {order.status === "Delivered" && (
+              <Link href={`/orders/${order._id}/review`}>
+                <Button variant="outline">Add Review</Button>
+              </Link>
+            )}
             <Button
               onClick={() => downloadInvoice(order._id)}
               disabled={isDownloading}

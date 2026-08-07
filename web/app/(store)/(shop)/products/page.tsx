@@ -10,6 +10,7 @@ import { useDebounce } from "@/hooks/useDebounce";
 import { useWishlistStore } from "@/store/wishlist.store";
 import { Product } from "@/types/product";
 import { Wishlist } from "@/types/wishlist";
+import { categories } from "@/constants/categories";
 import { Package, Sparkles } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -26,6 +27,9 @@ export default function ProductsPage() {
   const [limit, setLimit] = useState(10);
 
   const debouncedSearch = useDebounce(searchQuery, 400);
+
+  const activeCategoryLabel =
+    categories.find((c) => c.value === selectedCategory)?.label || "All Products";
 
   // Sync category from URL on mount / navigation
   useEffect(() => {
@@ -89,33 +93,11 @@ export default function ProductsPage() {
   );
 
   return (
-    <main className="min-h-screen bg-slate-50 text-slate-900 transition-colors duration-300 dark:bg-slate-950 dark:text-slate-50">
-      Page hero — offset for fixed header
-      <section className="border-b border-slate-200/80 bg-white pt-24 dark:border-slate-800 dark:bg-slate-900">
-        <div className="mx-auto max-w-360 px-4 pb-10 sm:px-6 lg:px-8">
-          <div className="flex items-start gap-3">
-            <div className="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-900 text-white dark:bg-white dark:text-slate-900">
-              <Sparkles className="h-5 w-5" />
-            </div>
-            <div>
-              <p className="text-xs font-bold uppercase tracking-widest text-slate-500">
-                Browse Collection
-              </p>
-              <h1 className="mt-1 text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
-                All Products
-              </h1>
-              <p className="mt-2 max-w-xl text-sm text-slate-500 dark:text-slate-400">
-                Discover our full range — filter by category, search by name or
-                brand, and sort to find exactly what you need.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+    <main className="min-h-screen bg-[var(--bg-primary)] text-foreground transition-colors duration-300 flex flex-col pt-24 lg:pt-28">
 
       {/* Sticky filter bar */}
-      <div className="sticky top-[72px] z-40 border-b border-slate-200/80 bg-slate-50/95 backdrop-blur-md dark:border-slate-800 dark:bg-slate-950/95">
-        <div className="mx-auto max-w-360 px-4 py-4 sm:px-8 lg:px-8">
+      <div className="sticky top-[72px] z-40 border-b border-[var(--glass-border)] bg-background/80 backdrop-blur-xl">
+        <div className="mx-auto max-w-370 px-4 py-4 sm:px-6 lg:px-8">
           <ProductFilters
             searchQuery={searchQuery}
             onSearchChange={setSearchQuery}
@@ -131,18 +113,18 @@ export default function ProductsPage() {
       </div>
 
       {/* Product grid */}
-      <section className="mx-auto max-w-360 px-4 py-8 sm:px-6 lg:px-8">
+      <section className="mx-auto w-full max-w-370 px-4 py-12 sm:px-6 lg:px-8 flex-1">
         {isLoading ? (
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
             {Array.from({ length: 8 }).map((_, i) => (
               <div
                 key={i}
-                className="h-80 animate-pulse rounded-2xl border border-slate-200/80 bg-white dark:border-slate-800 dark:bg-slate-900"
+                className="h-[28rem] animate-pulse rounded-3xl border border-[var(--glass-border)] bg-black/5 dark:bg-white/5"
               />
             ))}
           </div>
         ) : filteredProducts.length > 0 ? (
-          <div className="space-y-8">
+          <div className="space-y-8 w-full">
             <ProductGrid
               products={filteredProducts}
               mode="customer"
@@ -150,7 +132,7 @@ export default function ProductsPage() {
             />
 
             {data?.pagination && (
-              <div className="border-t border-slate-200/80 pt-4 dark:border-slate-800/80">
+              <div className="border-t border-[var(--glass-border)] pt-8 mt-12">
                 <Pagination
                   page={page}
                   total={data.pagination.total ?? 0}
@@ -168,17 +150,19 @@ export default function ProductsPage() {
             )}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-200 bg-white py-20 text-center dark:border-slate-800 dark:bg-slate-900">
-            <Package className="h-10 w-10 text-slate-300 dark:text-slate-700" />
-            <h3 className="mt-4 text-base font-semibold">No products matched</h3>
-            <p className="mt-1 max-w-sm text-xs text-slate-500">
+          <div className="flex flex-col items-center justify-center rounded-3xl border border-dashed border-[var(--glass-border)] bg-background py-20 text-center">
+            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-secondary/10 text-secondary mb-4">
+              <Package className="h-8 w-8" />
+            </div>
+            <h3 className="mt-4 text-xl font-bold font-heading text-foreground">No products found</h3>
+            <p className="mt-2 max-w-sm text-sm font-medium text-secondary">
               We couldn&apos;t find anything matching your current filters or
               search term.
             </p>
             <button
               type="button"
               onClick={clearFilters}
-              className="mt-5 rounded-xl bg-slate-900 px-5 py-2.5 text-xs font-semibold text-white shadow-sm transition-colors hover:bg-slate-800 dark:bg-slate-100 dark:text-slate-950 dark:hover:bg-white"
+              className="mt-8 rounded-full bg-linear-to-r from-[var(--accent-start)] to-[var(--accent-end)] px-8 py-3 text-sm font-bold uppercase tracking-widest text-white shadow-md shadow-[var(--accent-mid)]/20 transition-transform hover:-translate-y-1 active:scale-95"
             >
               Reset Filters
             </button>

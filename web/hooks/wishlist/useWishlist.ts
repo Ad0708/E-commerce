@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   addToWishlist,
@@ -37,8 +38,8 @@ export const useWishlist = (productId?: string) => {
 
       toast.success(data.message);
     },
-    onError: (error: any) => {
-      toast.error(error?.response?.data?.message || "Something went wrong");
+    onError: (error: unknown) => {
+      toast.error((error as AxiosError<{message?: string}>)?.response?.data?.message || "Something went wrong");
     },
   });
 
@@ -52,8 +53,8 @@ export const useWishlist = (productId?: string) => {
 
       toast.success(data.message);
     },
-    onError: (error: any) => {
-      toast.error(error?.response?.data?.message || "Something went wrong");
+    onError: (error: unknown) => {
+      toast.error((error as AxiosError<{message?: string}>)?.response?.data?.message || "Something went wrong");
     },
   });
 

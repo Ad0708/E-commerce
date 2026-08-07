@@ -58,96 +58,33 @@ export default function ProductFilters({
             value={searchQuery}
             onChange={onSearchChange}
             placeholder="Search by name, brand, or SKU..."
-            className="w-full"
+            className="w-full rounded-xl bg-secondary/5 border-[var(--glass-border)] shadow-inner transition-colors hover:bg-secondary/10 focus-within:bg-background"
           />
         </div>
 
-        <div className="flex items-center gap-3">
-          <div className="relative flex-1 sm:flex-initial">
+        <div className="flex items-center justify-end gap-3 w-full lg:w-auto">
+
+          <div className="relative flex-1 lg:flex-initial">
             <button
               type="button"
               onClick={() => {
-                setShowSortDropdown(false);
-                setShowCategoryDropdown((prev) => !prev);
-              }}
-              className="flex w-full min-w-40 items-center justify-between gap-2 rounded-xl border border-slate-200/80 bg-white px-4 py-2.5 text-sm font-medium shadow-sm transition-all hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-slate-700"
-            >
-              <span className="truncate">
-                {activeCategoryLabel || "All Categories"}
-              </span>
-              <ChevronDown
-                size={14}
-                className={cn(
-                  "shrink-0 text-slate-400 transition-transform duration-200",
-                  showCategoryDropdown && "rotate-180",
-                )}
-              />
-            </button>
-
-            {showCategoryDropdown && (
-              <>
-                <div className="fixed inset-0 z-40" onClick={closeDropdowns} />
-                <div className="absolute right-0 z-50 mt-1.5 max-h-64 w-52 overflow-y-auto rounded-xl border border-slate-200 bg-white py-1.5 shadow-xl dark:border-slate-800 dark:bg-slate-900">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      onCategoryChange(null);
-                      closeDropdowns();
-                    }}
-                    className={cn(
-                      "w-full px-4 py-2 text-left text-xs font-medium transition-colors",
-                      selectedCategory === null
-                        ? "bg-slate-100 font-semibold text-slate-900 dark:bg-slate-800 dark:text-white"
-                        : "text-slate-600 hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-slate-800/50",
-                    )}
-                  >
-                    All Categories
-                  </button>
-                  {categories.map((cat) => (
-                    <button
-                      key={cat.value}
-                      type="button"
-                      onClick={() => {
-                        onCategoryChange(cat.value);
-                        closeDropdowns();
-                      }}
-                      className={cn(
-                        "w-full px-4 py-2 text-left text-xs font-medium transition-colors",
-                        selectedCategory === cat.value
-                          ? "bg-slate-100 font-semibold text-slate-900 dark:bg-slate-800 dark:text-white"
-                          : "text-slate-600 hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-slate-800/50",
-                      )}
-                    >
-                      {cat.label}
-                    </button>
-                  ))}
-                </div>
-              </>
-            )}
-          </div>
-
-          <div className="relative flex-1 sm:flex-initial">
-            <button
-              type="button"
-              onClick={() => {
-                setShowCategoryDropdown(false);
                 setShowSortDropdown((prev) => !prev);
               }}
-              className="flex w-full min-w-[160px] items-center justify-between gap-2 rounded-xl border border-slate-200/80 bg-white px-4 py-2.5 text-sm font-medium shadow-sm transition-all hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-slate-700"
+              className="flex w-full min-w-[160px] items-center justify-between gap-2 rounded-xl border border-[var(--glass-border)] bg-secondary/5 px-4 py-2.5 text-sm font-bold shadow-sm transition-all hover:border-muted hover:bg-secondary/10 font-heading"
             >
               <span className="truncate">
                 {sortOptions.find((o) => o.value === sortBy)?.label}
               </span>
               <SlidersHorizontal
                 size={14}
-                className="shrink-0 text-slate-400"
+                className="shrink-0 text-muted"
               />
             </button>
 
             {showSortDropdown && (
               <>
                 <div className="fixed inset-0 z-40" onClick={closeDropdowns} />
-                <div className="absolute right-0 z-50 mt-1.5 w-48 rounded-xl border border-slate-200 bg-white py-1.5 shadow-xl dark:border-slate-800 dark:bg-slate-900">
+                <div className="absolute right-0 z-50 mt-1.5 w-48 rounded-xl border border-[var(--glass-border)] bg-background/90 backdrop-blur-xl py-1.5 shadow-xl">
                   {sortOptions.map((opt) => (
                     <button
                       key={opt.value}
@@ -157,10 +94,10 @@ export default function ProductFilters({
                         closeDropdowns();
                       }}
                       className={cn(
-                        "w-full px-4 py-2 text-left text-xs font-medium transition-colors",
+                        "w-full px-4 py-2 text-left text-xs font-bold font-heading transition-colors",
                         sortBy === opt.value
-                          ? "bg-slate-100 font-semibold text-slate-900 dark:bg-slate-800 dark:text-white"
-                          : "text-slate-600 hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-slate-800/50",
+                          ? "bg-secondary/10 text-foreground"
+                          : "text-secondary hover:bg-black/5 dark:hover:bg-white/5",
                       )}
                     >
                       {opt.label}
@@ -178,10 +115,10 @@ export default function ProductFilters({
           type="button"
           onClick={() => onCategoryChange(null)}
           className={cn(
-            "shrink-0 rounded-full px-4 py-1.5 text-xs font-semibold uppercase tracking-wide transition-all",
+            "shrink-0 rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-wide transition-all font-heading",
             selectedCategory === null
-              ? "bg-slate-900 text-white dark:bg-white dark:text-slate-900"
-              : "border border-slate-200 bg-white text-slate-600 hover:border-slate-300 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-400 dark:hover:border-slate-600",
+              ? "bg-linear-to-r from-[var(--accent-start)] to-[var(--accent-end)] text-white shadow-md shadow-[var(--accent-mid)]/20"
+              : "border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-slate-600 dark:text-slate-400 hover:border-slate-300 dark:hover:border-slate-700 hover:text-foreground shadow-sm",
           )}
         >
           All
@@ -192,10 +129,10 @@ export default function ProductFilters({
             type="button"
             onClick={() => onCategoryChange(cat.value)}
             className={cn(
-              "shrink-0 rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-wide transition-all",
+              "shrink-0 rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-wide transition-all font-heading",
               selectedCategory === cat.value
-                ? "bg-slate-900 text-white dark:bg-white dark:text-slate-900"
-                : "border border-slate-200 bg-white text-slate-600 hover:border-slate-300 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-400 dark:hover:border-slate-600",
+                ? "bg-linear-to-r from-[var(--accent-start)] to-[var(--accent-end)] text-white shadow-md shadow-[var(--accent-mid)]/20"
+                : "border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-slate-600 dark:text-slate-400 hover:border-slate-300 dark:hover:border-slate-700 hover:text-foreground shadow-sm",
             )}
           >
             {cat.label}
@@ -204,12 +141,12 @@ export default function ProductFilters({
       </div>
 
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <p className="text-sm text-slate-500 dark:text-slate-400">
+        <p className="text-sm text-secondary font-medium">
           {isLoading ? (
             "Loading products..."
           ) : (
             <>
-              <span className="font-semibold text-slate-900 dark:text-white">
+              <span className="font-bold text-foreground">
                 {totalResults ?? 0}
               </span>{" "}
               {totalResults === 1 ? "product" : "products"} found
@@ -220,12 +157,12 @@ export default function ProductFilters({
         {hasActiveFilters && (
           <div className="flex flex-wrap items-center gap-2">
             {selectedCategory && (
-              <span className="inline-flex items-center gap-1 rounded-lg bg-slate-200/60 px-2.5 py-1 text-xs font-medium text-slate-700 dark:bg-slate-800 dark:text-slate-300">
+              <span className="inline-flex items-center gap-1 rounded-lg bg-secondary/10 border border-[var(--glass-border)] px-2.5 py-1 text-xs font-bold text-foreground">
                 {activeCategoryLabel}
                 <button
                   type="button"
                   onClick={() => onCategoryChange(null)}
-                  className="hover:text-slate-900 dark:hover:text-white"
+                  className="hover:text-muted"
                   aria-label="Remove category filter"
                 >
                   <X size={12} />
@@ -233,12 +170,12 @@ export default function ProductFilters({
               </span>
             )}
             {searchQuery && (
-              <span className="inline-flex items-center gap-1 rounded-lg bg-slate-200/60 px-2.5 py-1 text-xs font-medium text-slate-700 dark:bg-slate-800 dark:text-slate-300">
+              <span className="inline-flex items-center gap-1 rounded-lg bg-secondary/10 border border-[var(--glass-border)] px-2.5 py-1 text-xs font-bold text-foreground">
                 &ldquo;{searchQuery}&rdquo;
                 <button
                   type="button"
                   onClick={() => onSearchChange("")}
-                  className="hover:text-slate-900 dark:hover:text-white"
+                  className="hover:text-muted"
                   aria-label="Clear search"
                 >
                   <X size={12} />
@@ -248,7 +185,7 @@ export default function ProductFilters({
             <button
               type="button"
               onClick={onClearFilters}
-              className="text-xs text-slate-500 underline hover:text-slate-800 dark:hover:text-slate-300"
+              className="text-xs text-muted underline hover:text-foreground font-bold transition-colors"
             >
               Clear all
             </button>

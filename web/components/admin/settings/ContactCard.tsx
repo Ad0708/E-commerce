@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { removeEmojis } from "@/lib/utils";
 import {
   Card,
   CardContent,
@@ -93,6 +94,7 @@ export function ContactCard({ store }: Props) {
               id="email"
               type="email"
               placeholder="hello@yourstore.com"
+              onInput={(e) => { e.currentTarget.value = removeEmojis(e.currentTarget.value); }}
               {...register("contact.email")}
             />
           </div>

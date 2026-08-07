@@ -19,7 +19,7 @@ import {
 } from "@/api/coupon";
 
 import { CouponFormValues } from "@/lib/validators/coupon.schema";
-import { Coupon, CouponsResponse } from "@/types/coupon";
+import { CouponsResponse } from "@/types/coupon";
 
 /* -------------------------------------------------------------------------- */
 /*                                  Queries                                   */
@@ -34,7 +34,7 @@ export interface GetCouponsProps {
   appliesTo?: "all" | "products" | "categories";
 }
 
-interface InfiniteCouponsProps extends Omit<GetCouponsProps, "page"> {}
+interface InfiniteCouponsProps extends Omit<GetCouponsProps, "page"> { }
 
 export const useCoupons = ({
   page,

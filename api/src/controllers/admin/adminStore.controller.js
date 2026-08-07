@@ -225,6 +225,8 @@ export const addBanner = async (req, res) => {
       });
     }
 
+    const targetOrder = Number(req.body.order) || store.banners.length + 1;
+
     store.banners.push({
       image: req.file.path,
       title: req.body.title || "",
@@ -232,7 +234,12 @@ export const addBanner = async (req, res) => {
       buttonText: req.body.buttonText || "",
       buttonLink: req.body.buttonLink || "",
       active: req.body.active === "false" ? false : true,
-      order: Number(req.body.order) || 0,
+      order: targetOrder - 0.5,
+    });
+
+    store.banners.sort((a, b) => a.order - b.order);
+    store.banners.forEach((b, index) => {
+      b.order = index + 1;
     });
 
     await store.save();
@@ -295,7 +302,22 @@ export const updateBanner = async (req, res) => {
 
     if (req.body.active !== undefined) banner.active = req.body.active;
 
-    if (req.body.order !== undefined) banner.order = req.body.order;
+    if (req.body.order !== undefined) {
+      const newOrder = Number(req.body.order);
+      const oldOrder = banner.order;
+      if (newOrder !== oldOrder) {
+        if (newOrder < oldOrder) {
+          banner.order = newOrder - 0.5;
+        } else {
+          banner.order = newOrder + 0.5;
+        }
+      }
+    }
+
+    store.banners.sort((a, b) => a.order - b.order);
+    store.banners.forEach((b, index) => {
+      b.order = index + 1;
+    });
 
     await store.save();
 
@@ -344,6 +366,11 @@ export const deleteBanner = async (req, res) => {
     }
 
     banner.deleteOne();
+
+    store.banners.sort((a, b) => a.order - b.order);
+    store.banners.forEach((b, index) => {
+      b.order = index + 1;
+    });
 
     await store.save();
 

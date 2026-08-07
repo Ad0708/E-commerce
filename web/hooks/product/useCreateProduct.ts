@@ -1,4 +1,5 @@
 "use client";
+import { AxiosError } from "axios";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
@@ -15,8 +16,8 @@ export const useCreateProduct = () => {
       toast.success(data.message);
     },
 
-    onError: (error: any) => {
-      toast.error(error?.response?.data?.message || "Failed to create product");
+    onError: (error: unknown) => {
+      toast.error((error as AxiosError<{message?: string}>)?.response?.data?.message || "Failed to create product");
     },
   });
 };

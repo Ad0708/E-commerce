@@ -1,4 +1,5 @@
 "use client";
+import { removeEmojis } from "@/lib/utils";
 
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -23,7 +24,7 @@ import {
 } from "lucide-react";
 import { format } from "date-fns";
 import { Address } from "@/types/address";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 interface ProfileDates {
@@ -215,6 +216,7 @@ function EditProfileModal({
               </span>
             </label>
             <input
+              onInput={(e) => { e.currentTarget.value = removeEmojis(e.currentTarget.value); }}
               type="email"
               value={user?.email ?? ""}
               readOnly
@@ -460,6 +462,8 @@ function AddressesCard() {
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 export default function ProfilePage() {
+  const router = useRouter();
+  const user = useAuthStore((state) => state.user);
   const [dates, setDates] = useState<ProfileDates | null>(null);
   const [datesLoading, setDatesLoading] = useState(true);
   const { data: profile } = useProfile();
@@ -471,17 +475,28 @@ export default function ProfilePage() {
     }
   }, [profile]);
 
+  const handleBack = () => {
+    // If there is history to go back to, go back in history
+    if (window.history.length > 1) {
+      router.back();
+    } else {
+      // Fallback route based on user role
+      router.push(user?.role === "admin" ? "/admin" : "/");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50/50 py-6 sm:py-10 px-4 transition-colors duration-200 dark:bg-slate-950">
       <div className="max-w-2xl mx-auto space-y-5">
         <div className="mb-8">
-          <Link
-            href="/"
+          <button
+            type="button"
+            onClick={handleBack}
             className="inline-flex items-center gap-2 text-xs font-medium text-zinc-500 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50"
           >
             <ArrowLeft size={14} />
-            Back to Home
-          </Link>
+            Return to Previous Page
+          </button>
         </div>
         <div className="mb-4 sm:mb-6">
           <h1 className="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight dark:text-slate-100">

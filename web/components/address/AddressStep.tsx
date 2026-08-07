@@ -64,11 +64,11 @@ export default function AddressStep({
       {/* Header */}
 
       <div>
-        <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
+        <h2 className="text-3xl font-extrabold text-foreground font-heading">
           Shipping Address
         </h2>
 
-        <p className="mt-1 text-sm text-gray-500">
+        <p className="mt-2 text-base font-medium text-secondary">
           Choose an existing address or add a new one.
         </p>
       </div>
@@ -99,7 +99,7 @@ export default function AddressStep({
           <button
             type="button"
             onClick={() => {setEditingAddress(null); setShowForm((prev) => !prev)}}
-            className="flex items-center gap-2 rounded-xl border border-dashed border-blue-500 px-5 py-3 text-sm font-semibold text-blue-600 transition hover:bg-blue-50 dark:hover:bg-blue-950"
+            className="flex items-center gap-2 rounded-xl border border-dashed border-[var(--accent-start)] px-5 py-3 text-sm font-bold uppercase tracking-widest text-[var(--accent-start)] transition hover:bg-[var(--accent-start)]/10"
           >
             <Plus size={18} />
 
@@ -111,11 +111,11 @@ export default function AddressStep({
       {/* Address Form */}
 
       {showForm && (
-        <div className="rounded-2xl border border-gray-200 bg-gray-50 p-6 dark:border-zinc-700 dark:bg-zinc-800">
+        <div className="rounded-3xl border border-[var(--glass-border)] bg-secondary/5 p-6 md:p-8">
           <div className="mb-6 flex items-center gap-2">
-            <MapPin className="text-blue-600" size={22} />
+            <MapPin className="text-[var(--accent-start)]" size={24} />
 
-            <h3 className="text-lg font-semibold">Add New Address</h3>
+            <h3 className="text-xl font-extrabold font-heading text-foreground">Add New Address</h3>
           </div>
 
           <AddressForm

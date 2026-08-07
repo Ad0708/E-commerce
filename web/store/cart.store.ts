@@ -97,20 +97,20 @@ export const useCartStore = create<CartState>((set, get) => ({
     })),
 
 
-// getSummary: () => {
-//   const { cart } = get();
+  // getSummary: () => {
+  //   const { cart } = get();
 
-//   return (
-//     cart?.summary ?? {
-//       subtotal: 0,
-//       discount: 0,
-//       couponDiscount: 0,
-//       total: 0,
-//       itemCount: 0,
-//       savings: 0,
-//     }
-//   );
-// },
+  //   return (
+  //     cart?.summary ?? {
+  //       subtotal: 0,
+  //       discount: 0,
+  //       couponDiscount: 0,
+  //       total: 0,
+  //       itemCount: 0,
+  //       savings: 0,
+  //     }
+  //   );
+  // },
   getItemCount: () => get().items.reduce((sum, item) => sum + item.quantity, 0),
 
   isInCart: (productId) =>
@@ -120,31 +120,3 @@ export const useCartStore = create<CartState>((set, get) => ({
     get().items.find((item) => item.productId === productId),
 }));
 
-
-  // getSummary: () => {
-  //   const { items, appliedCoupon } = get();
-
-  //   let subtotal = 0;
-  //   let productDiscount = 0;
-
-  //   items.forEach((item) => {
-  //     const original = item.price * item.quantity;
-  //     const actual = (item.discountPrice ?? item.price) * item.quantity;
-
-  //     subtotal += original;
-  //     productDiscount += original - actual;
-  //   });
-
-  //   const couponDiscount = appliedCoupon?.coupon_discount ??  0;
-  //   const totalDiscount = productDiscount + couponDiscount;
-
-  //   return {
-  //     subtotal,
-  //     productDiscount,
-  //     couponDiscount,
-  //     discount: totalDiscount,
-  //     total: Math.max(subtotal - totalDiscount, 0),
-  //     itemCount: items.reduce((sum, item) => sum + item.quantity, 0),
-  //     savings: totalDiscount,
-  //   };
-  // },

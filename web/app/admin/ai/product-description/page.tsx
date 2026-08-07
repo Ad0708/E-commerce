@@ -63,7 +63,7 @@ export default function ProductDescriptionPage() {
   };
 
   return (
-    <main className="mx-auto w-full max-w-7xl space-y-8 p-4 sm:p-6 lg:p-8">
+    <main className="mx-auto w-full max-w-370 space-y-8 p-4 sm:p-6 lg:p-8">
       {/* Header */}
       <section>
         <Link

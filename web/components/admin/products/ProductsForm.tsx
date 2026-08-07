@@ -94,7 +94,7 @@ export default function ProductForm({
   return (
     <form
       onSubmit={handleSubmit(submitHandler)}
-      className="mx-auto flex max-w-7xl flex-col gap-8"
+      className="mx-auto flex max-w-370 flex-col gap-8"
     >
       <FormHeader
         title={mode === "create" ? "Create Product" : "Edit Product"}

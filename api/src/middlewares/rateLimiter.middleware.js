@@ -24,6 +24,18 @@ export const authLimiter = rateLimit({
   },
 });
 
+// /me route limiter
+export const meLimiter = rateLimit({
+  windowMs: 1.5 * 60 * 1000,
+  max: 100,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    success: false,
+    message: "Too many /me requests.",
+  },
+});
+
 // AI limiter
 export const aiLimiter = rateLimit({
   windowMs: 60 * 1000,

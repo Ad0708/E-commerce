@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import {
   deleteNotification,
   getNotifications,
@@ -41,9 +42,9 @@ export const useMarkNotificationRead = () => {
       toast.success("Notification marked as read.");
     },
 
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       toast.error(
-        error?.response?.data?.message || "Failed to update notification.",
+        (error as AxiosError<{message?: string}>)?.response?.data?.message || "Failed to update notification.",
       );
     },
   });
@@ -63,9 +64,9 @@ export const useMarkAllNotificationsRead = () => {
       toast.success(data.message);
     },
 
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       toast.error(
-        error?.response?.data?.message || "Failed to update notifications.",
+        (error as AxiosError<{message?: string}>)?.response?.data?.message || "Failed to update notifications.",
       );
     },
   });
@@ -85,9 +86,9 @@ export const useDeleteNotification = () => {
       toast.success(data.message);
     },
 
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       toast.error(
-        error?.response?.data?.message || "Failed to delete notification.",
+        (error as AxiosError<{message?: string}>)?.response?.data?.message || "Failed to delete notification.",
       );
     },
   });

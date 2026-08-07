@@ -41,8 +41,9 @@ export default function FeaturedProducts() {
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
               onClick={() => {router.push(`/product/${product._id}`) ,window.scrollTo(0, 0)}}
+              className="cursor-pointer"
             >
-                <div className="group transition-transform duration-700 hover:-translate-y-4">
+                <div className="group transition-all duration-700 hover:-translate-y-4 hover:shadow-2xl hover:shadow-[var(--accent-mid)]/10 rounded-2xl">
                     <ProductCard
                         product={product}
                         view="grid"

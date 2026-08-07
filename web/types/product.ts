@@ -11,8 +11,11 @@ export interface Product {
   discountPrice?: number;
   featured: boolean;
   status: "active" | "draft" | "out_of_stock";
-}
 
+  // Reviews
+  averageRating: number;
+  totalReviews: number;
+}
 export interface ProductFormValues {
   name: string;
   category: string;

@@ -82,7 +82,8 @@ export function Header({ logo, storeName }: HeaderProps) {
 
   const length = user && wishlist ? Object.keys(wishlist).length : 0;
 
-  const itemCount = user ? useCartStore.getState().getItemCount() : 0;
+  // const itemCount = user ? useCartStore.getState().getItemCount() : 0;
+  const itemCount = useCartStore((state) => state.getItemCount());
 
   const isHome = pathname === "/home";
 
@@ -111,11 +112,10 @@ export function Header({ logo, storeName }: HeaderProps) {
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          isScrolled || !isHome
-            ? "border-b border-slate-200/50 bg-white/80 backdrop-blur-xl dark:border-slate-800/50 dark:bg-slate-950/80 shadow-sm"
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled || !isHome
+            ? "border-b border-[var(--glass-border)] bg-background/80 backdrop-blur-xl shadow-sm"
             : "border-transparent bg-transparent"
-        }`}
+          }`}
       >
         <div className="mx-auto flex max-w-370 items-center justify-between px-4 py-5 sm:px-6 lg:px-8">
           {/* Logo */}
@@ -128,21 +128,19 @@ export function Header({ logo, storeName }: HeaderProps) {
               />
             ) : (
               <div
-                className={`flex h-10 w-10 items-center justify-center rounded-full transition-colors ${
-                  isScrolled || !isHome
+                className={`flex h-10 w-10 items-center justify-center rounded-full transition-colors ${isScrolled || !isHome
                     ? "bg-black text-white dark:bg-white dark:text-black"
                     : "bg-white text-black"
-                }`}
+                  }`}
               >
                 <ShoppingBag className="h-5 w-5" />
               </div>
             )}
             <span
-              className={`text-xl font-bold tracking-widest font-sans uppercase ${
-                isScrolled || !isHome
-                  ? "text-slate-900 dark:text-white"
+              className={`text-2xl font-bold tracking-tight font-heading ${isScrolled || !isHome
+                  ? "text-foreground"
                   : "text-white drop-shadow-md"
-              }`}
+                }`}
             >
               {storeName}
             </span>
@@ -157,28 +155,25 @@ export function Header({ logo, storeName }: HeaderProps) {
                 className="group relative py-2 text-sm font-semibold tracking-wide uppercase transition-colors"
               >
                 <span
-                  className={`${
-                    isActive(link.href)
+                  className={`${isActive(link.href)
                       ? isScrolled || !isHome
-                        ? "text-slate-900 dark:text-white"
+                        ? "text-foreground"
                         : "text-white"
                       : isScrolled || !isHome
-                        ? "text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
+                        ? "text-secondary hover:text-foreground"
                         : "text-white/70 hover:text-white"
-                  }`}
+                    }`}
                 >
                   {link.label}
                 </span>
                 <span
-                  className={`absolute bottom-0 left-0 right-0 h-0.5 transition-transform duration-300 origin-left ${
-                    isScrolled || !isHome
-                      ? "bg-slate-900 dark:bg-white"
+                  className={`absolute bottom-0 left-0 right-0 h-0.5 transition-transform duration-300 origin-left ${isScrolled || !isHome
+                      ? "bg-foreground"
                       : "bg-white"
-                  } ${
-                    isActive(link.href)
+                    } ${isActive(link.href)
                       ? "scale-x-100"
                       : "scale-x-0 group-hover:scale-x-100"
-                  }`}
+                    }`}
                 />
               </Link>
             ))}
@@ -187,17 +182,17 @@ export function Header({ logo, storeName }: HeaderProps) {
           {/* Right Side */}
           <div className="flex items-center gap-4">
             <div
-              className={
+              className={`hidden md:block ${
                 !isScrolled && isHome
                   ? "opacity-0 pointer-events-none w-0 overflow-hidden transition-all"
                   : "transition-all"
-              }
+              }`}
             >
               <ThemeToggle />
             </div>
 
             {user && (
-              <div className={!isScrolled && isHome ? "text-white" : ""}>
+              <div className={`hidden md:block ${!isScrolled && isHome ? "text-white" : ""}`}>
                 <NotificationButton />
               </div>
             )}
@@ -205,31 +200,30 @@ export function Header({ logo, storeName }: HeaderProps) {
             {/* Cart Button */}
             <button
               onClick={handleCartClick}
-              className={`relative rounded-full p-2.5 transition-all hover:scale-110 active:scale-95 ${
-                isScrolled || !isHome
-                  ? "text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+              className={`relative rounded-full p-2.5 transition-all hover:scale-110 active:scale-95 ${isScrolled || !isHome
+                  ? "text-foreground hover:bg-black/5 dark:hover:bg-white/5"
                   : "text-white hover:bg-white/20"
-              }`}
+                }`}
               title="Cart"
             >
               <ShoppingCart className="h-5 w-5" />
-              <span className="absolute 0 top-0 flex h-4 w-4 items-center justify-center rounded-full bg-blue-600 text-[10px] font-bold text-white shadow-sm ring-2 ring-white dark:ring-slate-950">
-                {itemCount}
+              <span className="absolute 0 top-0 flex h-4 w-4 items-center justify-center rounded-full bg-[var(--accent-mid)] text-[10px] font-bold text-white shadow-sm ring-2 ring-background">
+                {/* {itemCount} */}
+                {user ? itemCount : 0}
               </span>
             </button>
 
             {/* Wishlist Button */}
             <button
               onClick={handleWishlistClick}
-              className={`relative rounded-full p-2.5 transition-all hover:scale-110 active:scale-95 ${
-                isScrolled || !isHome
-                  ? "text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+              className={`hidden md:block relative rounded-full p-2.5 transition-all hover:scale-110 active:scale-95 ${isScrolled || !isHome
+                  ? "text-foreground hover:bg-black/5 dark:hover:bg-white/5"
                   : "text-white hover:bg-white/20"
-              }`}
+                }`}
               title="Wishlist"
             >
               <Heart className="h-5 w-5" />
-              <span className="absolute 0 top-0 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white shadow-sm ring-2 ring-white dark:ring-slate-950">
+              <span className="absolute 0 top-0 flex h-4 w-4 items-center justify-center rounded-full bg-[var(--accent-mid)] text-[10px] font-bold text-white shadow-sm ring-2 ring-background">
                 {length}
               </span>
             </button>
@@ -237,34 +231,31 @@ export function Header({ logo, storeName }: HeaderProps) {
             {/* User Dropdown or Login Button */}
             {user ? (
               <div
-                className="relative"
+                className="relative hidden md:block"
                 onMouseEnter={() => setUserMenuOpen(true)}
                 onMouseLeave={() => setUserMenuOpen(false)}
               >
                 <button
-                  className={`flex items-center gap-2 rounded-full p-1 transition-all ${
-                    isScrolled || !isHome
-                      ? "hover:bg-slate-100 dark:hover:bg-slate-800"
+                  className={`flex items-center gap-2 rounded-full p-1 transition-all ${isScrolled || !isHome
+                      ? "hover:bg-black/5 dark:hover:bg-white/5"
                       : "hover:bg-white/20"
-                  }`}
+                    }`}
                 >
                   <div className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-900 text-sm font-bold text-white dark:bg-white dark:text-slate-900">
                     {user?.name?.[0]?.toUpperCase()}
                   </div>
                   <ChevronDown
-                    className={`hidden h-4 w-4 transition-transform sm:block ${
-                      isScrolled || !isHome ? "text-slate-500" : "text-white"
-                    } ${userMenuOpen ? "rotate-180" : ""}`}
+                    className={`hidden h-4 w-4 transition-transform sm:block ${isScrolled || !isHome ? "text-muted-foreground" : "text-white"
+                      } ${userMenuOpen ? "rotate-180" : ""}`}
                   />
                 </button>
 
                 {/* Dropdown Menu */}
                 <div
-                  className={`absolute right-0 top-full mt-2 w-64 rounded-2xl border border-slate-200 bg-white/90 backdrop-blur-xl py-2 shadow-2xl transition-all duration-200 origin-top-right dark:border-slate-800/80 dark:bg-slate-900/90 ${
-                    userMenuOpen
+                  className={`absolute right-0 top-full mt-2 w-64 rounded-2xl border border-[var(--glass-border)] bg-background/90 backdrop-blur-xl py-2 shadow-lg transition-all duration-200 origin-top-right ${userMenuOpen
                       ? "scale-100 opacity-100 visible translate-y-0"
                       : "scale-95 opacity-0 invisible -translate-y-2"
-                  }`}
+                    }`}
                 >
                   {/* User Info */}
                   <div className="border-b border-slate-100/50 px-5 py-4 dark:border-slate-800">
@@ -323,11 +314,10 @@ export function Header({ logo, storeName }: HeaderProps) {
             ) : (
               <Link
                 href="/login"
-                className={`flex items-center gap-2 rounded-xl px-5 py-2 text-sm font-bold tracking-wide uppercase transition-all shadow-sm ${
-                  isScrolled || !isHome
+                className={`hidden md:flex items-center gap-2 rounded-xl px-5 py-2 text-sm font-bold tracking-wide uppercase transition-all shadow-sm ${isScrolled || !isHome
                     ? "bg-slate-900 text-white hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100"
                     : "bg-white text-slate-900 hover:bg-slate-100"
-                }`}
+                  }`}
               >
                 <LogIn className="h-4 w-4" />
                 Login
@@ -337,11 +327,10 @@ export function Header({ logo, storeName }: HeaderProps) {
             {/* Mobile Menu Toggle */}
             <button
               onClick={() => setSearch(!mobileMenu)}
-              className={`rounded-full p-2.5 md:hidden transition-colors ${
-                isScrolled || !isHome
+              className={`rounded-full p-2.5 md:hidden transition-colors ${isScrolled || !isHome
                   ? "text-slate-900 dark:text-white"
                   : "text-white"
-              }`}
+                }`}
             >
               {mobileMenu ? (
                 <X className="h-6 w-6" />
@@ -354,9 +343,8 @@ export function Header({ logo, storeName }: HeaderProps) {
 
         {/* Mobile Menu */}
         <div
-          className={`overflow-hidden border-t border-slate-200/50 bg-white/95 backdrop-blur-xl transition-all duration-300 md:hidden dark:border-slate-800/50 dark:bg-slate-950/95 ${
-            mobileMenu ? "max-h-96" : "max-h-0 border-transparent"
-          }`}
+          className={`overflow-hidden border-t border-slate-200/50 bg-white/95 backdrop-blur-xl transition-all duration-300 md:hidden dark:border-slate-800/50 dark:bg-slate-950/95 ${mobileMenu ? "max-h-[80vh] overflow-y-auto" : "max-h-0 border-transparent"
+            }`}
         >
           <div className="px-4 py-4">
             <div className="flex flex-col gap-2">
@@ -365,15 +353,63 @@ export function Header({ logo, storeName }: HeaderProps) {
                   key={link.href}
                   href={link.href}
                   onClick={() => setSearch(false)}
-                  className={`rounded-xl px-4 py-3 text-sm font-bold tracking-wide uppercase transition-all ${
-                    isActive(link.href)
+                  className={`rounded-xl px-4 py-3 text-sm font-bold tracking-wide uppercase transition-all ${isActive(link.href)
                       ? "bg-slate-900 text-white dark:bg-white dark:text-slate-900"
                       : "text-slate-500 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white"
-                  }`}
+                    }`}
                 >
                   {link.label}
                 </Link>
               ))}
+
+              {user && (
+                <>
+                  <Link
+                    href="/wishlist"
+                    onClick={() => setSearch(false)}
+                    className="rounded-xl px-4 py-3 text-sm font-bold tracking-wide uppercase transition-all text-slate-500 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white"
+                  >
+                    Wishlist
+                  </Link>
+                  <Link
+                    href="/profile"
+                    onClick={() => setSearch(false)}
+                    className="rounded-xl px-4 py-3 text-sm font-bold tracking-wide uppercase transition-all text-slate-500 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white"
+                  >
+                    Profile
+                  </Link>
+                  <Link
+                    href="/wallet"
+                    onClick={() => setSearch(false)}
+                    className="rounded-xl px-4 py-3 text-sm font-bold tracking-wide uppercase transition-all text-slate-500 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white"
+                  >
+                    Wallet
+                  </Link>
+                  <Link
+                    href="/orders"
+                    onClick={() => setSearch(false)}
+                    className="rounded-xl px-4 py-3 text-sm font-bold tracking-wide uppercase transition-all text-slate-500 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white"
+                  >
+                    Orders
+                  </Link>
+                  <Link
+                    href="/settings"
+                    onClick={() => setSearch(false)}
+                    className="rounded-xl px-4 py-3 text-sm font-bold tracking-wide uppercase transition-all text-slate-500 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white"
+                  >
+                    Settings
+                  </Link>
+                  <button
+                    onClick={() => {
+                      setSearch(false);
+                      handleLogout();
+                    }}
+                    className="flex text-left rounded-xl px-4 py-3 text-sm font-bold tracking-wide uppercase transition-all text-red-500 hover:bg-red-50 hover:text-red-700 dark:text-red-400 dark:hover:bg-red-900/20"
+                  >
+                    Logout
+                  </button>
+                </>
+              )}
 
               {!user && (
                 <Link

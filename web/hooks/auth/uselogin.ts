@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import { loginApi } from "@/api/auth";
 import { addToCart } from "@/api/cart";
 import { addToWishlist } from "@/api/wishlist";
@@ -6,7 +7,7 @@ import { useAuthModalStore } from "@/store/authModal.store";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
-type LoginResponse = {
+export type LoginResponse = {
   success: boolean;
   message: string;
   token: string;
@@ -55,7 +56,7 @@ export const useLogin = () => {
 
           if (pending.type === "ADD_TO_CART") {
             try {
-              await addToCart(pending.payload);
+              await addToCart(pending.payload as Parameters<typeof addToCart>[0]);
               queryClient.invalidateQueries({ queryKey: ["cart"] });
               toast.success("Pending item added to cart!");
             } catch (err: any) {

@@ -1,9 +1,9 @@
 import { create } from "zustand";
 
 export type PendingAction =
-  | { type: "ADD_TO_CART"; payload: any }
+  | { type: "ADD_TO_CART"; payload: unknown }
   | { type: "ADD_TO_WISHLIST"; productId: string }
-  | { type: "BUY_NOW"; payload: any }
+  | { type: "BUY_NOW"; payload: unknown }
   | { type: "NAVIGATE"; path: string };
 
 interface AuthModalState {

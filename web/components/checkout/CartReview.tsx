@@ -22,7 +22,7 @@ export default function CartReview() {
   }
 
   return (
-    <div className="rounded-2xl border border-gray-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
+    <div className="rounded-2xl border border-gray-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900">
       <h2 className="mb-6 text-xl font-semibold">Order Items</h2>
 
       <div className="space-y-5">

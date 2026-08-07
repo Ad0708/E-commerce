@@ -7,35 +7,30 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 }
 
 const variantClasses: Record<NonNullable<ButtonProps["variant"]>, string> = {
-  // Fixed: Dark mode now uses a premium muted zinc-800 tone that blends instead of blinding white
   default:
-    "bg-slate-900 text-white hover:bg-slate-800 shadow-sm dark:bg-slate-200 dark:text-slate-950 dark:hover:bg-slate-300",
+    "bg-[linear-gradient(to_right,var(--accent-start),var(--accent-mid))] text-white hover:opacity-90 shadow-sm shadow-[var(--accent-mid)]/20 dark:shadow-[var(--accent-mid)]/40",
   
-  // High-end glass effect outline that blends seamlessly into card containers
   outline:
-    "border border-slate-200 bg-transparent text-slate-900 hover:bg-slate-50/80 dark:border-slate-800 dark:text-slate-300 dark:hover:bg-slate-900/60 dark:hover:text-slate-100",
+    "glass-panel text-foreground hover:bg-black/5 dark:hover:bg-white/10",
   
-  // Clean ghost interactive text
   ghost:
-    "text-slate-700 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-900/80 dark:hover:text-slate-200",
+    "text-foreground hover:bg-black/5 dark:hover:bg-white/10",
   
-  // Softened red that matches dark background configurations without glowing
   destructive:
-    "bg-red-600 text-white hover:bg-red-500 shadow-sm dark:bg-red-950/40 dark:text-red-400 dark:border dark:border-red-900/50 dark:hover:bg-red-950/60",
+    "bg-red-500 text-white hover:bg-red-600 shadow-sm shadow-red-500/20 dark:bg-red-500/80 dark:text-red-50 dark:hover:bg-red-500",
   
-  // Perfect for secondary controls; drops right into the background layout
   secondary:
-    "bg-slate-100 text-slate-900 hover:bg-slate-200/80 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800/80",
+    "bg-secondary text-foreground hover:bg-black/10 dark:hover:bg-white/10",
   
   link:
-    "text-slate-900 underline-offset-4 hover:underline dark:text-slate-400 dark:hover:text-slate-200",
+    "text-foreground underline-offset-4 hover:underline",
 };
 
 const sizeClasses: Record<NonNullable<ButtonProps["size"]>, string> = {
-  default: "h-9 px-4 py-2 text-sm",
-  sm:      "h-8 px-3 text-xs rounded-md", 
-  lg:      "h-10 px-5 text-base rounded-xl", 
-  icon:    "h-9 w-9",
+  default: "h-11 px-5 py-2 text-sm",
+  sm:      "h-9 px-4 text-xs rounded-lg", 
+  lg:      "h-14 px-8 text-base rounded-full", 
+  icon:    "h-11 w-11 rounded-full",
 };
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -44,10 +39,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       ref={ref}
       disabled={disabled}
       className={cn(
-        "inline-flex items-center justify-center gap-2 rounded-lg font-medium text-sm select-none",
-        "transition-all duration-200 active:scale-[0.98]",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 dark:focus-visible:ring-slate-700 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-950",
-        "disabled:pointer-events-none disabled:opacity-40",
+        "inline-flex items-center justify-center gap-2 rounded-xl font-semibold select-none",
+        "transition-all duration-300 active:scale-[0.98]",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-mid)] focus-visible:ring-offset-2 dark:focus-visible:ring-offset-background",
+        "disabled:pointer-events-none disabled:opacity-50",
         variantClasses[variant],
         sizeClasses[size],
         className,

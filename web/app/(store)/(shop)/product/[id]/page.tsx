@@ -71,7 +71,7 @@ export default function CustomerProductPage() {
   );
 
   const handleBuyNow = () => {
-    if (!product) return;
+    if (!product || product.stock === 0) return;
 
     const payload = {
       productId: product._id,
@@ -152,7 +152,7 @@ export default function CustomerProductPage() {
   return (
     <div className="bg-slate-50 dark:bg-slate-950 min-h-screen pt-20">
       <main className="py-10 lg:py-14">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-370 px-4 sm:px-6 lg:px-8">
           <motion.div
             variants={containerVariants}
             initial="hidden"
@@ -165,30 +165,84 @@ export default function CustomerProductPage() {
               actions={() => (
                 <motion.div
                   variants={containerVariants}
-                  className="mt-8 flex flex-col gap-3.5 border-t border-slate-200 pt-6 dark:border-slate-700"
+                  className="mt-6 flex flex-col gap-3 border-t border-zinc-200 pt-6 dark:border-zinc-800"
                 >
-                  {/* ── 1. WISHLIST BUTTON ── */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {/* ── 1. ADD TO CART / REMOVE BUTTON ── */}
+                    <motion.button
+                      variants={buttonVariants}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={handletoggle}
+                      disabled={isAdding || product.stock === 0}
+                      className={`group relative flex items-center justify-center gap-2.5 rounded-xl px-4 py-3.5 text-sm font-bold tracking-wide uppercase transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed ${
+                        isInCart
+                          ? "border border-rose-500/50 bg-rose-500/10 text-rose-500 shadow-sm hover:bg-rose-500/20"
+                          : "border border-[var(--glass-border)] bg-secondary/10 text-foreground shadow-sm hover:bg-foreground hover:text-background hover:shadow-lg hover:-translate-y-0.5"
+                      }`}
+                    >
+                      <svg
+                        className={`w-4 h-4 shrink-0 transition-transform duration-300 ${
+                          isInCart ? "group-hover:rotate-12" : "group-hover:-rotate-12"
+                        }`}
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth="2.5"
+                      >
+                        {isInCart ? (
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        ) : (
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                        )}
+                      </svg>
+                      <span className="truncate">{isInCart ? "Remove" : "Add to Bag"}</span>
+                    </motion.button>
+
+                    {/* ── 2. BUY NOW BUTTON ── */}
+                    <motion.button
+                      variants={buttonVariants}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={handleBuyNow}
+                      disabled={product.stock === 0}
+                      className="group relative flex items-center justify-center gap-2.5 rounded-xl bg-linear-to-r from-[var(--accent-start)] to-[var(--accent-end)] px-4 py-3.5 text-sm font-bold text-white tracking-wide uppercase shadow-lg shadow-[var(--accent-mid)]/20 transition-all duration-300 hover:shadow-[var(--accent-mid)]/40 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-[var(--accent-mid)]/20"
+                    >
+                      <svg
+                        className="w-4 h-4 shrink-0 transition-transform duration-300 group-hover:translate-x-1"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth="2.5"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                      </svg>
+                      <span className="truncate">Buy Now</span>
+                    </motion.button>
+                  </div>
+
+                  {/* ── 3. WISHLIST BUTTON ── */}
                   <motion.button
                     variants={buttonVariants}
-                    whileHover={{ scale: 1.015 }}
-                    whileTap={{ scale: 0.985 }}
+                    whileHover={{ scale: 1.01 }}
+                    whileTap={{ scale: 0.99 }}
                     onClick={handleToggleWishlist}
-                    className={`group relative w-full flex items-center justify-center gap-2 rounded-xl border-2 px-6 py-4 text-base font-bold tracking-wide shadow-sm transition-colors duration-300 ${
+                    className={`group relative flex w-full items-center justify-center gap-2 rounded-xl border px-4 py-3.5 text-sm font-bold uppercase tracking-wide shadow-sm transition-all duration-300 ${
                       isWishlisted
-                        ? "border-rose-500 bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400 shadow-rose-500/20 hover:bg-rose-100 dark:hover:bg-rose-500/20"
-                        : "border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 hover:border-rose-500 dark:hover:border-rose-500 hover:text-rose-500 dark:hover:text-rose-400 hover:shadow-xl hover:shadow-rose-500/15"
+                        ? "border-pink-500/30 bg-pink-500/10 text-pink-500"
+                        : "border-[var(--glass-border)] bg-background text-secondary hover:bg-secondary/10 hover:text-foreground"
                     }`}
                   >
                     <motion.svg
-                      animate={{ scale: isWishlisted ? [1, 1.3, 1] : 1 }}
+                      animate={{ scale: isWishlisted ? [1, 1.25, 1] : 1 }}
                       transition={{ duration: 0.3 }}
-                      className={`w-5 h-5 transition-colors duration-300 ${
+                      className={`w-4.5 h-4.5 transition-colors duration-300 ${
                         isWishlisted
-                          ? "fill-rose-500 text-rose-500"
-                          : "stroke-current fill-transparent group-hover:fill-rose-500 group-hover:text-rose-500"
+                          ? "fill-pink-500 text-pink-500 dark:fill-pink-400 dark:text-pink-400"
+                          : "fill-transparent stroke-current group-hover:text-pink-500 dark:group-hover:text-pink-400"
                       }`}
                       viewBox="0 0 24 24"
-                      strokeWidth="2.5"
+                      strokeWidth="2"
                     >
                       <path
                         strokeLinecap="round"
@@ -196,78 +250,9 @@ export default function CustomerProductPage() {
                         d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
                       />
                     </motion.svg>
-
                     <span>
-                      {isWishlisted
-                        ? "Remove from Wishlist"
-                        : "Add to Wishlist"}
+                      {isWishlisted ? "Saved to Wishlist" : "Add to Wishlist"}
                     </span>
-                  </motion.button>
-
-                  {/* ── 2. ADD TO CART BUTTON ── */}
-                  <motion.button
-                    variants={buttonVariants}
-                    whileHover={{ scale: 1.015 }}
-                    whileTap={{ scale: 0.985 }}
-                    onClick={handletoggle}
-                    disabled={isAdding}
-                    className={`group relative w-full flex items-center justify-center gap-2 rounded-xl px-6 py-4 text-base font-bold text-white tracking-wide shadow-lg transition-all duration-300 disabled:opacity-50 ${
-                      isInCart
-                        ? "bg-linear-to-r from-red-500 to-rose-600 shadow-red-500/30 hover:shadow-red-500/50"
-                        : "bg-linear-to-r from-blue-600 to-indigo-600 shadow-blue-600/20 hover:shadow-blue-600/40"
-                    }`}
-                  >
-                    <svg
-                      className={`w-5 h-5 transition-transform duration-300 group-hover:scale-110 ${
-                        isInCart
-                          ? "group-hover:rotate-6"
-                          : "group-hover:-rotate-6"
-                      }`}
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                    >
-                      {isInCart ? (
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M6 18L18 6M6 6l12 12"
-                        />
-                      ) : (
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
-                        />
-                      )}
-                    </svg>
-
-                    <span>{isInCart ? "Remove from Bag" : "Add to Bag"}</span>
-                  </motion.button>
-
-                  {/* ── 3. BUY NOW BUTTON ── */}
-                  <motion.button
-                    variants={buttonVariants}
-                    whileHover={{ scale: 1.015 }}
-                    whileTap={{ scale: 0.985 }}
-                    onClick={handleBuyNow}
-                    className="group relative w-full flex items-center justify-center gap-2 rounded-xl bg-linear-to-r from-emerald-500 to-teal-600 px-6 py-4 text-base font-bold text-white tracking-wide shadow-lg shadow-emerald-500/20 dark:shadow-teal-500/10 hover:shadow-xl hover:shadow-emerald-500/40 transition-all duration-300"
-                  >
-                    <svg
-                      className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M13 10V3L4 14h7v7l9-11h-7z"
-                      />
-                    </svg>
-                    Buy Now
                   </motion.button>
                 </motion.div>
               )}

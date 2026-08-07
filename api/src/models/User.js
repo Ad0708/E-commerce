@@ -55,6 +55,8 @@ const userSchema = new mongoose.Schema(
         message: "Maximum 10 addresses allowed.",
       },
     },
+    resetPasswordToken: String,
+    resetPasswordExpire: Date,
   },
   {
     timestamps: true,

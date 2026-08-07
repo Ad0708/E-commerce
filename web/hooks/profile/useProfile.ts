@@ -1,4 +1,5 @@
 "use client";
+import { AxiosError } from "axios";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
@@ -48,9 +49,9 @@ export const useUpdateProfile = () => {
       );
     },
 
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       toast.error(
-        error?.response?.data?.message ||
+        (error as AxiosError<{message?: string}>)?.response?.data?.message ||
           "Failed to update profile"
       );
     },

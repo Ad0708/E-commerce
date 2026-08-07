@@ -16,7 +16,7 @@ import {
 
 import Pagination from "@/components/common/Pagination";
 import { useInventoryForecast } from "@/hooks/ai/useAI";
-import { useallProducts } from "@/hooks/product/useAllProduct";
+import { useAllProducts } from "@/hooks/product/useAllProduct";
 import { Product } from "@/types/product";
 
 export default function InventoryForecastingPage() {
@@ -25,7 +25,7 @@ export default function InventoryForecastingPage() {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(5);
 
-  const { data: productsData, isLoading: isProductsLoading } = useallProducts({
+  const { data: productsData, isLoading: isProductsLoading } = useAllProducts({
     page,
     limit,
     search,
@@ -68,7 +68,7 @@ export default function InventoryForecastingPage() {
   };
 
   return (
-    <main className="mx-auto w-full max-w-7xl space-y-8 p-4 sm:p-6 lg:p-8">
+    <main className="mx-auto w-full max-w-370 space-y-8 p-4 sm:p-6 lg:p-8">
       {/* Header */}
       <section className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
         <div>

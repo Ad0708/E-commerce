@@ -8,8 +8,11 @@ import CheckoutStepper from "./CheckoutStepper";
 import NavigationButtons from "./NavigationButtons";
 import PaymentStep from "./PaymentStep";
 import ReviewStep from "./ReviewStep";
+import { useRouter } from "next/navigation";
+import { ArrowLeft } from "lucide-react";
 
 export default function Checkout() {
+  const router = useRouter();
   const [step, setStep] = useState<1 | 2 | 3>(1);
 
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
@@ -21,27 +24,41 @@ export default function Checkout() {
   };
 
   const previousStep = () => {
-    if (step > 1) setStep((prev) => (prev - 1) as 1 | 2 | 3);
+    if (step > 1) {
+      setStep((prev) => (prev - 1) as 1 | 2 | 3);
+    } else {
+      router.push("/cart");
+    }
   };
 
   return (
-    <section className="min-h-screen bg-slate-50 dark:bg-zinc-950">
-      <div className="mx-auto max-w-7xl px-4 py-10">
-        <div className="mb-10">
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
-            Checkout
-          </h1>
+    <section className="min-h-screen bg-background">
+      <div className="mx-auto max-w-370 px-4 py-6">
+        <div className="mb-6">
+          <button
+            type="button"
+            onClick={previousStep}
+            className="mb-6 flex w-fit items-center gap-2 rounded-xl border border-[var(--glass-border)] px-5 py-2.5 font-bold uppercase tracking-widest transition-all hover:bg-secondary/10 hover:-translate-x-1"
+          >
+            <ArrowLeft size={16} />
+            Back
+          </button>
 
-          <p className="mt-2 text-slate-500">
-            Complete your purchase in three simple steps.
-          </p>
+          <div>
+            <h1 className="text-4xl font-extrabold text-foreground font-heading">
+              Checkout
+            </h1>
+            <p className="mt-2 text-base text-secondary font-medium">
+              Complete your purchase in three simple steps.
+            </p>
+          </div>
         </div>
 
         <CheckoutStepper currentStep={step} />
 
-        <div className="mt-10 gap-8 lg:grid-cols-12">
+        <div className="mt-6 gap-8 lg:grid-cols-12">
           <div className="lg:col-span-8">
-            <div className="rounded-2xl border bg-white p-8 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+            <div className="glass-panel rounded-3xl border-[var(--glass-border)] p-6 md:p-8 shadow-sm">
               {step === 1 && (
                 <AddressStep
                   selectedAddress={selectedAddress}
@@ -67,7 +84,6 @@ export default function Checkout() {
             <NavigationButtons
               step={step}
               nextStep={nextStep}
-              previousStep={previousStep}
               canContinue={step === 1 ? !!selectedAddress : true}
             />
           </div>

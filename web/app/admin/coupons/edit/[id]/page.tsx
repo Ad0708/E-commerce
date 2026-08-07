@@ -11,7 +11,7 @@ import { useCoupon, useUpdateCoupon } from "@/hooks/coupon/useCoupon"; // adjust
 // Skeleton loader for the edit page while data loads
 function EditPageSkeleton() {
   return (
-    <div className="space-y-5 animate-pulse max-w-7xl mx-auto">
+    <div className="space-y-5 animate-pulse max-w-370 mx-auto">
       {Array.from({ length: 4 }).map((_, i) => (
         <div
           key={i}
@@ -58,7 +58,7 @@ export default function EditCouponPage() {
   };
 
   return (
-    <div className="bg-gray-50 dark:bg-gray-950 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="bg-gray-50 dark:bg-gray-950 max-w-370 mx-auto px-4 sm:px-6 lg:px-8">
       <div className="">
         {/* Page header */}
         <div className="mb-7 ">

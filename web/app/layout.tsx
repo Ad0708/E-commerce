@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 
 import { ThemeProvider } from "@/providers/theme-provider";
@@ -11,9 +12,12 @@ import MarketingProvider from "@/providers/marketing-provider";
 import { Suspense } from "react";
 import Loader from "@/components/common/Loader";
 
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-space-grotesk" });
+
 export const metadata: Metadata = {
   title: "E-Commerce",
-  description: "Modern E-Commerce Platform",
+  description: "Premium E-Commerce Platform",
 };
 
 export default function RootLayout({
@@ -22,8 +26,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className="min-h-screen bg-background text-foreground antialiased">
+    <html lang="en" suppressHydrationWarning className={`${inter.variable} ${spaceGrotesk.variable}`}>
+      <body className="min-h-screen bg-background text-foreground antialiased font-sans">
         <ThemeProvider>
           <QueryProvider>
             <Suspense

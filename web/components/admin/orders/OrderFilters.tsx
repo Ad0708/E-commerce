@@ -183,7 +183,7 @@ export default function OrderFilters({
         <div className="flex items-center gap-3 w-full md:w-auto justify-end shrink-0">
           {/* Status Filter */}
           <div className="relative flex-1 md:flex-none w-full sm:w-48">
-            <Filter
+            <Filter 
               className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400 dark:text-zinc-500 pointer-events-none"
               size={16}
             />

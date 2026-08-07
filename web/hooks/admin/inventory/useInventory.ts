@@ -1,5 +1,5 @@
 import { fetchInventory, updateStock } from "@/api/admin/inventory";
-import { UseInventoryParams } from "@/types/inventory";
+import { InventoryProduct, InventoryResponse, UseInventoryParams } from "@/types/inventory";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
@@ -24,11 +24,11 @@ export const useUpdateStock = () => {
         queryKey: ["inventory"],
       });
 
-      queryClient.setQueriesData({ queryKey: ["inventory"] }, (old: any) => {
+      queryClient.setQueriesData({ queryKey: ["inventory"] }, (old: InventoryResponse) => {
         if (!old?.products) return old;
         return {
           ...old,
-          products: old.products.map((p: any) =>
+          products: old.products.map((p: InventoryProduct) =>
             p._id === productId ? { ...p, stock } : p,
           ),
         };

@@ -7,62 +7,82 @@ interface CreateOrderResponse {
   order: Order;
 }
 
+// interface GetOrdersResponse {
+//   orders: Order[];
+// }
 
-interface GetOrdersResponse {
+export interface GetOrdersResponse {
+  success: boolean;
   orders: Order[];
+  pagination: {
+    hasMore: boolean;
+    nextCursor: string | null;
+  };
 }
-
 
 interface GetOrderResponse {
   order: Order;
 }
 
-
 /**
  * Create Order
  */
 export const createOrder = async (
-  data: CreateOrderPayload
+  data: CreateOrderPayload,
 ): Promise<CreateOrderResponse> => {
-  const response: AxiosResponse<CreateOrderResponse> =
-    await api.post("/orders", data);
+  const response: AxiosResponse<CreateOrderResponse> = await api.post(
+    "/orders",
+    data,
+  );
 
   return response.data;
 };
-
 
 /**
  * Get Logged In User Orders
  */
-export const getMyOrders = async (): Promise<GetOrdersResponse> => {
-  const response: AxiosResponse<GetOrdersResponse> =
-    await api.get("/orders");
+// export const getMyOrders = async (): Promise<GetOrdersResponse> => {
+//   const response: AxiosResponse<GetOrdersResponse> =
+//     await api.get("/orders");
+
+//   return response.data;
+// };
+
+export const getMyOrders = async (
+  cursor?: string,
+): Promise<GetOrdersResponse> => {
+  const response: AxiosResponse<GetOrdersResponse> = await api.get("/orders", {
+    params: {
+      limit: 10,
+      cursor,
+    },
+  });
 
   return response.data;
 };
-
 
 /**
  * Get Single Order
  */
 export const getOrderById = async (
-  orderId: string
+  orderId: string,
 ): Promise<GetOrderResponse> => {
-  const response: AxiosResponse<GetOrderResponse> =
-    await api.get(`/orders/${orderId}`);
+  const response: AxiosResponse<GetOrderResponse> = await api.get(
+    `/orders/${orderId}`,
+  );
 
   return response.data;
 };
-
 
 /**
  * Cancel Order
  */
 export const cancelOrder = async (
-  orderId: string
+  orderId: string,
 ): Promise<CreateOrderResponse> => {
-  const response: AxiosResponse<CreateOrderResponse> =
-    await api.patch(`/orders/${orderId}/cancel`);
+  const response: AxiosResponse<CreateOrderResponse> = await api.patch(
+    `/orders/${orderId}/cancel`,
+  );
 
   return response.data;
 };

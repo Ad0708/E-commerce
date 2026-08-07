@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect, useMemo } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
 import { categories } from "@/constants/categories";
@@ -11,19 +11,18 @@ export default function CategorySection() {
   const targetRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [scrollRange, setScrollRange] = useState(0);
-  const [viewportHeight, setViewportHeight] = useState(0);
 
   useEffect(() => {
     const updateMetrics = () => {
       if (!containerRef.current) return;
 
-      const vh = window.innerHeight;
+      // Calculate total horizontal scroll distance including right end padding
+      const padding = window.innerWidth < 768 ? 25 : 50;
       const range = Math.max(
         0,
-        containerRef.current.scrollWidth - window.innerWidth + 48
+        containerRef.current.scrollWidth - window.innerWidth + padding
       );
 
-      setViewportHeight(vh);
       setScrollRange(range);
     };
 
@@ -39,21 +38,19 @@ export default function CategorySection() {
     };
   }, []);
 
-  const sectionHeight = viewportHeight + scrollRange + viewportHeight;
+  // Section height determines how long user stays pinned while scrolling horizontally
+  const sectionHeight = scrollRange > 0 ? scrollRange + window.innerHeight : "100vh";
 
+  // Track scroll while section is pinned (start top of viewport -> end bottom of viewport)
   const { scrollYProgress } = useScroll({
     target: targetRef,
-    offset: ["start end", "end start"],
+    offset: ["start start", "end end"],
   });
 
-  const enterProgress = useMemo(() => {
-    if (viewportHeight <= 0 || scrollRange <= 0) return 1;
-    return viewportHeight / (viewportHeight + scrollRange);
-  }, [viewportHeight, scrollRange]);
-
+  // Smooth translation across full range
   const x = useTransform(
     scrollYProgress,
-    [enterProgress, 1],
+    [0, 1],
     [0, scrollRange > 0 ? -scrollRange : 0]
   );
 
@@ -79,28 +76,29 @@ export default function CategorySection() {
   return (
     <section
       ref={targetRef}
-      className="relative bg-slate-50 dark:bg-slate-950"
-      style={{ height: sectionHeight > 0 ? sectionHeight : "100vh" }}
+      className="relative bg-background"
+      style={{ height: sectionHeight }}
     >
       <div className="sticky top-0 flex h-screen items-center overflow-hidden">
         <motion.div
           ref={containerRef}
           style={{ x }}
-          className="flex items-center gap-6 px-6 will-change-transform md:gap-8 md:px-12"
+          className="flex items-center gap-[22px] px-6 will-change-transform md:gap-8 md:px-[50px]"
         >
           {/* Intro Text Card */}
-          <div className="flex w-[85vw] shrink-0 flex-col justify-center pr-8 sm:w-[400px] md:w-[450px]">
-            <h2 className="mb-4 text-sm font-bold uppercase tracking-widest text-slate-500">
+          <div className="flex w-[78vw] shrink-0 flex-col justify-center pr-7 sm:w-[378px] md:w-[425px]">
+            <h2 className="mb-3.5 text-[13px] font-bold uppercase tracking-widest text-muted font-heading">
               Curated Collection
             </h2>
-            <h3 className="mb-8 text-4xl font-extrabold leading-tight tracking-tight text-slate-900 dark:text-white md:text-6xl">
-              Explore Our <br /> Categories
+            <h3 className="mb-6 text-[34px] font-extrabold leading-tight tracking-tight text-foreground font-heading md:text-[52px]">
+              Explore Our <br /> <span className="text-gradient">Categories</span>
             </h3>
             <Link
               href="/products"
-              className="inline-flex w-max items-center gap-2 border-b-2 border-slate-900 pb-1 text-sm font-bold uppercase tracking-widest text-slate-900 transition-colors hover:text-slate-500 dark:border-white dark:text-white"
+              className="inline-flex w-max items-center gap-2 border-b-2 border-foreground pb-1 text-[13px] font-bold uppercase tracking-widest text-foreground transition-colors hover:text-muted group"
             >
-              View All Products <ArrowRight className="h-5 w-5" />
+              View All Products 
+              <ArrowRight className="h-[17px] w-[17px] transform group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
 
@@ -109,29 +107,35 @@ export default function CategorySection() {
             <Link
               href={`/products?category=${cat.value}`}
               key={cat.value}
-              className="group relative aspect-[4/5] w-[75vw] shrink-0 overflow-hidden rounded-3xl bg-slate-900 shadow-xl sm:w-[350px] md:w-[400px]"
+              className="group relative aspect-[4/4.8] w-[71vw] shrink-0 overflow-hidden rounded-[2rem] bg-black shadow-xl sm:w-[330px] md:w-[378px]"
             >
-              <Image
-                src={categoryImages[cat.value] || categoryImages.electronics}
-                alt={cat.label}
-                fill
-                sizes="(max-width: 768px) 75vw, 400px"
-                className="object-cover opacity-80 transition-all duration-700 ease-out group-hover:scale-110 group-hover:opacity-100"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent transition-opacity duration-500 group-hover:opacity-80" />
+              <motion.div className="w-full h-full relative origin-center">
+                <Image
+                  src={categoryImages[cat.value] || categoryImages.electronics}
+                  alt={cat.label}
+                  fill
+                  sizes="(max-width: 768px) 71vw, 378px"
+                  className="object-cover opacity-60 grayscale transition-all duration-700 ease-out group-hover:scale-110 group-hover:grayscale-0 group-hover:opacity-100"
+                />
+              </motion.div>
+              
+              <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black via-black/50 to-transparent opacity-80" />
 
-              <div className="absolute inset-0 flex transform flex-col justify-end p-6 transition-transform duration-500 md:p-8">
-                <span className="mb-2 block font-mono text-sm uppercase tracking-widest text-white/60">
-                  0{idx + 1}
-                </span>
-                <h4 className="mb-2 text-3xl font-bold text-white md:text-4xl">
+              <div className="absolute inset-x-0 bottom-0 p-[22px] md:p-[30px] translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                <div className="glass-panel w-max rounded-full px-3 py-1 mb-3 border-[var(--glass-border)] bg-black/20 backdrop-blur-md">
+                  <span className="font-mono text-xs uppercase tracking-widest text-white/90">
+                    0{idx + 1}
+                  </span>
+                </div>
+                <h4 className="text-[26px] font-bold text-white font-heading md:text-[33px] drop-shadow-lg">
                   {cat.label}
                 </h4>
               </div>
             </Link>
           ))}
 
-          <div className="w-6 shrink-0 md:w-12" aria-hidden />
+          {/* Extra right space to guarantee the final card reaches the viewport margin */}
+          <div className="w-[25px] shrink-0 md:w-[50px]" aria-hidden />
         </motion.div>
       </div>
     </section>

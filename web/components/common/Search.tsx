@@ -19,7 +19,7 @@ export default function SearchInput({
   ...props
 }: SearchInputProps) {
   return (
-    <div className={`relative w-full max-w-md ${className}`}>
+    <div className={`relative w-full max-w-md rounded-xl ${className}`}>
       <Search
         size={18}
         className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400"

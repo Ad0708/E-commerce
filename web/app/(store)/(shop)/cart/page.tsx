@@ -71,7 +71,7 @@ export default function CartPage() {
   // 2. EARLY RETURNS AND CONDITIONAL CHECKS GO HERE
   if (isLoading) {
     return (
-      <div className="flex flex-col bg-slate-50 dark:bg-slate-950 pt-20 min-h-screen">
+      <div className="flex flex-col bg-background pt-20 min-h-screen">
         <main className="flex-1">
           <CartSkeleton />
         </main>
@@ -81,7 +81,7 @@ export default function CartPage() {
 
   if (items.length === 0) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center bg-slate-50 dark:bg-slate-950">
+      <div className="flex min-h-screen flex-col items-center justify-center bg-background">
         <main className="flex w-full flex-1 items-center justify-center px-4 py-12">
           <EmptyCart />
         </main>
@@ -90,22 +90,22 @@ export default function CartPage() {
   }
 
   return (
-    <div className="flex flex-col bg-slate-50 dark:bg-slate-950 pt-18 min-h-screen">
+    <div className="flex flex-col bg-background pt-18 min-h-screen">
       <main className="flex-1">
-        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-370 px-4 py-8 sm:px-6 lg:px-8">
           {/* Header */}
           <div className="mb-8 flex items-center justify-between">
             <div>
               <Link
                 href="/products"
-                className="my-4 flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors"
+                className="my-4 flex items-center gap-1.5 text-sm text-secondary hover:text-foreground transition-colors font-bold uppercase tracking-widest"
               >
                 <ArrowLeft size={15} />
                 Continue shopping
               </Link>
-              <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
+              <h1 className="text-4xl font-extrabold text-foreground font-heading tracking-tighter">
                 My Cart
-                <span className="ml-2 text-lg font-normal text-slate-400">
+                <span className="ml-3 text-2xl font-medium text-muted">
                   ({summary?.itemCount}{" "}
                   {summary?.itemCount === 1 ? "item" : "items"})
                 </span>
@@ -153,12 +153,12 @@ export default function CartPage() {
                       variants={itemVariants}
                       layout
                       exit="exit"
-                      className="group flex gap-4 rounded-2xl border border-slate-200 bg-white p-4 transition-shadow hover:shadow-md dark:border-slate-800 dark:bg-slate-900 sm:gap-5 sm:p-5"
+                      className="group flex gap-4 rounded-3xl border border-[var(--glass-border)] bg-background p-4 shadow-sm transition-all hover:shadow-xl hover:-translate-y-1 sm:gap-5 sm:p-5"
                     >
                       {/* Image */}
                       <Link
                         href={`/product/${item.productId}`}
-                        className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-slate-100 dark:bg-slate-800 sm:h-28 sm:w-28"
+                        className="relative h-24 w-24 shrink-0 overflow-hidden rounded-2xl bg-secondary/10 sm:h-28 sm:w-28"
                       >
                         <Image
                           src={item?.image}
@@ -173,12 +173,12 @@ export default function CartPage() {
                       <div className="flex flex-1 flex-col justify-between min-w-0">
                         <div className="flex items-start justify-between gap-2">
                           <div className="min-w-0">
-                            <p className="text-xs font-medium text-blue-500 dark:text-blue-400">
+                            <p className="text-xs font-bold uppercase tracking-widest text-[var(--accent-mid)]">
                               {categories.find((c) => c.value === item.category)
                                 ?.label ?? item.category}
                             </p>
                             <Link href={`/product/${item.productId}`}>
-                              <h3 className="mt-0.5 line-clamp-2 text-sm font-semibold text-slate-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors sm:text-base">
+                              <h3 className="mt-1 line-clamp-2 text-base font-bold text-foreground hover:text-[var(--accent-start)] transition-colors font-heading">
                                 {item.name}
                               </h3>
                             </Link>
@@ -188,7 +188,7 @@ export default function CartPage() {
                           <button
                             onClick={() => removeFromCart(item.productId)}
                             disabled={isRemoving}
-                            className="shrink-0 rounded-lg p-1.5 text-slate-400 hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-950 dark:hover:text-red-400 transition-colors disabled:opacity-50"
+                            className="shrink-0 rounded-xl bg-secondary/5 border border-transparent p-2 text-muted hover:bg-red-500/10 hover:text-red-600 dark:hover:text-red-400 hover:border-red-500/20 transition-all disabled:opacity-50"
                             aria-label="Remove item"
                           >
                             <Trash2 size={16} />
@@ -199,25 +199,25 @@ export default function CartPage() {
                         <div className="mt-3 flex items-center justify-between">
                           {/* Price Block */}
                           <div className="flex items-baseline gap-2">
-                            <span className="text-base font-bold text-slate-900 dark:text-white sm:text-lg">
+                            <span className="text-lg font-extrabold text-foreground font-heading">
                               ₹{displayPrice.toLocaleString("en-IN")}
                             </span>
 
                             {hasValidDiscount && (
-                              <span className="text-xs text-slate-400 line-through">
+                              <span className="text-xs text-muted line-through font-bold">
                                 ₹{item.price.toLocaleString("en-IN")}
                               </span>
                             )}
 
                             {hasValidDiscount && discountPct > 0 && (
-                              <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs font-semibold text-green-700 dark:bg-green-900/40 dark:text-green-400">
+                              <span className="rounded-full bg-[var(--accent-start)]/10 px-2 py-0.5 text-xs font-bold text-[var(--accent-start)] border border-[var(--accent-start)]/20">
                                 {discountPct}% off
                               </span>
                             )}
                           </div>
 
                           {/* Quantity stepper */}
-                          <div className="flex items-center gap-1 rounded-xl border border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800">
+                          <div className="flex items-center gap-1 rounded-xl border border-[var(--glass-border)] bg-secondary/5 p-1">
                             <button
                               onClick={() =>
                                 item.quantity === 1
@@ -228,12 +228,12 @@ export default function CartPage() {
                                     })
                               }
                               disabled={isUpdating || isRemoving}
-                              className="flex h-8 w-8 items-center justify-center rounded-l-xl text-slate-600 hover:bg-slate-200 dark:text-slate-300 dark:hover:bg-slate-700 transition-colors disabled:opacity-40"
+                              className="flex h-7 w-7 items-center justify-center rounded-lg text-secondary hover:bg-background hover:text-foreground hover:shadow-sm transition-all disabled:opacity-40"
                               aria-label="Decrease quantity"
                             >
                               <Minus size={14} />
                             </button>
-                            <span className="w-8 text-center text-sm font-semibold text-slate-900 dark:text-white">
+                            <span className="w-8 text-center text-sm font-bold text-foreground">
                               {item.quantity}
                             </span>
                             <button
@@ -246,7 +246,7 @@ export default function CartPage() {
                               disabled={
                                 item.quantity >= item.stock || isUpdating
                               }
-                              className="flex h-8 w-8 items-center justify-center rounded-r-xl text-slate-600 hover:bg-slate-200 dark:text-slate-300 dark:hover:bg-slate-700 transition-colors disabled:opacity-40"
+                              className="flex h-7 w-7 items-center justify-center rounded-lg text-secondary hover:bg-background hover:text-foreground hover:shadow-sm transition-all disabled:opacity-40"
                               aria-label="Increase quantity"
                             >
                               <Plus size={14} />
@@ -274,13 +274,13 @@ export default function CartPage() {
               transition={{ duration: 0.3, delay: 0.1, ease: "easeOut" }}
               className="h-fit lg:sticky lg:top-24"
             >
-              <div className="rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
-                <h2 className="mb-5 text-lg font-bold text-slate-900 dark:text-white">
+              <div className="glass-panel rounded-3xl border-[var(--glass-border)] p-6 sm:p-8">
+                <h2 className="mb-6 text-2xl font-extrabold text-foreground font-heading">
                   Order Summary
                 </h2>
 
-                <div className="space-y-3 text-sm">
-                  <div className="flex justify-between text-slate-600 dark:text-slate-400">
+                <div className="space-y-4 text-sm font-medium">
+                  <div className="flex justify-between text-secondary">
                     <span>
                       Price ({summary?.itemCount}{" "}
                       {summary?.itemCount === 1 ? "item" : "items"})
@@ -289,22 +289,22 @@ export default function CartPage() {
                   </div>
 
                   {summary?.discount > 0 && (
-                    <div className="flex justify-between text-green-600 dark:text-green-400">
+                    <div className="flex justify-between text-[var(--accent-start)]">
                       <span>Product Discount</span>
-                      <span>
+                      <span className="font-bold">
                         − ₹{summary?.discount.toLocaleString("en-IN")}
                       </span>
                     </div>
                   )}
 
                   <div className="flex justify-between items-center py-2">
-                    <span className="text-slate-600 dark:text-slate-400 font-medium">
+                    <span className="text-secondary font-semibold">
                       Coupon
                     </span>
 
                     {appliedCoupon ? (
                       <div className="flex items-center gap-2">
-                        <div className="flex items-center gap-1.5 rounded-lg border border-green-200 bg-green-50/50 px-2.5 py-1 text-xs font-semibold uppercase tracking-wider text-green-700 dark:border-green-900/40 dark:bg-green-950/20 dark:text-green-400">
+                        <div className="flex items-center gap-1.5 rounded-xl border border-[var(--accent-mid)]/20 bg-[var(--accent-mid)]/10 px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-[var(--accent-mid)]">
                           <Ticket className="h-3.5 w-3.5" />
                           {appliedCoupon.code}
                         </div>
@@ -312,7 +312,7 @@ export default function CartPage() {
                         <button
                           onClick={() => removeCouponMutation.mutate(undefined)}
                           disabled={removeCouponMutation.isPending}
-                          className="rounded-lg p-1 text-slate-400 hover:bg-slate-100 hover:text-red-600 dark:hover:bg-zinc-800 transition-colors disabled:opacity-50"
+                          className="rounded-xl p-1.5 text-muted hover:bg-red-500/10 hover:text-red-500 transition-colors disabled:opacity-50"
                           title="Remove Coupon"
                         >
                           {removeCouponMutation.isPending ? (
@@ -325,9 +325,9 @@ export default function CartPage() {
                         </button>
                       </div>
                     ) : (
-                      <button
+                        <button
                         onClick={() => setCouponModalOpen(true)}
-                        className="text-sm font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
+                        className="text-sm font-bold text-[var(--accent-mid)] hover:text-[var(--accent-start)] transition-colors"
                       >
                         Apply Coupon
                       </button>
@@ -335,43 +335,43 @@ export default function CartPage() {
                   </div>
 
                   {summary?.couponDiscount > 0 && (
-                    <div className="flex justify-between text-green-600 dark:text-green-400">
+                    <div className="flex justify-between text-[var(--accent-start)]">
                       <span>Coupon Discount ({appliedCoupon?.code})</span>
-                      <span>
+                      <span className="font-bold">
                         − ₹{summary?.couponDiscount.toLocaleString("en-IN")}
                       </span>
                     </div>
                   )}
 
-                  <div className="flex justify-between text-slate-600 dark:text-slate-400">
+                  <div className="flex justify-between text-secondary">
                     <span>Delivery</span>
 
                     {summary?.deliveryCharge > 0 ? (
-                      <span className="font-medium text-slate-900 dark:text-white">
+                      <span className="font-bold text-foreground">
                         ₹{summary.deliveryCharge.toLocaleString("en-IN")}
                       </span>
                     ) : (
-                      <span className="font-medium text-green-600 dark:text-green-400">
+                      <span className="font-bold text-emerald-500">
                         FREE
                       </span>
                     )}
                   </div>
 
-                  <div className="my-3 border-t border-dashed border-slate-200 dark:border-slate-700" />
+                  <div className="my-4 border-t border-[var(--glass-border)]" />
 
-                  <div className="flex justify-between text-base font-bold text-slate-900 dark:text-white">
+                  <div className="flex justify-between text-xl font-extrabold text-foreground font-heading">
                     <span>Total</span>
                     <span>₹{summary?.total.toLocaleString("en-IN")}</span>
                   </div>
                 </div>
 
                 {summary?.savings > 0 && (
-                  <div className="mt-4 flex items-center gap-2 rounded-xl bg-green-50 px-4 py-3 dark:bg-green-900/20">
+                  <div className="mt-6 flex items-center gap-3 rounded-2xl bg-[var(--accent-start)]/10 px-5 py-4 border border-[var(--accent-start)]/20">
                     <Tag
-                      size={15}
-                      className="text-green-600 dark:text-green-400"
+                      size={18}
+                      className="text-[var(--accent-start)]"
                     />
-                    <p className="text-sm font-medium text-green-700 dark:text-green-400">
+                    <p className="text-sm font-bold text-[var(--accent-start)]">
                       You save ₹{summary?.savings.toLocaleString("en-IN")} on
                       this order
                     </p>
@@ -380,12 +380,12 @@ export default function CartPage() {
 
                 <Link
                   href="/checkout"
-                  className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 py-3.5 text-sm font-semibold text-white transition hover:bg-blue-700 active:scale-[0.98] dark:bg-blue-500 dark:hover:bg-blue-600"
+                  className="mt-8 flex w-full items-center justify-center gap-2 rounded-full bg-linear-to-r from-[var(--accent-start)] to-[var(--accent-end)] py-4 text-sm font-bold text-white uppercase tracking-widest transition-transform hover:-translate-y-1 hover:shadow-lg hover:shadow-[var(--accent-mid)]/20 active:scale-95"
                 >
                   Go to checkout
                 </Link>
 
-                <p className="mt-3 text-center text-xs text-slate-400 dark:text-slate-500">
+                <p className="mt-4 text-center text-xs text-muted font-medium">
                   Secure checkout · Free returns
                 </p>
               </div>
@@ -410,22 +410,22 @@ function EmptyCart() {
       transition={{ duration: 0.3, ease: "easeOut" }}
       className="flex flex-col items-center justify-center gap-6 text-center"
     >
-      <div className="flex h-24 w-24 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
-        <ShoppingBag size={40} className="text-slate-400" />
+      <div className="flex h-32 w-32 items-center justify-center rounded-full bg-secondary/10">
+        <ShoppingBag size={48} className="text-muted" />
       </div>
 
       <div>
-        <h2 className="text-xl font-bold text-slate-900 dark:text-white">
+        <h2 className="text-3xl font-extrabold text-foreground font-heading">
           Your cart is empty
         </h2>
-        <p className="mt-1 text-slate-500 dark:text-slate-400">
+        <p className="mt-3 text-secondary text-lg">
           Looks like you haven&apos;t added anything yet.
         </p>
       </div>
 
       <Link
         href="/products"
-        className="rounded-xl bg-blue-600 px-8 py-3 text-sm font-semibold text-white transition hover:bg-blue-700 active:scale-95 dark:bg-blue-500 dark:hover:bg-blue-600"
+        className="mt-4 rounded-full bg-linear-to-r from-[var(--accent-start)] to-[var(--accent-end)] px-10 py-4 text-sm font-bold uppercase tracking-widest text-white transition-all hover:shadow-lg hover:shadow-[var(--accent-mid)]/20 hover:-translate-y-1 active:scale-95"
       >
         Start shopping
       </Link>
@@ -436,7 +436,7 @@ function EmptyCart() {
 // ─── Skeleton ─────────────────────────────────────────────────────────────────
 function CartSkeleton() {
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-370 px-4 py-8 sm:px-6 lg:px-8">
       <div className="mb-8 h-8 w-48 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
       <div className="grid gap-8 lg:grid-cols-3">
         <div className="lg:col-span-2 space-y-3">

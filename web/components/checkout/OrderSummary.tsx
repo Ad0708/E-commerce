@@ -32,7 +32,7 @@ export default function OrderSummary({
   const deliveryCharge = finalSummary.deliveryCharge ?? 0;
 
   return (
-    <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+    <div className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
       <h2 className="text-xl font-bold text-gray-900 dark:text-white">
         Order Summary
       </h2>

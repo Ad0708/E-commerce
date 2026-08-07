@@ -25,12 +25,13 @@ import refundRoutes from "./routes/refund.routes.js";
 import adminRefundRoutes from "./routes/admin/adminrefund.routes.js";
 import analyticsRoutes from "./routes/admin/analytics.routes.js";
 import adminStoreRoutes from "./routes/admin/adminStore.routes.js";
+import adminReviewRoutes from "./routes/admin/adminReview.routes.js";
 import storeRoutes from "./routes/store.routes.js";
 import invoiceRoutes from "./routes/invoice.routes.js";
 import aiRoutes from "./routes/admin/ai.routes.js";
+import reviewRoutes from "./routes/review.routes.js";
 import {
   apiLimiter,
-  authLimiter,
   paymentLimiter,
 } from "./middlewares/rateLimiter.middleware.js";
 
@@ -57,7 +58,7 @@ app.use(
 );
 app.use(express.json());
 
-app.use("/api/auth", authLimiter, authRoutes);
+app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/inventory", inventoryRoutes);
 app.use("/api/wishlist", wishlistRoutes);
@@ -75,9 +76,11 @@ app.use("/api/refunds", refundRoutes);
 app.use("/api/admin/refunds", adminRefundRoutes);
 app.use("/api/admin/analytics", analyticsRoutes);
 app.use("/api/admin/store", adminStoreRoutes);
+app.use("/api/admin/reviews", adminReviewRoutes);
 app.use("/api/store", storeRoutes);
 app.use("/api/invoices", invoiceRoutes);
-app.use("/api/admin/ai", aiRoutes, aiRoutes);
+app.use("/api/admin/ai", aiRoutes);
+app.use("/api/reviews", reviewRoutes);
 
 // console.log("FRONTEND_URL:", process.env.FRONTEND_URL);
 const PORT = process.env.PORT || 5000;

@@ -38,11 +38,11 @@ export default function PaymentStep({
     <div className="space-y-8">
       {/* Heading */}
       <div>
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+        <h2 className="text-3xl font-extrabold text-foreground font-heading">
           Payment Method
         </h2>
 
-        <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+        <p className="mt-2 text-base font-medium text-secondary">
           Choose your preferred payment method.
         </p>
       </div>
@@ -58,31 +58,31 @@ export default function PaymentStep({
               key={method.id}
               type="button"
               onClick={() => setPaymentMethod(method.id)}
-              className={`w-full rounded-2xl border p-5 transition-all duration-300 ${
+              className={`w-full rounded-3xl border p-5 transition-all duration-300 ${
                 selected
-                  ? "border-blue-600 bg-blue-50 shadow-md dark:border-blue-500 dark:bg-blue-950/20"
-                  : "border-gray-200 bg-white hover:border-blue-300 hover:shadow-sm dark:border-zinc-700 dark:bg-zinc-900"
+                  ? "border-[var(--accent-start)] bg-[var(--accent-start)]/5 shadow-md shadow-[var(--accent-mid)]/10"
+                  : "border-[var(--glass-border)] bg-background hover:border-muted hover:shadow-sm"
               }`}
             >
               <div className="flex items-center justify-between">
                 {/* Left */}
                 <div className="flex items-center gap-4">
                   <div
-                    className={`flex h-12 w-12 items-center justify-center rounded-xl ${
+                    className={`flex h-14 w-14 items-center justify-center rounded-2xl ${
                       selected
-                        ? "bg-blue-600 text-white"
-                        : "bg-gray-100 text-gray-600 dark:bg-zinc-800 dark:text-gray-300"
+                        ? "bg-linear-to-r from-[var(--accent-start)] to-[var(--accent-end)] text-white shadow-lg shadow-[var(--accent-mid)]/20"
+                        : "bg-secondary/10 text-secondary"
                     }`}
                   >
                     <Icon size={24} />
                   </div>
 
                   <div className="text-left">
-                    <h3 className="font-semibold text-gray-900 dark:text-white">
+                    <h3 className="text-lg font-bold text-foreground font-heading">
                       {method.title}
                     </h3>
 
-                    <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                    <p className="mt-1 text-sm font-medium text-secondary">
                       {method.description}
                     </p>
                   </div>
@@ -92,12 +92,12 @@ export default function PaymentStep({
                 <div
                   className={`flex h-6 w-6 items-center justify-center rounded-full border-2 transition ${
                     selected
-                      ? "border-blue-600"
-                      : "border-gray-300 dark:border-zinc-600"
+                      ? "border-[var(--accent-start)]"
+                      : "border-[var(--glass-border)]"
                   }`}
                 >
                   {selected && (
-                    <div className="h-3 w-3 rounded-full bg-blue-600" />
+                    <div className="h-3 w-3 rounded-full bg-[var(--accent-start)]" />
                   )}
                 </div>
               </div>
@@ -107,9 +107,9 @@ export default function PaymentStep({
       </div>
 
       {/* Selected Payment Info */}
-      <div className="rounded-xl border border-blue-200 bg-blue-50 p-4 dark:border-blue-900 dark:bg-blue-950/20">
-        <p className="text-sm text-blue-700 dark:text-blue-300">
-          <span className="font-semibold">Selected:</span>{" "}
+      <div className="rounded-2xl border border-[var(--accent-start)]/20 bg-[var(--accent-start)]/5 p-4">
+        <p className="text-sm font-medium text-[var(--accent-start)]">
+          <span className="font-bold">Selected:</span>{" "}
           {paymentMethods.find((m) => m.id === paymentMethod)?.title}
         </p>
       </div>

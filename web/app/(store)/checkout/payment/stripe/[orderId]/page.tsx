@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import { Elements } from "@stripe/react-stripe-js";
 
 import { stripePromise } from "@/lib/stripe/stripe";
-import { usecreateStripePaymentIntent } from "@/hooks/payment/usePayment";
+import { useCreateStripePaymentIntent } from "@/hooks/payment/usePayment";
 
 import StripeCheckout from "@/components/checkout/payment/stripe/StripeCheckout";
 
@@ -16,7 +16,7 @@ export default function PaymentPage() {
 
   const [clientSecret, setClientSecret] = useState("");
 
-  const createStripePaymentIntent = usecreateStripePaymentIntent();
+  const createStripePaymentIntent = useCreateStripePaymentIntent();
 
   useEffect(() => {
     if (!orderId) return;

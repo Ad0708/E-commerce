@@ -1,4 +1,5 @@
 "use client";
+import { AxiosError } from "axios";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -39,18 +40,31 @@ export const useCreateOrder = () => {
       }
     },
 
-    onError: (error: any) => {
-      toast.error(error?.response?.data?.message || "Failed to create order");
+    onError: (error: unknown) => {
+      toast.error((error as AxiosError<{message?: string}>)?.response?.data?.message || "Failed to create order");
     },
   });
 };
 
+import { useInfiniteQuery } from "@tanstack/react-query";
+
 export const useMyOrders = () => {
-  return useQuery({
+  return useInfiniteQuery({
     queryKey: ["my-orders"],
-    queryFn: getMyOrders,
+    queryFn: ({ pageParam }) => getMyOrders(pageParam as string | undefined),
+    initialPageParam: undefined as string | undefined,
+    getNextPageParam: (lastPage) => {
+      // If backend says there are more orders, return the nextCursor
+      return lastPage.pagination.hasMore ? lastPage.pagination.nextCursor : undefined;
+    },
   });
 };
+// export const useMyOrders = () => {
+//   return useQuery({
+//     queryKey: ["my-orders"],
+//     queryFn: getMyOrders,
+//   });
+// };
 
 export const useOrderDetails = (orderId: string) => {
   return useQuery({

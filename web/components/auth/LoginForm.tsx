@@ -1,8 +1,9 @@
 "use client";
+import { removeEmojis } from "@/lib/utils";
 
 import Link from "next/link";
-import { Eye, EyeOff } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,6 +11,10 @@ import { useRouter } from "next/navigation";
 import { useLogin } from "@/hooks/auth/uselogin";
 import { useAuthStore } from "@/store/auth.store";
 import type { User } from "@/types/user";
+
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 
 const loginSchema = z.object({
   email: z
@@ -80,99 +85,96 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="w-full max-w-md rounded-3xl bg-white dark:bg-slate-900 p-8 shadow-2xl border border-slate-200 dark:border-slate-600">
-      <div className="mb-8 text-center">
-        <h1 className="text-4xl font-bold text-slate-900 dark:text-white">
+    <Card variant="glass" className="w-full max-w-md p-2 h-fit">
+      <CardHeader className="text-center mb-2">
+        <CardTitle className="text-3xl font-extrabold font-heading">
           Welcome Back
-        </h1>
-
-        <p className="mt-3 text-slate-500 dark:text-slate-400">
+        </CardTitle>
+        <CardDescription className="text-base mt-2">
           Sign in to continue shopping
-        </p>
-      </div>
+        </CardDescription>
+      </CardHeader>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-        <div>
-          <label className="mb-2 block text-sm font-medium">
-            Email Address
-          </label>
-
-          <input
-            type="email"
-            placeholder="john@example.com"
-            {...register("email")}
-            className={`w-full rounded-xl border bg-white dark:bg-slate-950 px-4 py-3 outline-none transition-all
-            ${errors.email
-                ? "border-red-500 focus:border-red-500"
-                : "border-slate-300 dark:border-slate-700 focus:border-blue-500"
-              }`}
-          />
-
-          {errors.email && (
-            <p className="mt-2 text-sm text-red-500">{errors.email.message}</p>
-          )}
-        </div>
-
-        <div>
-          <label className="mb-2 block text-sm font-medium">Password</label>
-
-          <div className="relative">
-            <input
-              type={showPassword ? "text" : "password"}
-              placeholder="Enter password"
-              {...register("password")}
-              className={`w-full rounded-xl border bg-white dark:bg-slate-950 px-4 py-3 pr-12 outline-none transition-all
-              ${errors.password
-                  ? "border-red-500 focus:border-red-500"
-                  : "border-slate-300 dark:border-slate-700 focus:border-blue-500"
-                }`}
+      <CardContent>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+          <div className="space-y-2">
+            <label className="text-sm font-semibold text-secondary">
+              Email Address
+            </label>
+            <Input
+              type="email"
+              placeholder="john@example.com"
+              onInput={(e) => { e.currentTarget.value = removeEmojis(e.currentTarget.value); }}
+              {...register("email")}
+              className={errors.email ? "border-red-500 focus-visible:ring-red-500/20 focus-visible:border-red-500" : ""}
             />
-
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
-            >
-              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-            </button>
+            {errors.email && (
+              <p className="text-xs font-medium text-red-500">{errors.email.message}</p>
+            )}
           </div>
 
-          {errors.password && (
-            <p className="mt-2 text-sm text-red-500">
-              {errors.password.message}
-            </p>
-          )}
-        </div>
+          <div className="space-y-2">
+            <label className="text-sm font-semibold text-secondary">Password</label>
+            <div className="relative">
+              <Input
+                type={showPassword ? "text" : "password"}
+                placeholder="Enter password"
+                onInput={(e) => { e.currentTarget.value = removeEmojis(e.currentTarget.value); }}
+                {...register("password")}
+                className={errors.password ? "border-red-500 focus-visible:ring-red-500/20 focus-visible:border-red-500 pr-12" : "pr-12"}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-muted hover:text-foreground transition-colors"
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
+            {errors.password && (
+              <p className="text-xs font-medium text-red-500">
+                {errors.password.message}
+              </p>
+            )}
+          </div>
 
-        <div className="flex items-center justify-between text-sm">
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input type="checkbox" {...register("rememberMe")} />
-            Remember me
-          </label>
+          <div className="flex items-center justify-between text-sm">
+            <label className="flex items-center gap-2 cursor-pointer font-medium text-secondary hover:text-foreground transition-colors select-none">
+              <input type="checkbox" className="rounded border-[var(--glass-border)] bg-background accent-[var(--accent-mid)] w-4 h-4" {...register("rememberMe")} />
+              Remember me
+            </label>
 
-          <button
-            type="button"
-            className="text-blue-600 hover:text-blue-700 transition-colors"
+            <Link
+              href="/forgot-password"
+              className="font-medium text-[var(--accent-mid)] hover:text-[var(--accent-start)] transition-colors"
+            >
+              Forgot Password?
+            </Link>
+          </div>
+
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            className="w-full mt-2"
           >
-            Forgot Password?
-          </button>
-        </div>
+            {isSubmitting ? (
+              <>
+                <Loader2 className="w-5 h-5 animate-spin" />
+                Signing In...
+              </>
+            ) : (
+              "Login"
+            )}
+          </Button>
+        </form>
 
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="w-full rounded-xl cursor-pointer bg-linear-to-r from-blue-600 to-cyan-500 py-3 font-semibold text-white transition hover:scale-[1.02] disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:scale-100"
-        >
-          {isSubmitting ? "Signing In..." : "Login"}
-        </button>
-      </form>
-
-      <p className="mt-6 text-center text-sm text-slate-500">
-        Don't have an account?{" "}
-        <Link href="/signup" className="font-semibold text-blue-600">
-          Create Account
-        </Link>
-      </p>
-    </div>
+        <p className="mt-8 text-center text-sm text-secondary font-medium">
+          Don't have an account?{" "}
+          <Link href="/signup" className="font-semibold text-[var(--accent-mid)] hover:text-[var(--accent-start)] transition-colors">
+            Create Account
+          </Link>
+        </p>
+      </CardContent>
+    </Card>
   );
 }

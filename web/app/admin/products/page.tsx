@@ -6,7 +6,7 @@ import Modal from "@/components/common/Modal";
 import Pagination from "@/components/common/Pagination";
 import SearchInput from "@/components/common/Search";
 import { categories } from "@/constants/categories";
-import { useallProducts } from "@/hooks/product/useAllProduct";
+import { useAllProducts } from "@/hooks/product/useAllProduct";
 // import { useDeleteProduct } from "@/hooks/product/useDeleteProduct";
 import { useUpdateProduct } from "@/hooks/product/useUpdateProduct";
 import { useDebounce } from "@/hooks/useDebounce";
@@ -32,7 +32,7 @@ export default function ProductsPage() {
     data: productsData,
     isLoading,
     error,
-  } = useallProducts({
+  } = useAllProducts({
     page,
     search: debouncedSearch,
     category,

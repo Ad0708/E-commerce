@@ -21,13 +21,13 @@ export default function AdminLayout({
         setDesktopCollapsed={setDesktopCollapsed}
       />
 
+      {/* Removed p-2 here so the header mounts flush with the top */}
       <div
-        className={`flex flex-col flex-1 min-w-0 transition-all duration-300 p-2 ${
-          desktopCollapsed ? "lg:ml-21" : "lg:ml-67"
-        }`}
+        className={`flex flex-col flex-1 min-w-0 transition-all duration-300 ${desktopCollapsed ? "lg:ml-21" : "lg:ml-67"
+          }`}
       >
-        {/* Sticky Header */}
-        <div className="sticky top-2 z-30 w-full">
+        {/* Sticky Header Wrapper (changed top-2 to top-0) */}
+        <div className="sticky top-0 z-30 w-full rounded-b-2xl overflow-hidden">
           <AdminHeader
             onToggleSidebar={() => setMobileSidebarOpen((prev) => !prev)}
           />
@@ -35,9 +35,8 @@ export default function AdminLayout({
 
         {/* Main Content Area */}
         <main
-          className={`w-full mx-auto px-4 sm:px-6 py-6 min-w-0 flex-1 transition-all duration-300 ${
-            desktopCollapsed ? "max-w-420" : "max-w-370"
-          }`}
+          className={`w-full mx-auto px-4 sm:px-6 py-6 min-w-0 flex-1 transition-all duration-300 ${desktopCollapsed ? "max-w-420" : "max-w-370"
+            }`}
         >
           {children}
         </main>

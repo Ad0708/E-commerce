@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
-import { useParams } from "next/navigation"; // 👇 Import the native hook
 import OrderDetails from "@/components/admin/orders/OrderDetails";
 import UpdateOrderStatus from "@/components/admin/orders/UpdateOrderStatus";
-import { ArrowLeft, Calendar, Edit3, Loader2, RefreshCw } from "lucide-react";
 import { useOrderDetails } from "@/hooks/order/useOrder";
+import { ArrowLeft, Calendar, Edit3, Loader2, RefreshCw } from "lucide-react";
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import { useState } from "react";
 
 export default function AdminOrderDetailsPage() {
   const routeParams = useParams();
@@ -14,7 +14,7 @@ export default function AdminOrderDetailsPage() {
   const orderId = routeParams?.orderid as string;
 
   const [showStatusUpdateModal, setShowStatusUpdateModal] = useState(false);
-  
+
   // Now that orderId is guaranteed to exist, this query will finally trigger!
   const { data, isPending, isError, error, refetch } = useOrderDetails(orderId);
 
@@ -36,7 +36,10 @@ export default function AdminOrderDetailsPage() {
   if (isPending || !orderId) {
     return (
       <div className="min-h-[60vh] flex flex-col justify-center items-center gap-3">
-        <Loader2 className="animate-spin text-zinc-800 dark:text-zinc-200" size={32} />
+        <Loader2
+          className="animate-spin text-zinc-800 dark:text-zinc-200"
+          size={32}
+        />
         <p className="text-xs font-bold text-zinc-400 uppercase tracking-wider">
           Assembling System Documentation Context...
         </p>
@@ -49,7 +52,8 @@ export default function AdminOrderDetailsPage() {
     return (
       <div className="max-w-md mx-auto my-16 text-center space-y-4 px-4">
         <p className="text-sm font-medium text-red-600 dark:text-red-400">
-          Failed to fetch target system node reference parameters: {error?.message || "Resource missing from database lookup."}
+          Failed to fetch target system node reference parameters:{" "}
+          {error?.message || "Resource missing from database lookup."}
         </p>
         <Link
           href="/admin/orders"
@@ -62,7 +66,7 @@ export default function AdminOrderDetailsPage() {
   }
 
   return (
-    <main className="w-full max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8 min-h-screen space-y-6">
+    <main className="w-full max-w-370 mx-auto px-4 py-8 sm:px-6 lg:px-8 min-h-screen space-y-6">
       <div>
         <Link
           href="/admin/orders"
@@ -94,7 +98,9 @@ export default function AdminOrderDetailsPage() {
             <button
               type="button"
               onClick={() => setShowStatusUpdateModal(true)}
-              disabled={order.status === "Delivered" || order.status === "Cancelled"}
+              disabled={
+                order.status === "Delivered" || order.status === "Cancelled"
+              }
               className="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-bold bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-white dark:hover:bg-zinc-100 dark:text-zinc-900 rounded-xl transition shadow-sm disabled:opacity-40 disabled:pointer-events-none"
             >
               <Edit3 size={14} /> Update Operational Status

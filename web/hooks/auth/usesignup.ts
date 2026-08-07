@@ -1,4 +1,5 @@
 "use client";
+import { AxiosError } from "axios";
 
 import { useMutation } from "@tanstack/react-query";
 import { signupApi } from "@/api/auth";
@@ -16,7 +17,7 @@ type SignupResponse = {
 };
 
 export const useSignup = () => {
-  return useMutation<SignupResponse, any, SignupPayload>({
+  return useMutation<SignupResponse, unknown, SignupPayload>({
     mutationFn: signupApi,
 
     onSuccess: (data) => {
@@ -27,7 +28,7 @@ export const useSignup = () => {
     },
 
     onError: (error) => {
-      toast.error(error?.response?.data?.message || "Signup failed");
+      toast.error((error as AxiosError<{message?: string}>)?.response?.data?.message || "Signup failed");
     },
   });
 };

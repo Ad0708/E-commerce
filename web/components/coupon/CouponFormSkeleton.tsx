@@ -1,6 +1,6 @@
 function PageSkeleton() {
   return (
-    <div className="space-y-5 animate-pulse max-w-7xl mx-auto">
+    <div className="space-y-5 animate-pulse max-w-370 mx-auto">
       {Array.from({ length: 4 }).map((_, i) => (
         <div
           key={i}

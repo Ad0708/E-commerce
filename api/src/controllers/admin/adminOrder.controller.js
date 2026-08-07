@@ -246,6 +246,9 @@ export const updateOrderStatus = async (req, res) => {
         orderId: order._id,
         status: order.status,
       },
+      sendEmailFlag: true,
+      sendWhatsappFlag: true,
+      order,
     });
 
     return res.status(200).json({

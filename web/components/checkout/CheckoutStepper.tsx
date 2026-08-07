@@ -27,7 +27,7 @@ const steps = [
 
 export default function CheckoutStepper({ currentStep }: CheckoutStepperProps) {
   return (
-    <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+    <div className="glass-panel rounded-3xl border-[var(--glass-border)] bg-background p-6 shadow-sm">
       <div className="flex items-center justify-between">
         {steps.map((step, index) => {
           const completed = currentStep > step.id;
@@ -45,13 +45,13 @@ export default function CheckoutStepper({ currentStep }: CheckoutStepperProps) {
               <div className="flex flex-col items-center text-center">
                 <div
                   className={clsx(
-                    "flex h-12 w-12 items-center justify-center rounded-full border-2 text-sm font-semibold transition-all duration-300",
-                    completed && "border-blue-600 bg-blue-600 text-white",
+                    "flex h-12 w-12 items-center justify-center rounded-full border-2 text-sm font-bold font-heading transition-all duration-500",
+                    completed && "border-[var(--accent-start)] bg-linear-to-r from-[var(--accent-start)] to-[var(--accent-end)] text-white shadow-[var(--accent-mid)]/20 shadow-lg",
                     active &&
-                      "border-blue-600 bg-blue-50 text-blue-600 dark:bg-blue-950",
+                      "border-[var(--accent-start)] bg-[var(--accent-start)]/10 text-[var(--accent-start)]",
                     !completed &&
                       !active &&
-                      "border-gray-300 bg-white text-gray-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-gray-400",
+                      "border-[var(--glass-border)] bg-background text-muted",
                   )}
                 >
                   {completed ? <Check className="h-5 w-5" /> : step.id}
@@ -59,16 +59,16 @@ export default function CheckoutStepper({ currentStep }: CheckoutStepperProps) {
 
                 <span
                   className={clsx(
-                    "mt-3 text-sm font-semibold",
+                    "mt-3 text-sm font-bold uppercase tracking-widest font-heading transition-colors",
                     active
-                      ? "text-blue-600"
-                      : "text-gray-700 dark:text-gray-300",
+                      ? "text-[var(--accent-start)]"
+                      : "text-secondary",
                   )}
                 >
                   {step.title}
                 </span>
 
-                <span className="mt-1 hidden text-xs text-gray-500 md:block">
+                <span className="mt-1 hidden text-xs font-medium text-muted md:block">
                   {step.description}
                 </span>
               </div>
@@ -76,10 +76,10 @@ export default function CheckoutStepper({ currentStep }: CheckoutStepperProps) {
               {/* Connector */}
               {index < steps.length - 1 && (
                 <div className="mx-4 mt-[-28px] flex-1">
-                  <div className="relative h-1 rounded-full bg-gray-200 dark:bg-zinc-700">
+                  <div className="relative h-1.5 rounded-full bg-secondary/10">
                     <div
                       className={clsx(
-                        "absolute left-0 top-0 h-full rounded-full bg-blue-600 transition-all duration-500",
+                        "absolute left-0 top-0 h-full rounded-full bg-linear-to-r from-[var(--accent-start)] to-[var(--accent-end)] transition-all duration-700",
                         currentStep > step.id ? "w-full" : "w-0",
                       )}
                     />

@@ -1,4 +1,5 @@
 "use client";
+import { AxiosError } from "axios";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
@@ -7,7 +8,7 @@ import { Product } from "@/types/product"; // Adjust import path if needed
 
 export interface UpdateProductPayload {
   id: string;
-  data: FormData | Partial<Product> | Record<string, any>;
+  data: FormData | Partial<Product> | Record<string, unknown>;
 }
 
 export const useUpdateProduct = () => {
@@ -25,33 +26,8 @@ export const useUpdateProduct = () => {
       });
     },
 
-    onError: (error: any) => {
-      toast.error(error?.response?.data?.message || "Failed to update product");
+    onError: (error: unknown) => {
+      toast.error((error as AxiosError<{ message?: string }>)?.response?.data?.message || "Failed to update product");
     },
   });
 };
-// "use client";
-
-// import { useMutation, useQueryClient } from "@tanstack/react-query";
-// import toast from "react-hot-toast";
-// import { updateProductApi } from "@/api/product";
-
-// export const useUpdateProduct = () => {
-//   const queryClient = useQueryClient();
-
-//   return useMutation({
-//     mutationFn: updateProductApi,
-
-//     onSuccess: () => {
-//       toast.success("Product updated successfully");
-
-//       queryClient.invalidateQueries({
-//         queryKey: ["products"],
-//       });
-//     },
-
-//     onError: (error: any) => {
-//       toast.error(error?.response?.data?.message || "Failed to update product");
-//     },
-//   });
-// };

@@ -4,12 +4,24 @@ import { Bell } from "lucide-react";
 import { useState } from "react";
 import NotificationPopup from "./NotificationPopup";
 import { useNotificationStore } from "@/store/notification.store";
+import { useInfiniteNotifications } from "@/hooks/notification/useNotification";
+import { useEffect } from "react";
 
 const NotificationButton = () => {
   const [open, setOpen] = useState(false);
 
   const unreadCount = useNotificationStore((state) => state.unreadCount);
-  //   console.log("unreadCount", unreadCount);
+  const setNotifications = useNotificationStore((state) => state.setNotifications);
+
+  // Fetch notifications on mount so the unread count is accurate immediately
+  const { data } = useInfiniteNotifications(10);
+  
+  useEffect(() => {
+    if (data) {
+      const notifications = data.pages.flatMap((page) => page.notifications) || [];
+      setNotifications(notifications);
+    }
+  }, [data, setNotifications]);
 
   return (
     <div className="relative">

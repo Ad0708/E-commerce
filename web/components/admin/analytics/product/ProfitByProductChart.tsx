@@ -73,7 +73,10 @@ export default function ProfitByProductChart() {
               type="category"
               tickLine={false}
               stroke="#94a3b8"
-              width={80}
+              width={100}
+              tickFormatter={(name: string) =>
+                name.length > 14 ? name.substring(0, 14) + "..." : name
+              }
             />
             <Tooltip
               formatter={(value: any) => {

@@ -171,28 +171,30 @@ export function BannerManagementCard({ store }: Props) {
     });
   };
 
-  const handleMoveTop = (banner: Banner) => {
+  const handleMoveUp = (banner: Banner) => {
+    if (banner.order <= 1) return;
     updateBanner(
       {
         bannerId: banner._id,
-        order: 1,
+        order: banner.order - 1,
       },
       {
-        onSuccess: () => toast.success("Banner moved to top"),
+        onSuccess: () => toast.success("Banner moved up"),
         onError: () => toast.error("Move failed"),
       },
     );
   };
 
-  const handleMoveBottom = (banner: Banner) => {
-    const max = Math.max(...(store.banners?.map((b) => b.order) ?? [1]));
+  const handleMoveDown = (banner: Banner) => {
+    const max = store.banners?.length ?? 1;
+    if (banner.order >= max) return;
     updateBanner(
       {
         bannerId: banner._id,
-        order: max + 1,
+        order: banner.order + 1,
       },
       {
-        onSuccess: () => toast.success("Banner moved to bottom"),
+        onSuccess: () => toast.success("Banner moved down"),
         onError: () => toast.error("Move failed"),
       },
     );
@@ -318,8 +320,9 @@ export function BannerManagementCard({ store }: Props) {
                           size="icon"
                           variant="outline"
                           className="h-7 w-7 rounded-md border-slate-200 hover:bg-slate-50 dark:border-slate-800 dark:hover:bg-slate-900"
-                          onClick={() => handleMoveTop?.(banner)}
-                          title="Move to top"
+                          onClick={() => handleMoveUp?.(banner)}
+                          disabled={banner.order <= 1 || isMutating}
+                          title="Move up"
                         >
                           <ChevronUp className="h-3.5 w-3.5 text-slate-500 dark:text-slate-400" />
                         </Button>
@@ -327,8 +330,9 @@ export function BannerManagementCard({ store }: Props) {
                           size="icon"
                           variant="outline"
                           className="h-7 w-7 rounded-md border-slate-200 hover:bg-slate-50 dark:border-slate-800 dark:hover:bg-slate-900"
-                          onClick={() => handleMoveBottom?.(banner)}
-                          title="Move to bottom"
+                          onClick={() => handleMoveDown?.(banner)}
+                          disabled={banner.order >= sortedBanners.length || isMutating}
+                          title="Move down"
                         >
                           <ChevronDown className="h-3.5 w-3.5 text-slate-500 dark:text-slate-400" />
                         </Button>

@@ -13,6 +13,7 @@ import {
   Settings,
   ShoppingCart,
   Sparkles,
+  Star,
   TicketPercent,
   Users,
   X,
@@ -66,6 +67,11 @@ const menuGroups = [
         href: "/admin/customers",
         icon: Users,
       },
+      {
+        title: "Reviews",
+        href: "/admin/reviews",
+        icon: Star,
+      }
     ],
   },
   {
@@ -130,7 +136,7 @@ export default function AdminSidebar({
           fixed left-0 top-0 z-50 flex h-[calc(100vh-1rem)] flex-col
           border border-slate-200 bg-white/90 backdrop-blur-xl
           dark:border-slate-800 dark:bg-slate-900/90
-          transition-all duration-300 m-2 rounded-xl overflow-hidden shadow-sm
+          transition-all duration-300 m-2 mt-1.5 rounded-xl overflow-hidden shadow-sm
 
           ${mobileSidebarOpen ? "translate-x-0" : "-translate-x-full"}
 
@@ -140,9 +146,8 @@ export default function AdminSidebar({
       >
         {/* Fixed Header */}
         <div
-          className={`shrink-0 border-b border-slate-200/60 px-4 h-20 dark:border-slate-800/60 flex items-center ${
-            desktopCollapsed ? "justify-center" : "justify-between"
-          }`}
+          className={`shrink-0 border-b border-slate-200/60 px-4 h-20 dark:border-slate-800/60 flex items-center ${desktopCollapsed ? "justify-center" : "justify-between"
+            }`}
         >
           {/* Expanded Brand Header */}
           {!desktopCollapsed && (
@@ -204,13 +209,11 @@ export default function AdminSidebar({
                     key={item.title}
                     href={item.href}
                     onClick={() => setMobileSidebarOpen(false)}
-                    className={`group flex items-center rounded-xl px-3.5 py-2.5 transition-all duration-200 ${
-                      desktopCollapsed ? "justify-center" : "gap-3.5"
-                    } ${
-                      isActive
+                    className={`group flex items-center rounded-xl px-3.5 py-2.5 transition-all duration-200 ${desktopCollapsed ? "justify-center" : "gap-3.5"
+                      } ${isActive
                         ? "bg-linear-to-r from-blue-600 to-cyan-500 text-white shadow-md font-medium"
                         : "text-slate-600 hover:bg-slate-100/80 dark:text-slate-300 dark:hover:bg-slate-800/60"
-                    }`}
+                      }`}
                     title={desktopCollapsed ? item.title : undefined}
                   >
                     <Icon size={19} className="shrink-0" />
@@ -231,9 +234,8 @@ export default function AdminSidebar({
         <div className="shrink-0 space-y-1 border-t border-slate-200/60 p-3 dark:border-slate-800/60">
           <Link
             href="/home"
-            className={`flex items-center rounded-xl px-3.5 py-2.5 text-slate-600 transition hover:bg-slate-100/80 dark:text-slate-300 dark:hover:bg-slate-800/60 ${
-              desktopCollapsed ? "justify-center" : "gap-3.5"
-            }`}
+            className={`flex items-center rounded-xl px-3.5 py-2.5 text-slate-600 transition hover:bg-slate-100/80 dark:text-slate-300 dark:hover:bg-slate-800/60 ${desktopCollapsed ? "justify-center" : "gap-3.5"
+              }`}
             title={desktopCollapsed ? "View Store" : undefined}
           >
             <ExternalLink size={19} className="shrink-0" />
@@ -247,9 +249,8 @@ export default function AdminSidebar({
 
           <button
             type="button"
-            className={`flex w-full items-center rounded-xl px-3.5 py-2.5 text-red-500 transition hover:bg-red-50 dark:hover:bg-red-500/10 ${
-              desktopCollapsed ? "justify-center" : "gap-3.5"
-            }`}
+            className={`flex w-full items-center rounded-xl px-3.5 py-2.5 text-red-500 transition hover:bg-red-50 dark:hover:bg-red-500/10 ${desktopCollapsed ? "justify-center" : "gap-3.5"
+              }`}
             onClick={handleLogout}
             title={desktopCollapsed ? "Logout" : undefined}
           >

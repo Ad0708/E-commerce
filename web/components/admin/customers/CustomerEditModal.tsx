@@ -1,4 +1,5 @@
 "use client";
+import { removeEmojis } from "@/lib/utils";
 
 import { useEffect } from "react";
 import { X } from "lucide-react";
@@ -104,6 +105,7 @@ export default function CustomerEditModal({
             <label className="mb-2 block text-sm font-medium">Email</label>
 
             <input
+              onInput={(e) => { e.currentTarget.value = removeEmojis(e.currentTarget.value); }}
               {...register("email")}
               className="w-full rounded-xl border border-zinc-300 bg-white px-4 py-2.5 outline-none focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-950"
             />

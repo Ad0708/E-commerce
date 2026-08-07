@@ -9,7 +9,7 @@ type Props = {
   status?: string;
 };
 
-export const useallProducts = ({
+export const useAllProducts = ({
   page,
   limit,
   search,

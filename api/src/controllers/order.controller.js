@@ -325,6 +325,21 @@ export const createOrder = async (req, res) => {
       });
     }
 
+    // Trigger Notifications
+    await sendNotification({
+      userId: user._id.toString(),
+      title: "Order Placed Successfully",
+      message: `Your order ${createdOrder.orderNumber} has been received.`,
+      type: "order",
+      link: `/orders/${createdOrder._id}`,
+      metadata: {
+        orderId: createdOrder._id,
+      },
+      sendEmailFlag: true,
+      sendWhatsappFlag: true,
+      order: createdOrder,
+    });
+
     return res.status(201).json({
       success: true,
       message:
@@ -346,18 +361,72 @@ export const createOrder = async (req, res) => {
     await session.endSession();
   }
 };
+// export const getMyOrders = async (req, res) => {
+//   try {
+//     const orders = await Order.find({
+//       userId: req.user.id,
+//     })
+//       .select("-marketing")
+//       .sort({ createdAt: -1 })
+//       .lean();
+
+//     return res.status(200).json({
+//       success: true,
+//       orders,
+//     });
+//   } catch (error) {
+//     console.error("Get My Orders Error:", error);
+
+//     return res.status(500).json({
+//       success: false,
+//       message: "Failed to fetch orders",
+//       error: error.message,
+//     });
+//   }
+// };
+
 export const getMyOrders = async (req, res) => {
   try {
-    const orders = await Order.find({
+    const limit = parseInt(req.query.limit) || 10;
+    const { cursor } = req.query; // Expectations: cursor is the last item's createdAt or _id
+
+    // Base query filter
+    const query = {
       userId: req.user.id,
-    })
+    };
+
+    // If a cursor is passed, fetch orders created BEFORE the cursor date
+    if (cursor) {
+      query.createdAt = { $lt: new Date(cursor) };
+    }
+
+    // Fetch limit + 1 items to easily check if there is a next page
+    const orders = await Order.find(query)
       .select("-marketing")
       .sort({ createdAt: -1 })
+      .limit(limit + 1)
       .lean();
+
+    const hasMore = orders.length > limit;
+
+    // Remove the extra item if we fetched limit + 1
+    if (hasMore) {
+      orders.pop();
+    }
+
+    // Next cursor is the createdAt timestamp of the last order in the returned array
+    const nextCursor =
+      hasMore && orders.length > 0
+        ? orders[orders.length - 1].createdAt
+        : null;
 
     return res.status(200).json({
       success: true,
       orders,
+      pagination: {
+        hasMore,
+        nextCursor,
+      },
     });
   } catch (error) {
     console.error("Get My Orders Error:", error);
@@ -369,7 +438,6 @@ export const getMyOrders = async (req, res) => {
     });
   }
 };
-
 export const getOrderById = async (req, res) => {
   try {
     const {

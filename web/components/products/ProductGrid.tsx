@@ -201,14 +201,13 @@ export default function ProductGrid({
     <div className="space-y-4">
       {/* Sticky view toggle */}
       <div className="sticky top-0 z-10 flex items-center justify-end py-2">
-        <div className="flex gap-1 rounded-xl border border-slate-200 bg-white p-1 shadow-sm dark:border-slate-700 dark:bg-slate-900">
+        <div className="flex gap-1 rounded-xl border border-[var(--glass-border)] bg-background p-1 shadow-sm">
           <button
             onClick={() => setView("grid")}
-            className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors ${
-              view === "grid"
-                ? "bg-slate-900 text-white dark:bg-white dark:text-slate-900"
-                : "text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white"
-            }`}
+            className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors ${view === "grid"
+                ? "bg-foreground text-background"
+                : "text-secondary hover:text-foreground"
+              }`}
             aria-label="Grid view"
           >
             <LayoutGrid size={15} />
@@ -216,11 +215,10 @@ export default function ProductGrid({
           </button>
           <button
             onClick={() => setView("list")}
-            className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors ${
-              view === "list"
-                ? "bg-slate-900 text-white dark:bg-white dark:text-slate-900"
-                : "text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white"
-            }`}
+            className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors ${view === "list"
+                ? "bg-foreground text-background"
+                : "text-secondary hover:text-foreground"
+              }`}
             aria-label="List view"
           >
             <List size={15} />
@@ -238,39 +236,39 @@ export default function ProductGrid({
             initial="hidden"
             animate="show"
             exit={{ opacity: 0 }}
-            className="grid gap-5 grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+            className="grid gap-5 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
           >
             {mode === "admin"
               ? products?.map((product, index) => (
-                  <motion.div
-                    key={`${product._id}-${index}`}
-                    variants={itemVariants}
-                    className="h-full"
-                  >
+                <motion.div
+                  key={`${product._id}-${index}`}
+                  variants={itemVariants}
+                  className="h-full"
+                >
+                  <ProductCard
+                    product={product}
+                    mode={mode}
+                    view="grid"
+                    wishlisted={wishlist?.has(product._id)}
+                  />
+                </motion.div>
+              ))
+              : products?.map((product) => (
+                <motion.div
+                  key={product._id}
+                  variants={itemVariants}
+                  className="h-full"
+                >
+                  <Link href={`/product/${product._id}`} className="block h-full">
                     <ProductCard
                       product={product}
                       mode={mode}
                       view="grid"
                       wishlisted={wishlist?.has(product._id)}
                     />
-                  </motion.div>
-                ))
-              : products?.map((product) => (
-                  <motion.div
-                    key={product._id}
-                    variants={itemVariants}
-                    className="h-full"
-                  >
-                    <Link href={`/product/${product._id}`} className="block h-full">
-                      <ProductCard
-                        product={product}
-                        mode={mode}
-                        view="grid"
-                        wishlisted={wishlist?.has(product._id)}
-                      />
-                    </Link>
-                  </motion.div>
-                ))}
+                  </Link>
+                </motion.div>
+              ))}
           </motion.div>
         )}
 
@@ -286,30 +284,30 @@ export default function ProductGrid({
           >
             {mode === "admin"
               ? products?.map((product, index) => (
-                  <motion.div
-                    key={`${product._id}-${index}`}
-                    variants={itemVariants}
-                  >
+                <motion.div
+                  key={`${product._id}-${index}`}
+                  variants={itemVariants}
+                >
+                  <ProductCard
+                    product={product}
+                    mode={mode}
+                    view="list"
+                    wishlisted={wishlist?.has(product._id)}
+                  />
+                </motion.div>
+              ))
+              : products?.map((product) => (
+                <motion.div key={product._id} variants={itemVariants}>
+                  <Link href={`/product/${product._id}`} className="block">
                     <ProductCard
                       product={product}
                       mode={mode}
                       view="list"
                       wishlisted={wishlist?.has(product._id)}
                     />
-                  </motion.div>
-                ))
-              : products?.map((product) => (
-                  <motion.div key={product._id} variants={itemVariants}>
-                    <Link href={`/product/${product._id}`} className="block">
-                      <ProductCard
-                        product={product}
-                        mode={mode}
-                        view="list"
-                        wishlisted={wishlist?.has(product._id)}
-                      />
-                    </Link>
-                  </motion.div>
-                ))}
+                  </Link>
+                </motion.div>
+              ))}
           </motion.div>
         )}
       </AnimatePresence>

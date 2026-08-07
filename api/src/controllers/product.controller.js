@@ -209,123 +209,6 @@ export const getProductById = async (req, res) => {
   }
 };
 
-// export const updateProduct = async (req, res) => {
-//   try {
-//     const product = await Product.findById(req.params.id);
-//     console.log(req.body.featured);
-//     console.log(typeof req.body.featured);
-//     if (!product) {
-//       return res.status(404).json({
-//         success: false,
-//         message: "Product not found",
-//       });
-//     }
-
-//     const validatedData = productSchema.parse(req.body);
-
-//     let existingImages = [];
-
-//     if (req.body.images) {
-//       try {
-//         const parsed = JSON.parse(req.body.images);
-//         existingImages = Array.isArray(parsed) ? parsed : [];
-//       } catch {
-//         existingImages = [];
-//       }
-//     }
-
-//     const newImages = (req.files || []).map((f) => f.path);
-
-//     const finalImages = [...existingImages, ...newImages];
-
-//     const removedImages = product.images.filter(
-//       (oldImg) => !finalImages.includes(oldImg),
-//     );
-
-//     for (const url of removedImages) {
-//       try {
-//         const publicId = url.split("/").slice(-1)[0].split(".")[0];
-
-//         await cloudinary.uploader.destroy(`products/${publicId}`);
-//       } catch (err) {
-//         console.log("Cloudinary delete failed:", err.message);
-//       }
-//     }
-
-//     const updated = await Product.findByIdAndUpdate(
-//       req.params.id,
-//       {
-//         ...validatedData,
-//         images: finalImages,
-//         status:
-//           validatedData.stock === 0 ? "out_of_stock" : validatedData.status,
-//       },
-//       { new: true },
-//     );
-
-//     return res.status(200).json({
-//       success: true,
-//       message: "Product updated successfully",
-//       product: updated,
-//     });
-//   } catch (error) {
-//     console.log(error);
-
-//     if (error.name === "ZodError") {
-//       return res.status(400).json({
-//         success: false,
-//         errors: error.issues,
-//       });
-//     }
-
-//     return res.status(500).json({
-//       success: false,
-//       message: error.message,
-//     });
-//   }
-// };
-
-// export const deleteProduct = async (req, res) => {
-//   try {
-//     const { id } = req.params;
-
-//     const product = await Product.findById(id);
-
-//     if (!product) {
-//       return res.status(404).json({
-//         success: false,
-//         message: "Product not found",
-//       });
-//     }
-
-//     if (product.images?.length) {
-//       for (const url of product.images) {
-//         try {
-//           const publicId = url.split("/").slice(-1)[0].split(".")[0];
-
-//           await cloudinary.uploader.destroy(`products/${publicId}`);
-//         } catch (err) {
-//           console.log("Cloud delete failed:", err.message);
-//         }
-//       }
-//     }
-
-//     await Product.findByIdAndDelete(id);
-
-//     return res.status(200).json({
-//       success: true,
-//       message: "Product deleted successfully",
-//     });
-//   } catch (error) {
-//     return res.status(500).json({
-//       success: false,
-//       message: error.message,
-//     });
-//   }
-// };
-
-// backend/controllers/product.controller.js
-
 export const updateProduct = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
@@ -511,6 +394,7 @@ export const deleteProduct = async (req, res) => {
     });
   }
 };
+
 export const getSimilarProducts = async (req, res) => {
   try {
     const { id } = req.params;

@@ -1,4 +1,5 @@
 "use client";
+import { AxiosError } from "axios";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
@@ -35,9 +36,9 @@ export const useUpdateOrderStatus = () => {
       queryClient.invalidateQueries({ queryKey: ["admin-order", variables.orderId] });
     },
 
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       toast.error(
-        error?.response?.data?.message || "Failed to update order status"
+        (error as AxiosError<{message?: string}>)?.response?.data?.message || "Failed to update order status"
       );
     },
   });

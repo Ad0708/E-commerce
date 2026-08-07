@@ -36,53 +36,57 @@ export default function ReviewStep({
   };
 
   return (
-    <div className="space-y-8">
-      {/* Address */}
-      <div className="rounded-2xl border border-gray-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
-        <h2 className="mb-4 text-xl font-semibold">Shipping Address</h2>
-
-        {address ? (
-          <div className="space-y-2">
-            <p className="font-semibold">{address.fullName}</p>
-
-            <p>{address.phone}</p>
-
-            <p>{address.address1}</p>
-
-            {address.address2 && <p>{address.address2}</p>}
-
-            <p>
-              {address.city}, {address.state}
-            </p>
-
-            <p>
-              {address.country} - {address.pincode}
-            </p>
+    <div className="grid items-start gap-4 lg:grid-cols-12">
+      {/* Left Column: Address, Payment, Cart */}
+      <div className="flex flex-col gap-4 lg:col-span-7 xl:col-span-8">
+        
+        {/* Top Row: Address and Payment */}
+        <div className="grid gap-4 sm:grid-cols-2">
+          {/* Address */}
+          <div className="rounded-xl border border-gray-200 bg-gray-50/50 p-4 dark:border-zinc-800/80 dark:bg-zinc-900/50">
+            <div className="mb-3 flex items-center justify-between">
+              <h2 className="text-base font-semibold">Shipping Address</h2>
+            </div>
+            {address ? (
+              <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                <p className="font-medium text-gray-900 dark:text-white">{address.fullName}</p>
+                <p>{address.phone}</p>
+                <p>
+                  {address.address1}
+                  {address.address2 ? `, ${address.address2}` : ""}
+                </p>
+                <p>
+                  {address.city}, {address.state} - {address.pincode}
+                </p>
+                <p>{address.country}</p>
+              </div>
+            ) : (
+              <p className="text-sm text-red-500">No address selected.</p>
+            )}
           </div>
-        ) : (
-          <p className="text-red-500">No address selected.</p>
-        )}
+
+          {/* Payment */}
+          <div className="rounded-xl border border-gray-200 bg-gray-50/50 p-4 dark:border-zinc-800/80 dark:bg-zinc-900/50">
+            <h2 className="mb-3 text-base font-semibold">Payment Method</h2>
+            <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+              <span className="capitalize">{paymentMethod}</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Products */}
+        <CartReview />
       </div>
 
-      {/* Payment */}
-      <div className="rounded-2xl border border-gray-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
-        <h2 className="mb-4 text-xl font-semibold">Payment Method</h2>
-
-        <p className="capitalize">{paymentMethod}</p>
+      {/* Right Column: Order Summary */}
+      <div className="lg:col-span-5 xl:col-span-4">
+        <OrderSummary
+          onPlaceOrder={() => {
+            handleSubmit();
+          }}
+          loading={isPending}
+        />
       </div>
-
-      {/* Products */}
-
-      <CartReview />
-
-      {/* Summary */}
-
-      <OrderSummary
-        onPlaceOrder={() => {
-          handleSubmit();
-        }}
-        loading={isPending}
-      />
     </div>
   );
 }

@@ -156,7 +156,7 @@ export function ProductSelectorModal({
   // Debounce search
   useEffect(() => {
     const timer = setTimeout(() => {
-      setDebouncedSearch(search);
+      setDebouncedSearch(search.trimStart());
       setPage(1);
       setHasMore(true);
     }, 400);

@@ -6,7 +6,7 @@ import {
   verifyRazorpayPayment,
 } from "@/api/payment";
 
-export const usecreateStripePaymentIntent = () => {
+export const useCreateStripePaymentIntent = () => {
   return useMutation({
     mutationFn: createStripePaymentIntent,
   });

@@ -27,11 +27,14 @@
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/auth.store";
 import { logoutapi } from "@/api/auth";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useWishlistStore } from "@/store/wishlist.store";
+import { useCartStore } from "@/store/cart.store";
+import { useNotificationStore } from "@/store/notification.store";
 
 export const useLogout = () => {
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async () => {
@@ -46,9 +49,12 @@ export const useLogout = () => {
     onSuccess: () => {
       useAuthStore.getState().setUser(null);
       useWishlistStore.getState().clearWishlist();
+      useCartStore.getState().clearCart();
+      useNotificationStore.getState().clearNotifications();
+      queryClient.clear();
       localStorage.removeItem("loggedIn");
 
-      router.replace("/login");
+      window.location.href = "/login";
     },
 
     onError: (error) => {

@@ -1,4 +1,5 @@
 "use client";
+import { AxiosError } from "axios";
 
 import { useCancelOrder } from "@/hooks/order/useOrder";
 import { OrderStatusType } from "@/types/order";
@@ -27,9 +28,9 @@ export default function CancelOrderButton({ orderId, status }: CancelOrderButton
         // Ensure single order detail tracking cache is invalidated on real-time mutation
         queryClient.invalidateQueries({ queryKey: ["order", orderId] });
       },
-      onError: (error: any) => {
+      onError: (error: unknown) => {
         toast.error(
-          error?.response?.data?.message || "Failed to cancel order"
+          (error as AxiosError<{message?: string}>)?.response?.data?.message || "Failed to cancel order"
         );
       },
     });

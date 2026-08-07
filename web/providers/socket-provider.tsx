@@ -6,7 +6,7 @@ import { socket } from "@/lib/socket/socket";
 import { useAuthStore } from "@/store/auth.store";
 import { usePathname, useRouter } from "next/navigation";
 import { useNotificationStore } from "@/store/notification.store";
-import { getNotifications } from "@/api/notification";
+import { getNotifications, type Notification } from "@/api/notification";
 import { useStoreBasic } from "@/hooks/store/useStore";
 
 export default function SocketProvider({
@@ -62,7 +62,7 @@ export default function SocketProvider({
         });
 
         const notifications =
-          data.pages.flatMap((page: any) => page.notifications) ?? [];
+          data.pages.flatMap((page: { notifications: Notification[] }) => page.notifications) ?? [];
 
         useNotificationStore.getState().setNotifications(notifications);
       } catch (error) {
@@ -85,7 +85,7 @@ export default function SocketProvider({
       addNotification(notification);
 
       // Update React Query cache (popup list)
-      queryClient.setQueryData(["notifications"], (old: any) => {
+      queryClient.setQueryData(["notifications"], (old: { pages: { notifications: Notification[] }[] } | undefined) => {
         if (!old) return old;
 
         return {
@@ -103,9 +103,8 @@ export default function SocketProvider({
       // Browser notification
       if ("Notification" in window && Notification.permission === "granted") {
         const browserNotification = new Notification(notification.title, {
-          body: `${notification.message}\nOrder ID: ${
-            notification.metadata?.orderId || ""
-          }`,
+          body: `${notification.message}\nOrder ID: ${notification.metadata?.orderId || ""
+            }`,
           icon: store?.logo,
           data: {
             link: notification.link,
